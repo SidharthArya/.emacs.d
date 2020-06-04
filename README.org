@@ -1,0 +1,17 @@
+#+TITLE: Personal Emacs Configuration
+#+AUTHOR: Sidharth Arya
+
+This is my personal emacs configuration. 
+
+#+BEGIN_SRC shell
+git clone --depth=1 https://github.com/SidharthArya/.emacs.d ~/.local/emacs.d
+cd ~/.local/emacs.d
+Emacs=Vanilla ./install.sh
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(org-babel-load-file "~/.emacs.d/init.org")
+#+END_SRC
+
+Every time the configuration file is changed, it is required to =M-x config-compile=.
+
