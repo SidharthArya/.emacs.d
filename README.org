@@ -2,7 +2,7 @@
 #+AUTHOR: Sidharth Arya
 
 This is my personal emacs configuration. 
-
+The syntax I use for ~use-package~, is dependent on [[https://github.com/SidharthArya/emacsit][emacsit]] (Feel free to use it if you wish, but I wrote it mostly for personal use.)  
 #+BEGIN_SRC shell
 git clone --depth=1 https://github.com/SidharthArya/.emacs.d ~/.local/emacs.d
 cd ~/.local/emacs.d
@@ -14,4 +14,3 @@ Emacs=Vanilla ./install.sh
 #+END_SRC
 
 Every time the configuration file is changed, it is required to =M-x config-compile=.
-
