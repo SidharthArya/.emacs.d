@@ -1,8 +1,7 @@
 #!/bin/bash
 declare -A locations=(
 		["Vanilla"]="$HOME/.emacs.d/"
-		["Spacemacs"]="dog"
-		["Doom"]="dog"
+		["Doom"]="$HOME/.doom.d/"
 )
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"

@@ -25,12 +25,13 @@
                            (minimal (compile core appearance vi))
                            (mail (core mail emoji begin-mail not-org))
                            (news (core web org news emoji begin-news not-org))
-                           (tracking (core org begin-tracking not-org))
+                           (tracking (core vi ivy org begin-tracking not-org))
                            (programming (compile core appearance vi ivy org programming vc))
-                           (org (compile core appearance programming vi org server web begin-org finance))
+                           (org (compile core appearance programming vi org server web ivy finance begin-org))
+                           (doom (begin-org doom))
                            (main (compile core appearance programming vi emoji ivy org finance server))
                            ))
-    (modules-config-default 'org)
+    (modules-config-default 'doom)
     (modules-path "~/.emacs.d/lisp")
     :config
     (modules-command-line-args-process))
@@ -55,6 +56,9 @@
   (set-frame-parameter nil 'alpha '(95 . 100))
   (set-frame-size nil 130 40)
   (set-frame-position nil 130 40)
+  (setq custom-theme-directory "~/.emacs.d/themes")
+  (load-theme 'doom-one t)
+  (add-hook 'kill-emacs-hook 'save-some-buffers)
 #+END_SRC
 * Appearance
 #+BEGIN_SRC emacs-lisp :tangle lisp/appearance.el
@@ -66,16 +70,6 @@
     "Equalize The width"
     (setq display-line-numbers-width (length (number-to-string (line-number-at-pos (point-max))))))
   (add-hook 'find-file-hook 'display-line-numbers-equalize)
-  (setq custom-theme-directory "~/.emacs.d/themes")
-  (load-theme 'tango-dark t)
-
-  (set-face-attribute 'default nil
-		      :family "SF Mono"
-		      :foundry "APPL"
-		      :slant 'normal
-		      :weight 'normal
-		      :height 100
-		      :width 'normal)
 
 #+END_SRC
 * Interface
@@ -158,50 +152,52 @@
 #+end_src
 * Programming
   #+begin_src emacs-lisp :tangle lisp/programming.el
-    (use-package ide-mode
-      :ensure SidharthArya/emacs-ide-mode
-      :config
-      (require 'ide-mode-recipes)
-      :bind
-      (:map prog-mode-map
-	    ("C-S-i" . ide-mode)
-      )
-      (:map ide-mode-map
-	    ("C-S-z" . ide-goto-shell)
-	    ("C-S-c" . ide-mode-compile)
-	    ("C-S-e" . ide-mode-execute)
-	    ("C-S-x" . ide-goto-input)
-	    ("C-S-s" . ide-goto-output)
-	    ("C-S-a" . ide-goto-code)
-	    )
-      )
-    (use-package yasnippet
-      :ensure t
-      :ensure yasnippet-snippets
-      :hook (prog-mode . yas-minor-mode)
-      :config
-      (require 'yasnippet-snippets)
-      )
-    (use-package company
-      :ensure t
-      :hook (prog-mode . company-mode)
-      :init
-      (require 'company-tng)
-      :bind
-      (:map prog-mode-map
-	    ("TAB" . company-indent-or-complete-common)
-	    ))
+        (use-package ide-mode
+          :ensure SidharthArya/emacs-ide-mode
+          :config
+          (require 'ide-mode-recipes)
+          :bind
+          (:map prog-mode-map
+                ("C-S-i" . ide-mode)
+          )
+          (:map ide-mode-map
+                ("C-S-z" . ide-goto-shell)
+                ("C-S-c" . ide-mode-compile)
+                ("C-S-e" . ide-mode-execute)
+                ("C-S-x" . ide-goto-input)
+                ("C-S-s" . ide-goto-output)
+                ("C-S-a" . ide-goto-code)
+                )
+          )
+        (use-package yasnippet
+          :ensure t
+          :ensure yasnippet-snippets
+          :hook (prog-mode . yas-minor-mode)
+          :config
+          (require 'yasnippet-snippets)
+          )
+        (use-package company
+          :ensure t
+          :hook (prog-mode . company-mode)
+          :init
+          (require 'company-tng)
+          :bind
+          (:map prog-mode-map
+                ("TAB" . company-indent-or-complete-common)
+                ))
 
-    (use-package flycheck
-      :ensure t
-      :hook (prog-mode . flycheck-mode)
-      )
-    (use-package ob-ipython
-      :ensure t
-      :after org
-      :config 
-      (add-to-list 'org-babel-load-languages '(ipython . t)) 
-)
+        (use-package flycheck
+          :ensure t
+          :hook (prog-mode . flycheck-mode)
+          )
+    ;;     (use-package ob-ipython
+    ;;       :ensure magnars/s.el
+    ;;       :ensure rejeep/f.el
+    ;;       :ensure gregsexton/ob-ipython
+    ;;       :after org
+    ;;       :config 
+    ;;       (add-to-list 'org-babel-load-languages '(ipython . t)) 
+    ;;       )
   #+end_src
   #+begin_src emacs-lisp :tangle lisp/vc.el
 	(use-package magit
@@ -249,12 +245,21 @@
       (modules-load '(mount))
             (use-package org
               :if my-documents-mounted
+              :ensure org-clock
+              :ensure alphapapa/ts.el
               :ensure t
-              :ensure sabof/org-bullets
-              :ensure SidharthArya/org-alert
-              :ensure org-ql
-              :ensure org-sidebar
-              :ensure org-brain
+              ;; :ensure sabof/org-bullets
+              :ensure ht
+              ;; :ensure SidharthArya/org-alert
+              :ensure s
+              :ensure emacsorphanage/ov
+              :ensure f
+              :ensure transient
+              :ensure emacsmirror/peg
+              :ensure alphapapa/org-ql
+              :ensure alphapapa/org-sidebar
+              :ensure alphapapa/org-super-agenda
+              :ensure Kungsgeten/org-brain
               :ensure org-drill
               :ensure kaushalmodi/ox-hugo
               :hook (org-mode . visual-line-mode)
@@ -367,6 +372,7 @@
               (org-super-agenda-mode)
 
               :config;; Populates only the EXPORT_FILE_NAME property in the inserted headline.
+              (require 'org-clock)
               (require 'ox-hugo)
               (require 'org-hugo-auto-export-mode)
           (defun org-hugo-new-subtree-post-capture-template ()
@@ -406,15 +412,6 @@
 #+END_SRC
 #+begin_src emacs-lisp :tangle lisp/begin-org.el
       (set-frame-parameter nil 'title "Org")
-    (org-agenda nil "a")
-    (switch-to-buffer "*Org Agenda*")
-  (defun my-tasks-async-instance ()
-    ""
-    (interactive)
-    (start-process-shell-command "*Tasks*" nil "emacs --config tracking")
-    )
-  (run-at-time "04:00am" nil #'my-tasks-async-instance)
-  (run-at-time "08:00pm" nil #'my-tasks-async-instance)
 #+end_src
 #+begin_src emacs-lisp :tangle lisp/not-org.el
   (global-set-key (kbd "C-c c") #'(lambda () (interactive) (start-process-shell-command "*Capture*" nil "emacsclient --eval '(org-capture)'")))
@@ -501,46 +498,50 @@
   #+end_src
 * News
 #+begin_src emacs-lisp :tangle lisp/news.el
-  (use-package elfeed
-    :if my-documents-mounted
-    :ensure t
-    :ensure remyhonig/elfeed-org
-    :custom
-    (elfeed-db-directory "~/Private/News/Feeds")
-    (browse-url-generic-program "firefox")
-    (rmh-elfeed-org-files (list "~/Documents/Org/Feeds/feeds.org"))
-    (elfeed-sort-order 'descending)
-    :init
-    (require 'elfeed-org)
-    (elfeed-org)
+    (modules-load '(mount))
+      (use-package elfeed
+        :if my-documents-mounted
+        :ensure t
+        :ensure remyhonig/elfeed-org
+        :custom
+        (elfeed-db-directory "~/Private/News/Feeds")
+        (browse-url-generic-program "firefox")
+        (rmh-elfeed-org-files (list "~/Documents/Org/Feeds/feeds.org"))
+        (elfeed-sort-order 'descending)
+        :init
+        (require 'elfeed-org)
+        (elfeed-org)
 
-    :config
-    (setq-default elfeed-search-filter "@2-days-ago +unread +important")
-                                          ; (start-process "*Youtube*" nil "/home/arya/.local/scripts/elfeed-youtube" "get")
-                                          ; (start-process "*Mpv*" nil "/home/arya/.local/scripts/elfeed-youtube" "vlc")
-    (add-to-list 'kill-emacs-hook 'elfeed-db-unload)
+        :config
+        (setq-default elfeed-search-filter  (if
+                                                (<= (string-to-number (format-time-string "%u")) 5)
+                                                "@2-days-ago -unimportant +unread +important"
+                                              "@1-week-ago +unread +important"))
+                                              ; (start-process "*Youtube*" nil "/home/arya/.local/scripts/elfeed-youtube" "get")
+                                              ; (start-process "*Mpv*" nil "/home/arya/.local/scripts/elfeed-youtube" "vlc")
+        (add-to-list 'kill-emacs-hook 'elfeed-db-unload)
 
-    (defun my-elfeed-feed-sort (a b)
-      (let* ((a-tags (format "%s" (elfeed-entry-feed a)))
-             (b-tags (format "%s" (elfeed-entry-feed b))))
-        (if (string= a-tags b-tags)
-            (< (elfeed-entry-date b) (elfeed-entry-date a)))
-        (string< a-tags b-tags)))
-    (setf elfeed-search-sort-function #'my-elfeed-feed-sort)
+        (defun my-elfeed-feed-sort (a b)
+          (let* ((a-tags (format "%s" (elfeed-entry-feed a)))
+                 (b-tags (format "%s" (elfeed-entry-feed b))))
+            (if (string= a-tags b-tags)
+                (< (elfeed-entry-date b) (elfeed-entry-date a)))
+            (string< a-tags b-tags)))
+        (setf elfeed-search-sort-function #'my-elfeed-feed-sort)
 
-        ;;; HOOKS
-    (add-hook 'elfeed-new-entry-hook
-              (elfeed-make-tagger  :entry-title '"ASL Video Series"
-                                   :add 'junk
-                                   :remove 'unread))
+            ;;; HOOKS
+        (add-hook 'elfeed-new-entry-hook
+                  (elfeed-make-tagger  :entry-title '"ASL Video Series"
+                                       :add 'junk
+                                       :remove 'unread))
 
 
-    (add-hook 'elfeed-new-entry-hook
-              (elfeed-make-tagger  :entry-title '"Dr. Pimple Popper"
-                                   :add 'junk
-                                   :remove 'unread))
+        (add-hook 'elfeed-new-entry-hook
+                  (elfeed-make-tagger  :entry-title '"Dr. Pimple Popper"
+                                       :add 'junk
+                                       :remove 'unread))
 
-    )
+        )
 #+end_src
   #+begin_src emacs-lisp :tangle lisp/begin-news.el
     (set-frame-parameter nil 'title "News")
@@ -564,44 +565,10 @@
 
     (defvar my-tracking-writeup-file "~/Documents/Org/Brain/Morning.org")
 
-    (defvar my-tracking-drill-prefix "~/Documents/Org")
+    (defvar my-tracking-drill-prefix "~/Documents/Org/Brain")
     (setq org-drill-maximum-items-per-session nil)
     (setq org-drill-maximum-duration nil)
-    (setq my-tracking-drill-files '(
-                                    "Brain/Learning/CS/Networks.org"
-                                    "Brain/Learning/Languages/Japanese.org"
-                                    "Brain/Learning/Languages/Spanish.org"
-                                    "Brain/Learning/Languages/French.org"
-                                    "Brain/Learning/Languages/English.org"
-                                    "Brain/Learning/Fitness.org"
-                                    "Brain/Learning/Math/Statistics.org"
-                                    "Brain/Learning/Math/Combinatorics.org"
-                                    "Brain/Learning/Math/Probability.org"
-                                    "Brain/Learning/AI/Courses/AndrewNG.org"
-                                    "Brain/Learning/CS/Algorithms.org"
-                                    "Brain/Learning/Culture/Hinduism.org"
-                                    "Brain/Learning/Culture/Christianism.org"
-                                    "Brain/Learning/Culture/Egyptian.org"
-                                    "Brain/Learning/Life/Quotes.org"
-                                    "Brain/Learning/Life/Changes.org"
-                                    "Brain/Learning/Life/EmotionalIntelligence.org"
-                                    "Brain/Learning/Life/Lessons.org"
-                                    "Brain/Me/Annoyance.org"
-                                    "Brain/Me/Resolve.org"
-                                    "Brain/Me/Nature.org"
-                                    "Brain/Me/Events.org"
-                                    "Brain/Me/Improvement.org"
-                                    "Brain/Learning/Learning.org"
-                                    "Brain/Lessons/Personality.org"
-                                    "Brain/Learning/Science/Medical/Medicines.org"
-                                    "Brain/Learning/Science/Medical/Medical.org"
-                                    "Brain/Learning/Math/Trigonometry.org"
-                                    "Brain/Software/Software.org"
-                                    "Brain/Learning/Social/General.org"
-                                    "Brain/Thoughts/Technology.org"
-                                    "Brain/Learning/Science/Space.org"
-                                    "Brain/Learning/Activities/Dance.org"
-                                    ))
+    (load "~/Documents/Org/Drill/drill.el")
     (defun my-tracking-drill-stuff ()
 
       ""
@@ -770,4 +737,11 @@
 * Server
   #+begin_src emacs-lisp :tangle lisp/server.el
 (server-start)
+  #+end_src
+
+* Distributions
+  #+begin_src emacs-lisp :tangle lisp/doom.el
+    (setq user-emacs-directory "~/.emacs.d/doom")
+(load "~/.emacs.d/doom/init.el")
+
   #+end_src
