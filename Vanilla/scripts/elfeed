@@ -1,31 +1,33 @@
 #!/usr/bin/emacs --script 
 
-  (add-to-list 'load-path "~/.emacs.d/packages/SidharthArya/emacsit")
-  (require 'emacsit)
-  (setq emacsit::savedir "/home/arya/.emacs.d/packages")
-  (setq emacsit::packages  '(
-                             jwiegley/use-package
-                             SidharthArya/modules.el
-                             ))
-  (emacsit::load)
-  (require 'modules)
-  (require 'use-package)
+(add-to-list 'load-path "~/.emacs.d/packages/SidharthArya/emacsit")
+(require 'emacsit)
+(setq emacsit::savedir "/home/arya/.emacs.d/packages")
+(setq emacsit::packages  '(
+                           jwiegley/use-package
+                           SidharthArya/modules.el
+                           ))
+(emacsit::load)
+(require 'modules)
+(require 'use-package)
 
 
-  (use-package emacsit-repositories
-    :custom
-    (use-package-ensure-function 'emacsit-use-package-ensure)
-    )
+(use-package emacsit-repositories
+  :custom
+  (use-package-ensure-function 'emacsit-use-package-ensure))
 
-  (modules-load '(news))
-(progn
-  (elfeed)
-  (elfeed-update)
-  (while (> (elfeed-queue-count-total) 0)
-    (sleep-for 5)
-    (message "%s" (elfeed-queue-count-total))
-    (accept-process-output))
-  (elfeed-db-save-safe)
-  (elfeed-db-gc-safe)
-  (kill-emacs)
-  )
+(modules-load '(news))
+(require 'notifications)
+(if (not (equal (format-time-string "%Y-%m-%d" elfeed-search-last-update) (format-time-string "%Y-%m-%d" (current-time))))
+    (progn
+      (elfeed)
+      (elfeed-update)
+      (while (> (elfeed-queue-count-total) 0)
+        (sleep-for 5)
+        (message "%s" (elfeed-queue-count-total))
+        (accept-process-output))
+      (elfeed-db-save-safe)
+      (elfeed-db-gc-safe)
+      (notifications-notify :app-name "Emacs" :title "Elfeed" :body  "Updated")
+      (kill-emacs))
+  (notifications-notify :app-name "Emacs" :title "Elfeed" :body  "Already Updated"))

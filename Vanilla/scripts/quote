@@ -1,0 +1,22 @@
+#!/usr/bin/emacs --script
+(require 'subr-x)
+(require 'org)
+(require 'notifications)
+(with-current-buffer (find-file-noselect "~/Documents/Org/Brain/Learning/Personality/Quotes.org")
+  (forward-line (let ((entries
+                       (org-map-entries
+                        #'(lambda () (line-number-at-pos)) nil 'file)))
+                  (nth (random (length entries)) entries)))
+  (let ((entry (org-get-entry)))
+    (setq my-quote (replace-regexp-in-string "\\[?\\]?" "" (concat "<span foreground=\"#55ff55\">" (replace-regexp-in-string ":drill:" "" (org-get-heading)) "</span>" "\n" "<span foreground=\"#005500\"> <i>"
+                                                                   (string-trim
+                                                                    (replace-regexp-in-string "\n$" ""
+                                                                                              (replace-regexp-in-string "\s*SCHEDULED:.*" ""
+                                                                                                                        (replace-regexp-in-string "\s*:.*:.*$" "" entry)))) "</i> </span>" ))))
+
+  (kill-buffer))
+(with-current-buffer (find-file-noselect "~/Documents/Org/Brain/Morning.org")
+  (end-of-buffer)
+  (setq my-objective (replace-regexp-in-string "\\[?\\]?" "" (org-get-entry))))
+
+(notifications-notify :urgency 'low :title "Day Reminder" :body (concat my-quote "\n" my-objective))

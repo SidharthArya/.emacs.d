@@ -2,6 +2,7 @@
 #+AUTHOR: Sidharth Arya
 
 * Packages
+  This is where i define the basic settings required for package management.
 #+BEGIN_SRC emacs-lisp :tangle init.el
   (add-to-list 'load-path "~/.emacs.d/packages/SidharthArya/emacsit")
   (require 'emacsit)
@@ -24,48 +25,99 @@
                            (none ())
                            (minimal (compile core appearance vi))
                            (mail (core mail emoji begin-mail not-org))
-                           (news (core web org news emoji begin-news not-org))
+                           (news (core web org emoji begin-news not-org))
                            (tracking (core vi ivy org begin-tracking not-org))
                            (programming (compile core appearance vi ivy org programming vc))
-                           (org (compile core appearance programming vi org server web ivy finance begin-org))
+                           (org (compile core appearance programming vi org server web ivy finance begin-org core-post dashboard custom))
                            (doom (begin-org doom))
-                           (main (compile core appearance programming vi emoji ivy org finance server))
-                           ))
-    (modules-config-default 'doom)
+                           (main (compile core appearance programming vi emoji ivy web org finance news mail server space workspace dashboard core-post))))
+    (modules-config-default 'org)
     (modules-path "~/.emacs.d/lisp")
     :config
     (modules-command-line-args-process))
 #+END_SRC
 
 * Core
+  Everything that will always be a part of any emacs instance.
 #+BEGIN_SRC emacs-lisp :tangle lisp/core.el
-              (setq backup-directory-alist '(("" . "~/.emacs.d/backup")))
-                (setq delete-old-versions t
-                      version-control t)
-              (setq enable-recursive-minibuffers t)
-              (minibuffer-depth-indicate-mode)
-              (fset 'yes-or-no-p 'y-or-n-p)
-          (setq-default indent-tabs-mode nil)
-    (setq inhibit-startup-screen t)
-        (set-register ?f '(file . "~/.emacs.d/init.org"))
-        (menu-bar-mode -1)
-        (tool-bar-mode -1)
-        (scroll-bar-mode -1)
-      (defvar my-documents-mounted nil)
-            ;(global-so-long-mode +1)
+  (setq my-temp-gc-cons-threshold gc-cons-threshold)
+  (setq gc-cons-threshold most-positive-fixnum)
+  (setq load-prefer-newer noninteractive)
+  ;; Because file names shouldn't be handled at startup.
+  (setq my-temp-file-name-handler-alist file-name-handler-alist)
+  (setq file-name-handler-alist nil)
+
+  (setq message-log-max 20)
+
+  ;; UTF-8 support
+  (set-charset-priority 'unicode)
+  (prefer-coding-system 'utf-8)
+  (setq locale-coding-system 'utf-8)
+  (setq selection-coding-system 'utf-8)
+
+  ;; Disable warnings from legacy advice system. They aren't useful, and what can
+  ;; we do about them, besides changing packages upstream?
+  (setq ad-redefinition-action 'accept)
+
+  ;; A second, case-insensitive pass over `auto-mode-alist' is time wasted, and
+  ;; indicates misconfiguration (or that the user needs to stop relying on case
+  ;; insensitivity).
+  (setq auto-mode-case-fold nil)
+
+  (setq inhibit-startup-screen t
+        inhibit-startup-message t
+        inhibit-startup-echo-area-message user-login-name
+        inhibit-default-init t
+        initial-major-mode 'fundamental-mode
+        initial-scratch-message nil)
+
+  (advice-add #'display-startup-echo-area-message :override #'ignore)
+
+  (setq idle-update-delay 1.5)
+
+  ;; (setq auth-sources '("~/.config/authinfo.gpg"))
+
+  (setq abbrev-file-name "~/.emacs.d/lisp/abbrev.el")
+  (setq bookmark-default-file "~/.emacs.d/bookmarks")
+  (setq custom-file "~/.emacs.d/lisp/custom.el"
+        desktop-dirname              "~/.emacs.d/desktop"
+        desktop-base-file-name       "autosave"
+        desktop-base-lock-name       "autosave-lock"
+        tramp-auto-save-directory    "~/.emacs.d/tramp-auto-save/"
+        backup-directory-alist '(("" . "~/.emacs.d/backup"))
+        tramp-backup-directory-alist backup-directory-alist
+        tramp-persistency-file-name "~/.emacs.d/tramp")
+  (setq delete-old-versions t
+        version-control t)
+  (setq enable-recursive-minibuffers t)
+  (minibuffer-depth-indicate-mode)
+  (fset 'yes-or-no-p 'y-or-n-p)
+  (setq-default indent-tabs-mode nil)
+  (set-register ?f '(file . "~/.emacs.d/init.org"))
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (defvar my-documents-mounted nil)
+                                          ;(global-so-long-mode +1)
   (set-frame-parameter nil 'alpha '(95 . 100))
   (set-frame-size nil 130 40)
   (set-frame-position nil 130 40)
   (setq custom-theme-directory "~/.emacs.d/themes")
   (load-theme 'doom-one t)
   (add-hook 'kill-emacs-hook 'save-some-buffers)
+
+#+END_SRC
+#+BEGIN_SRC emacs-lisp :tangle lisp/core-post.el
+  (setq file-name-handler-alist my-temp-file-name-handler-alist)
+      (setq gc-cons-threshold my-temp-gc-cons-threshold )
 #+END_SRC
 * Appearance
+  Mostly related to appearance.
 #+BEGIN_SRC emacs-lisp :tangle lisp/appearance.el
   (setq-default display-line-numbers-width-start t
-		display-line-numbers-grow-only t
-		display-line-numbers 'relative)
-(column-number-mode +1)
+                display-line-numbers-grow-only t
+                display-line-numbers 'relative)
+  (column-number-mode +1)
   (defun display-line-numbers-equalize ()
     "Equalize The width"
     (setq display-line-numbers-width (length (number-to-string (line-number-at-pos (point-max))))))
@@ -74,18 +126,17 @@
 #+END_SRC
 * Interface
 #+begin_src emacs-lisp :tangle lisp/ido.el
-    (use-package ido
-      :ensure t
-      :custom
-      (ido-use-filename-at-point 'guess)
-      (ido-create-new-buffer 'always)
-      (ido-file-extensions-order '(".py" ".org" ".txt"  ".emacs" ".xml" ".el" ".ini" ".cfg" ".cnf"))
-      (ido-ignore-buffers '("\*.*\*"))
-      (ido-ignore-directories '("\..*"))
-      (ido-ignore-files '("\..*"))
-      :config
-      (ido-mode t)
-      )
+  (use-package ido
+    :ensure t
+    :custom
+    (ido-use-filename-at-point 'guess)
+    (ido-create-new-buffer 'always)
+    (ido-file-extensions-order '(".py" ".org" ".txt"  ".emacs" ".xml" ".el" ".ini" ".cfg" ".cnf"))
+    (ido-ignore-buffers '("\*.*\*"))
+    (ido-ignore-directories '("\..*"))
+    (ido-ignore-files '("\..*"))
+    :config
+    (ido-mode t))
 
 #+end_src
 #+begin_src emacs-lisp :tangle lisp/ivy.el
@@ -102,13 +153,13 @@
     :config 
     (ido-mode -1)
     (counsel-mode 1)
-    (evil-define-command Grep (arg)
-		     (interactive "<a>")
-		     (counsel-rg arg)
-		     )
-    (evil-ex-define-cmd "G[rep]" 'Grep)
-    (evil-ex-define-cmd "PlugInstall" 'emacsit::get)
-    (evil-ex-define-cmd "PlugUpdate" 'emacsit::update-all)
+    (when (modules-loaded-p 'vi)
+      (evil-define-command Grep (arg)
+        (interactive "<a>")
+        (counsel-rg arg))
+      (evil-ex-define-cmd "G[rep]" 'Grep)
+      (evil-ex-define-cmd "PlugInstall" 'emacsit::get)
+      (evil-ex-define-cmd "PlugUpdate" 'emacsit::update-all))
     :bind 
     ("C-s" . swiper)
     ("C-x b" . counsel-switch-buffer)
@@ -138,280 +189,256 @@
     :config
     (require 'evil-collection)
     (evil-collection-init)
-    (evil-mode +1)
-  )
-
-
+    (evil-mode +1))
 #+end_src
 #+begin_src emacs-lisp :tangle lisp/emoji.el
-    (use-package emojify
-      :ensure t
-      :config
-      (global-emojify-mode +1)
-  )
+  (use-package emojify
+    :ensure t
+    :config
+    (global-emojify-mode +1))
+#+end_src
+#+begin_src emacs-lisp :tangle lisp/space.el
+  (bind-keys
+   :prefix-map space-prefix
+   :prefix "M-SPC")
+
+  (bind-keys
+   :prefix-map org-prefix
+   :prefix "M-SPC o"
+   ("a" . org-agenda)
+   ("c" . org-capture))
+
+  (bind-keys
+   :prefix-map file-prefix
+   :prefix "M-SPC f"
+   ("f" . find-file)
+   ("r" . counsel-recentf))
+
+  (bind-keys
+   :prefix-map buffer-prefix
+   :prefix "M-SPC b"
+   ("b" . counsel-switch-buffer)
+   ("n" . counsel-switch-buffer)
+   ("B" . ibuffer))
+  (evil-define-key 'normal 'global (kbd "SPC") 'space-prefix)
+  (evil-define-key 'normal 'dashboard-mode-map (kbd "SPC") 'space-prefix)
 #+end_src
 * Programming
-  #+begin_src emacs-lisp :tangle lisp/programming.el
-        (use-package ide-mode
-          :ensure SidharthArya/emacs-ide-mode
-          :config
-          (require 'ide-mode-recipes)
-          :bind
-          (:map prog-mode-map
-                ("C-S-i" . ide-mode)
-          )
-          (:map ide-mode-map
-                ("C-S-z" . ide-goto-shell)
-                ("C-S-c" . ide-mode-compile)
-                ("C-S-e" . ide-mode-execute)
-                ("C-S-x" . ide-goto-input)
-                ("C-S-s" . ide-goto-output)
-                ("C-S-a" . ide-goto-code)
-                )
-          )
-        (use-package yasnippet
-          :ensure t
-          :ensure yasnippet-snippets
-          :hook (prog-mode . yas-minor-mode)
-          :config
-          (require 'yasnippet-snippets)
-          )
-        (use-package company
-          :ensure t
-          :hook (prog-mode . company-mode)
-          :init
-          (require 'company-tng)
-          :bind
-          (:map prog-mode-map
-                ("TAB" . company-indent-or-complete-common)
-                ))
+#+begin_src emacs-lisp :tangle lisp/programming.el
+  (use-package ide-mode
+    :ensure SidharthArya/emacs-ide-mode
+    :config
+    (require 'ide-mode-recipes)
+    :bind
+    (:map prog-mode-map
+          ("C-S-i" . ide-mode))
+    (:map ide-mode-map
+          ("C-S-z" . ide-goto-shell)
+          ("C-S-c" . ide-mode-compile)
+          ("C-S-e" . ide-mode-execute)
+          ("C-S-x" . ide-goto-input)
+          ("C-S-s" . ide-goto-output)
+          ("C-S-a" . ide-goto-code)))
+  (use-package yasnippet
+    :ensure t
+    :ensure yasnippet-snippets
+    :hook (prog-mode . yas-minor-mode)
+    :config
+    (require 'yasnippet-snippets))
+  (use-package company
+    :ensure t
+    :hook (prog-mode . company-mode)
+    :init
+    (require 'company-tng)
+    :bind
+    (:map prog-mode-map
+          ("TAB" . company-indent-or-complete-common)))
 
-        (use-package flycheck
-          :ensure t
-          :hook (prog-mode . flycheck-mode)
-          )
-    ;;     (use-package ob-ipython
-    ;;       :ensure magnars/s.el
-    ;;       :ensure rejeep/f.el
-    ;;       :ensure gregsexton/ob-ipython
-    ;;       :after org
-    ;;       :config 
-    ;;       (add-to-list 'org-babel-load-languages '(ipython . t)) 
-    ;;       )
-  #+end_src
-  #+begin_src emacs-lisp :tangle lisp/vc.el
-	(use-package magit
-	  :ensure t
-	  :bind
-	  ("C-x g" . magit))
+  (use-package flycheck
+    :ensure t
+    :hook (prog-mode . flycheck-mode))
+#+end_src
+#+begin_src emacs-lisp :tangle lisp/vc.el
+  (use-package magit
+    :ensure t
+    :bind
+    ("C-x g" . magit))
 
-  #+end_src
+#+end_src
 * Mounts
 #+BEGIN_SRC emacs-lisp :tangle lisp/mount.el
-(setq my-documents-mounted (equal 1 (string-to-number (shell-command-to-string "mount | grep Documents | wc -l"))))
-(defun my-documents-mount()
+  (setq my-documents-mounted (equal 1 (string-to-number (shell-command-to-string "mount | grep Documents | wc -l"))))
+  (defun my-documents-mount()
     (if  (not my-documents-mounted)
-       (if (y-or-n-p "Do you want to mount Secrets?" )
-       (progn
-        (shell-command "~/.local/scripts/mount-secret" nil)
-	(setq my-documents-mounted (equal 1 (string-to-number (shell-command-to-string "mount | grep Secret | wc -l")))))
-       )))
-(my-documents-mount)
+        (if (y-or-n-p "Do you want to mount Secrets?" )
+            (progn
+              (shell-command "gocryptfs --extpass 'zenity --password' ~/Private/Drive/Personal ~/Documents" nil)
+              (setq my-documents-mounted (equal 1 (string-to-number (shell-command-to-string "mount | grep Secret | wc -l"))))))))
+  (my-documents-mount)
 
-    
 
 #+END_SRC
 * Dashboard
 #+BEGIN_SRC emacs-lisp :tangle lisp/dashboard.el
-    (use-package dashboard
-      :ensure t
-      :custom 
-      (dashboard-center-content t)
-      (dashboard-org-agenda-categories '("Tasks" "Appointments" "Books" "Movies" "Bills"))
-      (dashboard-items '(
-      (agenda . -1)
-      (recents  . 5)
-      (bookmarks . 5)
-  ;    (projects . 5)
-      (registers . 5)))
-      :config (dashboard-setup-startup-hook)
-      )
-
-
-
+  (use-package dashboard
+    :ensure t
+    :custom
+    (dashboard-center-content t)
+    (dashboard-startup-banner 'logo)
+    (dashboard-page-separator "\n\n")
+    (dashboard-org-agenda-categories '("Tasks" "Appointments" "Books" "Movies" "Bills"))
+    (dashboard-items '(
+                       (agenda . -1)
+                       (recents  . 5)
+                       (bookmarks . 5)
+                       (registers . 5)))
+    :config (dashboard-setup-startup-hook))
 #+END_SRC
 * Organise
 #+BEGIN_SRC emacs-lisp :tangle lisp/org.el
-      (modules-load '(mount))
-            (use-package org
-              :if my-documents-mounted
-              :ensure org-clock
-              :ensure alphapapa/ts.el
-              :ensure t
-              ;; :ensure sabof/org-bullets
-              :ensure ht
-              ;; :ensure SidharthArya/org-alert
-              :ensure s
-              :ensure emacsorphanage/ov
-              :ensure f
-              :ensure transient
-              :ensure emacsmirror/peg
-              :ensure alphapapa/org-ql
-              :ensure alphapapa/org-sidebar
-              :ensure alphapapa/org-super-agenda
-              :ensure Kungsgeten/org-brain
-              :ensure org-drill
-              :ensure kaushalmodi/ox-hugo
-              :hook (org-mode . visual-line-mode)
-      (org-mode . auto-save-mode)
+  (modules-load '(mount))
+  (use-package org
+    :if my-documents-mounted
+    :ensure org-clock
+    :ensure alphapapa/ts.el
+    :ensure t
+    ;; :ensure sabof/org-bullets
+    :ensure ht
+    ;; :ensure SidharthArya/org-alert
+    :ensure s
+    :ensure emacsorphanage/ov
+    :ensure f
+    :ensure transient
+    :ensure emacsmirror/peg
+    :ensure alphapapa/org-ql
+    :ensure alphapapa/org-sidebar
+    :ensure alphapapa/org-super-agenda
+    :ensure Kungsgeten/org-brain
+    :ensure org-drill
+    :ensure kaushalmodi/ox-hugo
+    :hook (org-mode . visual-line-mode)
+    (org-mode . auto-save-mode)
 
-              :custom
-              (org-agenda-skip-deadline-if-done t)
-              (org-agenda-skip-scheduled-if-done t)
-              (org-agenda-window-setup 'current-window)
-              (org-babel-load-languages '((emacs-lisp . t)
-
-                                          ))
-              (org-agenda-diary-file "~/Documents/Org/diary")
-              (diary-file "~/Documents/Org/diary")
-              (org-log-into-drawer t)
-              (org-agenda-include-diary t)
-              (alert-default-style 'libnotify)
-              (org-alert-notification-title "Organizer")
-              (org-directory "~/Documents/Org")
-              (org-agenda-files '("~/Documents/Org/Agenda/notes.org" "~/Documents/Org/Agenda/habits.org" ))
-              (org-super-agenda-groups
-               '(
-
-                 (:name "Diary"  		
-                        :category "Diary"
-                        :order 1)
-                 (:name "Deadlines"  		
-                        :deadline t
-                        :order 2)
-                 (:name "Started"  		
-                        :todo "STARTED"
-                        :order 3)
-
-                 (:name "Important"  		
-                        :priority "A"
-                        :tag "important"
-                        :tag "bill"
-                        :order 4)
-
-                 (:name "Unimportant"  		
-                        :priority "C"
-                        :tag "unimportant"
-                        :order 6)
-
-
-                 (:name "Habit"
-                        :habit t
-                        :order 7)
-
-
-                 (:name "Personal"
-                        :tag ("movies" "tvshows" "tvseries" "books")
-                        :order 9
-                        )
-                 (:name "Overdue"
-                        :deadline past
-                        :scheduled past
-                        :order 5)     
-
-                 ))
-
-              (org-agenda-custom-commands 
-               '(("e" "Exercises" agenda  "";; (1) (2) (3) (4)
-                  ((org-agenda-files (list "~/Documents/Org/Agenda/exercises.org")) ;;
-                   (org-super-agenda-groups
-                    '((:auto-category t)))
-                   (org-agenda-sorting-strategy '(priority-up effort-down))) ;; (5) cont.
-                  )
-                 ;; ...other commands here
-                 ))
-              (org-brain-path "~/Documents/Org/Brain")
-              (org-id-track-globally t)
-              (org-id-locations-file "~/Documents/Org/.org-id-locations")
-              (org-capture-templates
-               '(("i" "Important" entry (file+headline "~/Documents/Org//Agenda/notes.org" "Tasks")
-                  "* TODO %?\t:important:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n  %i\n  %a")
-                 ("u" "Unimportant" entry (file+headline "~/Documents/Org//Agenda/notes.org" "Tasks")
-                  "* TODO %?\t:unimportant:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"Sun\"))\n  %i\n  %a")
-                 ("j" "Journal" entry (file+datetree "~/org/journal.org")
-                  "* %?\nEntered on %U\n  %i\n  %a")
-                 ("D" "Diary")
-                 ("Dd" "Daily Diary" entry (file+headline "~/Documents/Org/Brain/Personal/Diaries.org" "Diary")
-                  "* %(org-insert-time-stamp (org-read-date nil t \"\"))\n %?")
-                 ("Ds" "Sleep Journal" entry (file+headline "~/Documents/Org/Brain/Personal/Diaries.org" "Sleep")
-                  "* %(org-insert-time-stamp (org-read-date nil t \"\"))\n %?")
-                 ("Dr" "Regret" entry (file+headline "~/Documents/Org/Brain/Personal/Diaries.org" "Regrets")
-                  "* %?")
-                 ("P" "Protocol")
-                 ("Pc" "Protocol Text" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Protocol")
-                  "* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?")
-                 ("Pl" "Protocol Link" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Inbox")
-                  "* %? [[%:link][%:description]] \nCaptured On: %U")
-                 ))
-
-              :bind 
-              ("C-c c" . org-capture)
-              ("C-c a" . org-agenda)
-              ("C-c l" . org-store-link)
-              ("C-c b" . org-switchb)
-              ("C-c B" . org-brain-visualize)
-              (:map org-mode-map
-                    ("C-c t" . org-sidebar-toggle))
-              :init
-              (setq org-version "9999")
-              (require 'org-super-agenda)
-              (require 'org-ql)
-              (require 'org-ql-search)
-              (require 'org-sidebar)
-              (require 'org-tempo)
-              (org-super-agenda-mode)
-
-              :config;; Populates only the EXPORT_FILE_NAME property in the inserted headline.
-              (require 'org-clock)
-              (require 'ox-hugo)
-              (require 'org-hugo-auto-export-mode)
-          (defun org-hugo-new-subtree-post-capture-template ()
-            "Returns `org-capture' template string for new Hugo post.
+    :custom
+    (org-agenda-skip-deadline-if-done t)
+    (org-agenda-skip-scheduled-if-done t)
+    (org-agenda-window-setup 'current-window)
+    (org-babel-load-languages '((emacs-lisp . t)))
+    (org-agenda-diary-file "~/Documents/Org/diary")
+    (diary-file "~/Documents/Org/diary")
+    (org-log-into-drawer t)
+    (org-agenda-include-diary t)
+    (alert-default-style 'libnotify)
+    (org-alert-notification-title "Organizer")
+    (org-directory "~/Documents/Org")
+    (org-agenda-files '("~/Documents/Org/Agenda/notes.org" "~/Documents/Org/Agenda/habits.org" ))
+    (org-super-agenda-groups
+     '((:name "Diary"
+              :category "Diary"
+              :order 1)
+       (:name "Deadlines"
+              :deadline t
+              :order 2)
+       (:name "Started"
+              :todo "STARTED"
+              :order 3)
+       (:name "Important"
+              :priority "A"
+              :tag "important"
+              :tag "bill"
+              :order 4)
+       (:name "Unimportant"
+              :priority "C"
+              :tag "unimportant"
+              :order 6)
+       (:name "Habit"
+              :habit t
+              :order 7)
+       (:name "Personal"
+              :tag ("movies" "tvshows" "tvseries" "books")
+              :order 9)
+       (:name "Overdue"
+              :deadline past
+              :scheduled past
+              :order 5)))
+    (org-agenda-custom-commands
+     '(("e" "Exercises" agenda  ""
+        ((org-agenda-files (list "~/Documents/Org/Agenda/exercises.org"))
+         (org-super-agenda-groups
+          '((:auto-category t)))
+         (org-agenda-sorting-strategy '(priority-up effort-down))))))
+    (org-brain-path "~/Documents/Org/Brain")
+    (org-id-track-globally t)
+    (org-id-locations-file "~/Documents/Org/.org-id-locations")
+    (org-capture-templates
+     '(("i" "Important" entry (file+headline "~/Documents/Org//Agenda/notes.org" "Tasks")
+        "* TODO %?\t:important:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n  %i\n  %a")
+       ("u" "Unimportant" entry (file+headline "~/Documents/Org//Agenda/notes.org" "Tasks")
+        "* TODO %?\t:unimportant:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"Sun\"))\n  %i\n  %a")
+       ("j" "Journal" entry (file+datetree "~/org/journal.org")
+        "* %?\nEntered on %U\n  %i\n  %a")
+       ("D" "Diary")
+       ("Dd" "Daily Diary" entry (file+headline "~/Documents/Org/Brain/Personal/Diaries.org" "Diary")
+        "* %(org-insert-time-stamp (org-read-date nil t \"\"))\n %?")
+       ("Ds" "Sleep Journal" entry (file+headline "~/Documents/Org/Brain/Personal/Diaries.org" "Sleep")
+        "* %(org-insert-time-stamp (org-read-date nil t \"\"))\n %?")
+       ("Dr" "Regret" entry (file+headline "~/Documents/Org/Brain/Personal/Diaries.org" "Regrets")
+        "* %?")
+       ("P" "Protocol")
+       ("Pc" "Protocol Text" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Protocol")
+        "* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?")
+       ("Pl" "Protocol Link" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Inbox")
+        "* %? [[%:link][%:description]] \nCaptured On: %U")))
+    :bind
+    ("C-c c" . org-capture)
+    ("C-c a" . org-agenda)
+    ("C-c l" . org-store-link)
+    ("C-c b" . org-switchb)
+    ("C-c B" . org-brain-visualize)
+    (:map org-mode-map
+          ("C-c t" . org-sidebar-toggle))
+    :init
+    (setq org-version "9999")
+    (require 'org-super-agenda)
+    (require 'org-ql)
+    (require 'org-ql-search)
+    (require 'org-sidebar)
+    (require 'org-tempo)
+    (org-super-agenda-mode)
+    :config
+    (require 'org-clock)
+    (require 'ox-hugo)
+    (require 'org-hugo-auto-export-mode)
+    (defun org-hugo-new-subtree-post-capture-template ()
+      "Returns `org-capture' template string for new Hugo post.
         See `org-capture-templates' for more information."
-            (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
-                   (fname (org-hugo-slug title)))
-              (mapconcat #'identity
-                         `(
-                           ,(concat "* TODO " title)
-                           ":PROPERTIES:"
-                           ,(concat ":EXPORT_FILE_NAME: " fname)
-                           ":END:"
-                           "%?\n")          ;Place the cursor here finally
-                         "\n")))
+      (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
+             (fname (org-hugo-slug title)))
+        (mapconcat #'identity
+                   `(,(concat "* TODO " title)
+                     ":PROPERTIES:"
+                     ,(concat ":EXPORT_FILE_NAME: " fname)
+                     ":END:"
+                     "%?\n")          ;Place the cursor here finally
+                   "\n")))
 
-          (add-to-list 'org-capture-templates
-                       '("b"                ;`org-capture' binding + h
-                         "Blog post"
-                         entry
-                         ;; It is assumed that below file is present in `org-directory'
-                         ;; and that it has a "Blog Ideas" heading. It can even be a
-                         ;; symlink pointing to the actual location of all-posts.org!
-                         (file+olp "~/Documents/Org/Blog/posts.org" "Blog")
-                         (function org-hugo-new-subtree-post-capture-template)))
-        ;(setenv) 
-
-          ;; Capture
-
-  ;(remove-hook 'org-capture-after-finalize-hook 'org-capture-after-finalize)
-              (setq-default org-confirm-babel-evaluate nil) 
-              (require 'org-habit)
-              (require 'org-brain)
-              (require 'org-drill)
-              (require 'cl)
-              )
+    (add-to-list 'org-capture-templates
+                 '("b"                ;`org-capture' binding + h
+                   "Blog post"
+                   entry
+                   ;; It is assumed that below file is present in `org-directory'
+                   ;; and that it has a "Blog Ideas" heading. It can even be a
+                   ;; symlink pointing to the actual location of all-posts.org!
+                   (file+olp "~/Documents/Org/Blog/posts.org" "Blog")
+                   (function org-hugo-new-subtree-post-capture-template)))
+     (setq-default org-confirm-babel-evaluate nil)
+    (require 'org-habit)
+    (require 'org-brain)
+    (require 'org-drill)
+    (require 'cl))
 #+END_SRC
 #+begin_src emacs-lisp :tangle lisp/begin-org.el
-      (set-frame-parameter nil 'title "Org")
+  (set-frame-parameter nil 'title "Org")
 #+end_src
 #+begin_src emacs-lisp :tangle lisp/not-org.el
   (global-set-key (kbd "C-c c") #'(lambda () (interactive) (start-process-shell-command "*Capture*" nil "emacsclient --eval '(org-capture)'")))
@@ -419,329 +446,292 @@
 
 #+end_src
 * Finance
-  #+begin_src emacs-lisp :tangle lisp/finance.el
-    (use-package ledger-mode
-      :ensure ledger/ledger-mode
-      :mode ".ledger"
-      )
-
-  #+end_src
+#+begin_src emacs-lisp :tangle lisp/finance.el
+  (use-package ledger-mode
+    :ensure ledger/ledger-mode
+    :mode ".ledger")
+#+end_src
 * Notifications
-  #+begin_src emacs-lisp :tangle lisp/notifications.el
-    (use-package alert
-      :ensure t)
-  #+end_src
+#+begin_src emacs-lisp :tangle lisp/notifications.el
+  (use-package alert
+    :ensure t)
+#+end_src
+* Workspaces
+#+begin_src emacs-lisp :tangle lisp/workspace.el
+  (use-package perspective
+    :ensure nex3/perspective-el
+    :config
+    (persp-mode))
+#+end_src
 * Web
-  #+begin_src emacs-lisp :tangle lisp/web.el
-    (use-package browse-rules
-      :ensure SidharthArya/browse-rules.el
-      :custom
-      (browse-url-browser-function 'browse-rules-url)
-      (browse-rules '(
-                      (".*" t "firefox" "%s")
-                      (".*thehindu.*" t "firefox" "about:reader?url=%s")
-                      ))
-      )
-  #+end_src
+#+begin_src emacs-lisp :tangle lisp/web.el
+  (use-package browse-rules
+    :ensure SidharthArya/browse-rules.el
+    :custom
+    (browse-url-browser-function 'browse-rules-url)
+    (browse-rules '(
+                    (".*" t "firefox" "%s")
+                    (".*thehindu.*" t "firefox" "about:reader?url=%s"))))
+#+end_src
 * Mail
-  #+begin_src emacs-lisp :tangle lisp/mail.el
-    (use-package gnus
-      :ensure t
-      :custom
-      (gnus-home-directory "~/Private/News/Gnus")
-      (gnus-default-directory "~/Private/News/Gnus")
-      (gnus-directory "~/Private/News/Gnus/News")
-      (gnus-agent-directory "~/Private/News/Gnus/News/agent")
-      (gnus-cache-directory "~/Private/News/Gnus/News/cache")
-      (gnus-article-save-directory "~/Private/News/Gnus/News")
-      (gnus-kill-files-directory "~/Private/News/Gnus/News")
-      (message-directory "~/Private/News/Gnus/Mail")
-      (nnfolder-directory "~/Private/News/Gnus/Mail/archive")
-      (user-mail-address "sidhartharya10@gmail.com")
-      (user-full-name "Sidharth Arya")
-      (smtpmail-smtp-server "smtp.gmail.com")
-      (smtpmail-smtp-service 587)
-      (shr-use-colors nil)
-      (shr-use-fonts nil)
-      (gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
-					    ; Adaptive scoring
-	(nnheader-file-name-translation-alist '((?[ . ?_) (?] . ?_)) )
-      (gnus-select-method
-       '(nnimap "Gmail"
-		(nnimap-address "imap.gmail.com")
-		(nnimap-server-port "imaps")
-		(nnimap-stream ssl))
-    (nnir-search-engine imap)
-       )
-      (gnus-secondary-select-methods '(
-				       (nntp "news.gwene.org")
-				     ))
-      :init
-      (require 'nnir)
-      (add-hook 'gnus-after-getting-new-news-hook 'gnus-notifications)
-      :config
-      (gnus-demon-add-handler 'gnus-demon-scan-news 2 t)
-      (gnus-demon-init)
-      )
-  #+end_src
-  #+begin_src emacs-lisp :tangle lisp/begin-mail.el
-                (set-frame-parameter nil 'title "Mail")
-                (add-to-list 'kill-emacs-hook 'gnus-group-exit)
-                (gnus)
-                (add-hook 'after-make-frame-functions (lambda (&optional frame) (switch-to-buffer "*Group*")))
+#+begin_src emacs-lisp :tangle lisp/mail.el
+  (use-package gnus
+    :ensure t
+    :custom
+    (gnus-home-directory "~/Private/News/Gnus")
+    (gnus-default-directory "~/Private/News/Gnus")
+    (gnus-directory "~/Private/News/Gnus/News")
+    (gnus-agent-directory "~/Private/News/Gnus/News/agent")
+    (gnus-cache-directory "~/Private/News/Gnus/News/cache")
+    (gnus-article-save-directory "~/Private/News/Gnus/News")
+    (gnus-kill-files-directory "~/Private/News/Gnus/News")
+    (message-directory "~/Private/News/Gnus/Mail")
+    (nnfolder-directory "~/Private/News/Gnus/Mail/archive")
+    (user-mail-address "sidhartharya10@gmail.com")
+    (user-full-name "Sidharth Arya")
+    (smtpmail-smtp-server "smtp.gmail.com")
+    (smtpmail-smtp-service 587)
+    (shr-use-colors nil)
+    (shr-use-fonts nil)
+    (gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
+                                          ; Adaptive scoring
+    (nnheader-file-name-translation-alist '((?[ . ?_) (?] . ?_)) )
+    (gnus-select-method
+     '(nnimap "Gmail"
+              (nnimap-address "imap.gmail.com")
+              (nnimap-server-port "imaps")
+              (nnimap-stream ssl))
+     (nnir-search-engine imap))
+    (gnus-secondary-select-methods '((nntp "news.gwene.org")))
+    :init
+    (require 'nnir)
+    (add-hook 'gnus-after-getting-new-news-hook 'gnus-notifications)
+    :config
+    (gnus-demon-add-handler 'gnus-demon-scan-news 2 t)
+    (gnus-demon-init))
 
-                (use-package gnus-desktop-notify
-                  :ensure https://gitlab.com/wavexx/gnus-desktop-notify.el
-                  :config
+  (add-to-list 'kill-emacs-hook 'gnus-group-exit)
+  (use-package gnus-desktop-notify
+    :ensure https://gitlab.com/wavexx/gnus-desktop-notify.el
+    :config
     (gnus-desktop-notify-mode)
     (gnus-demon-add-scanmail))
-  #+end_src
+#+end_src
+#+begin_src emacs-lisp :tangle lisp/begin-mail.el
+  (set-frame-parameter nil 'title "Mail")
+  (gnus)
+  (add-hook 'after-make-frame-functions (lambda (&optional frame) (switch-to-buffer "*Group*")))
+#+end_src
 * News
 #+begin_src emacs-lisp :tangle lisp/news.el
-    (modules-load '(mount))
-      (use-package elfeed
-        :if my-documents-mounted
-        :ensure t
-        :ensure remyhonig/elfeed-org
-        :custom
-        (elfeed-db-directory "~/Private/News/Feeds")
-        (browse-url-generic-program "firefox")
-        (rmh-elfeed-org-files (list "~/Documents/Org/Feeds/feeds.org"))
-        (elfeed-sort-order 'descending)
-        :init
-        (require 'elfeed-org)
-        (elfeed-org)
+  (modules-load '(mount))
+  (use-package elfeed
+    :if my-documents-mounted
+    :ensure t
+    :ensure remyhonig/elfeed-org
+    :custom
+    (elfeed-db-directory "~/Private/News/Feeds")
+    (browse-url-generic-program "firefox")
+    (rmh-elfeed-org-files (list "~/Documents/Org/Feeds/feeds.org"))
+    (elfeed-sort-order 'descending)
+    :init
+    (require 'elfeed-org)
+    (elfeed-org)
 
-        :config
-        (setq-default elfeed-search-filter  (if
-                                                (<= (string-to-number (format-time-string "%u")) 5)
-                                                "@2-days-ago -unimportant +unread +important"
-                                              "@1-week-ago +unread +important"))
-                                              ; (start-process "*Youtube*" nil "/home/arya/.local/scripts/elfeed-youtube" "get")
-                                              ; (start-process "*Mpv*" nil "/home/arya/.local/scripts/elfeed-youtube" "vlc")
-        (add-to-list 'kill-emacs-hook 'elfeed-db-unload)
+    :config
+    (setq-default elfeed-search-filter  (if
+                                            (<= (string-to-number (format-time-string "%u")) 5)
+                                            "@2-days-ago -unimportant +unread +important"
+                                          "@1-week-ago +unread +important"))
+                                          ; (start-process "*Youtube*" nil "/home/arya/.local/scripts/elfeed-youtube" "get")
+                                          ; (start-process "*Mpv*" nil "/home/arya/.local/scripts/elfeed-youtube" "vlc")
+    (add-to-list 'kill-emacs-hook 'elfeed-db-unload)
 
-        (defun my-elfeed-feed-sort (a b)
-          (let* ((a-tags (format "%s" (elfeed-entry-feed a)))
-                 (b-tags (format "%s" (elfeed-entry-feed b))))
-            (if (string= a-tags b-tags)
-                (< (elfeed-entry-date b) (elfeed-entry-date a)))
-            (string< a-tags b-tags)))
-        (setf elfeed-search-sort-function #'my-elfeed-feed-sort)
+    (defun my-elfeed-feed-sort (a b)
+      (let* ((a-tags (format "%s" (elfeed-entry-feed a)))
+             (b-tags (format "%s" (elfeed-entry-feed b))))
+        (if (string= a-tags b-tags)
+            (< (elfeed-entry-date b) (elfeed-entry-date a)))
+        (string< a-tags b-tags)))
+    (setf elfeed-search-sort-function #'my-elfeed-feed-sort)
 
-            ;;; HOOKS
-        (add-hook 'elfeed-new-entry-hook
-                  (elfeed-make-tagger  :entry-title '"ASL Video Series"
-                                       :add 'junk
-                                       :remove 'unread))
+          ;;; HOOKS
+    (add-hook 'elfeed-new-entry-hook
+              (elfeed-make-tagger  :entry-title '"ASL Video Series"
+                                   :add 'junk
+                                   :remove 'unread))
 
 
-        (add-hook 'elfeed-new-entry-hook
-                  (elfeed-make-tagger  :entry-title '"Dr. Pimple Popper"
-                                       :add 'junk
-                                       :remove 'unread))
-
-        )
+    (add-hook 'elfeed-new-entry-hook
+              (elfeed-make-tagger  :entry-title '"Dr. Pimple Popper"
+                                   :add 'junk
+                                   :remove 'unread)))
+  (run-at-time "04:00am" 600 'elfeed-db-save)
 #+end_src
   #+begin_src emacs-lisp :tangle lisp/begin-news.el
     (set-frame-parameter nil 'title "News")
-    (add-to-list 'kill-emacs-hook 'elfeed)
-    (elfeed)
-    (add-hook 'after-make-frame-functions (lambda (&optional frame) (switch-to-buffer "*elfeed-search*")))
-    (run-at-time "04:00am" 600 'elfeed-db-save)
-  #+end_src
+    (add-to-list 'kill-emacs-hook 'elfeed-db-unload)
+    (set-process-sentinel (start-process-shell-command "*ELFEED*" "*ELFEED LOG*" "emacs --script ~/.emacs.d/scripts/elfeed") 'my-elfeed-sentinel)
+
+
+    (defun my-elfeed-sentinel (name status)
+      "NAME STATUS."
+      (message "%s %s" name status)
+      (modules-load '(news))
+      (elfeed)
+      (switch-to-buffer "*elfeed-search*"))
+#+end_src
 * Tracking
-  #+begin_src emacs-lisp :tangle lisp/tracking.el
-    (modules-load '(mount))
-    (defvar my-tracking-writeup-handles '(
-                                          "I will let go of"
-                                          "I am grateful for"
-                                          "I will focus on"
-                                          "What will i do for my family today"
-                                          "Am i working more than other people in my field?"
-                                          "Is it important to exert dominance today?"
-                                          "Am i appreciating my family enough?"
-                                          ))
+#+begin_src emacs-lisp :tangle lisp/tracking.el
+  (modules-load '(mount))
+  (load "~/Documents/Org/Personal/tracking.el")
+  (defvar my-tracking-drill-prefix "~/Documents/Org/Brain")
+  (setq org-drill-maximum-items-per-session nil)
+  (setq org-drill-maximum-duration nil)
+  (load "~/Documents/Org/Drill/drill.el")
+  (defun my-tracking-drill-stuff ()
 
-    (defvar my-tracking-writeup-file "~/Documents/Org/Brain/Morning.org")
+    ""
+    (interactive)
+    (save-excursion
+      (let  ((org-drill-scope (mapcar (lambda (a) (format "%s/%s" my-tracking-drill-prefix a)) my-tracking-drill-files)))
+        (org-drill))))
 
-    (defvar my-tracking-drill-prefix "~/Documents/Org/Brain")
-    (setq org-drill-maximum-items-per-session nil)
-    (setq org-drill-maximum-duration nil)
-    (load "~/Documents/Org/Drill/drill.el")
-    (defun my-tracking-drill-stuff ()
-
-      ""
-      (interactive)
-      (save-excursion
-        (let  ((org-drill-scope (mapcar (lambda (a) (format "%s/%s" my-tracking-drill-prefix a)) my-tracking-drill-files)))
-          (org-drill)
-          ))
-      )
-    (defun my-tracking-do-the-writeup ()
-      ""
-      (interactive)
-      (with-current-buffer (find-file-noselect my-tracking-writeup-file)
-        (end-of-buffer)
-        (if (not (equal (org-time-string-to-absolute (org-get-heading t t t t)) (time-to-days (org-read-date nil t ""))))
-            (let ((temp ""))
-
-              (setq temp (concat temp "\n"))
-              (dolist
-                  (handle my-tracking-writeup-handles)
-                (setq temp (concat temp (format "- [ ] %s :%s\n" handle (read-string (concat handle ": "))))))
-              (setq temp (concat temp (insert "\n"))
-                    )
-              (insert "* ")
-              (org-insert-time-stamp (org-read-date nil t ""))
-              (insert temp)
-              ))
-        (save-buffer)
-        (kill-current-buffer)
-        ))
-
-    (defun my-tracking-do-check-writeup ()
-      ""
-      (interactive)
-      (switch-to-buffer (find-file-noselect my-tracking-writeup-file))
-      (org-show-all)
+  (defun my-tracking-do-the-writeup ()
+    ""
+    (interactive)
+    (with-current-buffer (find-file-noselect my-tracking-writeup-file)
       (end-of-buffer)
-      (org-narrow-to-subtree)
-      )
-    (setq my-tracking-points-directory "~/Documents/Org/Tracking/")
-    (setq my-tracking-point-keys-daily '(
-                                         daily
-                                         todo
-                                         habit
-                                         crossword
-                                         recall
-                                         sleep
-                                         mombp
-                                         ))
-    (setq my-tracking-point-keys-weekly '(
-                                          iq
-                                          chess
-                                          momsugar
-                                          ))
-    (setq my-tracking-point-keys-monthly '(
-                                           ))
-    (defun my-tracking-do-give-points ()
-      ""
-      (interactive)
-      (if (equal (format-time-string "%a" (current-time)) "Sun")
-          (dolist (key my-tracking-point-keys-weekly)
-            (my-tracking-give-points (symbol-name key))
-            ))
-      (if (equal (string-to-number (format-time-string "%d" (current-time))) 1)
-          (dolist (key my-tracking-point-keys-monthly)
-            (my-tracking-give-points (symbol-name key))
-            ))
-      (dolist (key my-tracking-point-keys-daily)
-        (my-tracking-give-points (symbol-name key))
-        ))
-    (defun my-tracking-give-points(str)
-      ""
+      (if (not (equal (org-time-string-to-absolute (org-get-heading t t t t)) (time-to-days (org-read-date nil t ""))))
+          (let ((temp ""))
 
-      (with-current-buffer (find-file-noselect (concat  my-tracking-points-directory str ".csv"))
-        (if (equal (buffer-size) 0)
-            (insert "Date,Value"))
-        (end-of-buffer)
-        (if (not (equal (car (split-string (thing-at-point 'line) ","))  (format-time-string "%d-%m-%Y" (current-time))))
-            (progn
-              (let ((input (read-string (concat (string-trim-right (capitalize (buffer-name)) ".csv") ": "))))
-                (insert "\n")
-                (insert "")
-                (insert (format-time-string "%d-%m-%Y" (current-time)))
-                (insert "," input)
-                (save-buffer)
-                (kill-buffer))))))
+            (setq temp (concat temp "\n"))
+            (dolist
+                (handle my-tracking-writeup-handles)
+              (setq temp (concat temp (format "- [ ] %s :%s\n" handle (read-string (concat handle ": "))))))
+            (setq temp (concat temp (insert "\n"))
+                  )
+            (insert "* ")
+            (org-insert-time-stamp (org-read-date nil t ""))
+            (insert temp)))
+      (save-buffer)
+      (kill-current-buffer)))
 
+  (defun my-tracking-do-check-writeup ()
+    ""
+    (interactive)
+    (switch-to-buffer (find-file-noselect my-tracking-writeup-file))
+    (org-show-all)
+    (end-of-buffer)
+    (org-narrow-to-subtree))
+  (setq my-tracking-points-directory "~/Documents/Org/Tracking/")
+  (defun my-tracking-do-give-points ()
+    ""
+    (interactive)
+    (if (equal (format-time-string "%a" (current-time)) "Sun")
+        (dolist (key my-tracking-point-keys-weekly)
+          (my-tracking-give-points (symbol-name key))))
+    (if (equal (string-to-number (format-time-string "%d" (current-time))) 1)
+        (dolist (key my-tracking-point-keys-monthly)
+          (my-tracking-give-points (symbol-name key))))
+    (dolist (key my-tracking-point-keys-daily)
+      (my-tracking-give-points (symbol-name key))))
 
-    (defvar my-morning-tracking-functions '(
-                                            my-tracking-do-the-writeup
-                                            my-tracking-drill-stuff
-                                            ))
-    (setq my-night-tracking-functions '(
-                                        my-tracking-do-check-writeup
-                                        my-tracking-do-give-points
-                                        my-tracking-drill-stuff
-                                        ))
-
-    (defun do-tasks (arg)
-      ""
-      (interactive)
-      (dolist (task arg)
-        (funcall task)))
-    (defun my-morning-tasks ()
-      ""
-      (interactive)
-      (do-tasks my-morning-tracking-functions))
-    (defun my-night-tasks ()
-      ""
-      (interactive)
-      (do-tasks my-night-tracking-functions))
-    (if my-documents-mounted
-        (progn
-          (run-at-time "04:00am" nil #'my-morning-tasks)
-          (run-at-time "08:00pm" nil #'my-night-tasks)
-          )
-      )
+  (defun my-tracking-give-points(str)
+    ""
+    (with-current-buffer (find-file-noselect (concat  my-tracking-points-directory str ".csv"))
+      (if (equal (buffer-size) 0)
+          (insert "Date,Value"))
+      (end-of-buffer)
+      (if (not (equal (car (split-string (thing-at-point 'line) ","))  (format-time-string "%d-%m-%Y" (current-time))))
+          (progn
+            (let ((input (read-string (concat (string-trim-right (capitalize (buffer-name)) ".csv") ": "))))
+              (insert "\n")
+              (insert "")
+              (insert (format-time-string "%d-%m-%Y" (current-time)))
+              (insert "," input)
+              (save-buffer)
+              (kill-buffer))))))
 
 
+  (defvar my-morning-tracking-functions '(my-tracking-do-the-writeup
+                                          my-tracking-drill-stuff))
+  (setq my-night-tracking-functions '(my-tracking-do-check-writeup
+                                      my-tracking-do-give-points
+                                      my-tracking-drill-stuff))
+
+  (defun do-tasks (arg)
+    ""
+    (interactive)
+    (dolist (task arg)
+      (funcall task)))
+  (defun my-morning-tasks ()
+    ""
+    (interactive)
+    (do-tasks my-morning-tracking-functions))
+  (defun my-night-tasks ()
+    ""
+    (interactive)
+    (do-tasks my-night-tracking-functions))
+  (if my-documents-mounted
+      (progn
+        (run-at-time "04:00am" nil #'my-morning-tasks)
+        (run-at-time "08:00pm" nil #'my-night-tasks)))
   #+end_src
-  #+begin_src emacs-lisp :tangle lisp/begin-tracking.el
-    (modules-load '(tracking))
-    (set-frame-parameter nil 'title "Tracking")
-    (defun after-tracking-task ()
-      ""
-      (interactive)
+#+begin_src emacs-lisp :tangle lisp/begin-tracking.el
+  (modules-load '(tracking))
+  (set-frame-parameter nil 'title "Tracking")
+  (defun after-tracking-task ()
+    ""
+    (interactive)
     (if (y-or-n-p "Are you done with you Tasks?")
         (save-buffers-kill-terminal)))
-    (advice-add 'my-morning-tasks :after 'after-tracking-task)
-    (advice-add 'my-night-tasks :after 'after-tracking-task)
+  (advice-add 'my-morning-tasks :after 'after-tracking-task)
+  (advice-add 'my-night-tasks :after 'after-tracking-task)
 
   #+end_src
 * Config Compile
 #+BEGIN_SRC emacs-lisp :tangle lisp/compile.el
-(defun config-compile()
-"Compile all my configurations"
-(interactive)
-(delete-file "~/.emacs.d/init.el")	
-(org-babel-tangle-file "~/.emacs.d/init.org")
-)
+  (defun config-compile()
+    "Compile all my configurations"
+    (interactive)
+    (delete-file "~/.emacs.d/init.el")
+    (org-babel-tangle-file "~/.emacs.d/init.org"))
 #+END_SRC
 * MELPA
   This is just to make debug packages for melpa
-  #+begin_src emacs-lisp :tangle lisp/melpa.el
-    (require 'package)
-    (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
-                        (not (gnutls-available-p))))
-           (proto (if no-ssl "http" "https")))
-      (when no-ssl (warn "\
-    Your version of Emacs does not support SSL connections,
-    which is unsafe because it allows man-in-the-middle attacks.
-    There are two things you can do about this warning:
-    1. Install an Emacs version that does support SSL and be safe.
-    2. Remove this warning from your init file so you won't see it again."))
-      (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
-      ;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
-      ;; and `package-pinned-packages`. Most users will not need or want to do this.
-      ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
-      )
-    (package-initialize)
-    (use-package package-build
-      :ensure melpa/melpa)
-    (use-package package-lint
-      :ensure purcell/package-lint)
+#+begin_src emacs-lisp :tangle lisp/melpa.el
+  (require 'package)
+  (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+                      (not (gnutls-available-p))))
+         (proto (if no-ssl "http" "https")))
+    (when no-ssl (warn "\
+  Your version of Emacs does not support SSL connections,
+  which is unsafe because it allows man-in-the-middle attacks.
+  There are two things you can do about this warning:
+  1. Install an Emacs version that does support SSL and be safe.
+  2. Remove this warning from your init file so you won't see it again."))
+    (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
+    ;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
+    ;; and `package-pinned-packages`. Most users will not need or want to do this.
+    ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
+    )
+  (package-initialize)
+  (use-package package-build
+    :ensure melpa/melpa)
+  (use-package package-lint
+    :ensure purcell/package-lint)
   #+end_src
 * Server
-  #+begin_src emacs-lisp :tangle lisp/server.el
-(server-start)
-  #+end_src
+#+begin_src emacs-lisp :tangle lisp/server.el
+  (server-start)
+#+end_src
 
 * Distributions
-  #+begin_src emacs-lisp :tangle lisp/doom.el
-    (setq user-emacs-directory "~/.emacs.d/doom")
-(load "~/.emacs.d/doom/init.el")
+#+begin_src emacs-lisp :tangle lisp/doom.el
+  (setq user-emacs-directory "~/.emacs.d/doom")
+  (load "~/.emacs.d/doom/init.el")
 
-  #+end_src
+#+end_src
+* TODO doom-initialize
+  
