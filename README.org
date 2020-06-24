@@ -2,15 +2,31 @@
 #+AUTHOR: Sidharth Arya
 
 This is my personal emacs configuration. 
-The syntax I use for ~use-package~, is dependent on [[https://github.com/SidharthArya/emacsit][emacsit]] (Feel free to use it if you wish, but I wrote it mostly for personal use.)  
+The syntax I use for ~use-package~, is dependent on [[https://github.com/SidharthArya/emacsit][emacsit]] (Feel free to use it if you wish, but I wrote it mostly for personal use).
 #+BEGIN_SRC shell
 git clone --depth=1 https://github.com/SidharthArya/.emacs.d ~/.local/emacs.d
 cd ~/.local/emacs.d
 Emacs=Vanilla ./install.sh
 #+END_SRC
+And from within emacs
+#+BEGIN_SRC emacs-lisp
+(org-babel-load-file "~/.emacs.d/init.org")
+#+END_SRC
+Every time the configuration file is changed, it is required to =M-x config-compile=.
 
+* Misc
+I use doom emacs, sometimes, either to try and reproduce some behavior in my config or to use doom for it's excellent programming support. If you intend to use doom, you should execute the following.
+#+begin_src sh
+  git clone --depth=1 https://github.com/SidharthArya/.emacs.d ~/.local/emacs.d
+  git clone --depth=1 https://github.com/hlissner/doom-emacs ~/.emacs.d/doom
+  ~/.emacs.d/doom/bin/doom install
+  cd ~/.local/emacs.d
+  Emacs=Vanilla ./install.sh
+  Emacs=Doom ./install.sh
+#+end_src
+And from within emacs
 #+BEGIN_SRC emacs-lisp
 (org-babel-load-file "~/.emacs.d/init.org")
 #+END_SRC
 
-Every time the configuration file is changed, it is required to =M-x config-compile=.
+then you can start doom with ~emacs --config doom~.
