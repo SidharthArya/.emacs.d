@@ -28,9 +28,10 @@
                            (news (core web org emoji begin-news not-org))
                            (tracking (core vi ivy org begin-tracking not-org))
                            (programming (compile core appearance vi ivy org programming vc))
-                           (org (compile core appearance programming vi org server web ivy finance begin-org core-post dashboard custom))
+                           (org (compile core appearance programming vi org server web ivy finance begin-org core-post dashboard vc custom projects space))
                            (doom (begin-org doom))
-                           (main (compile core appearance programming vi emoji ivy web org finance news mail server space workspace dashboard core-post))))
+                           (utilities (core pdf))
+                           (main (compile coxcore appearance programming vi emoji ivy web org finance news mail server space workspace dashboard core-post))))
     (modules-config-default 'org)
     (modules-path "~/.emacs.d/lisp")
     :config
@@ -213,6 +214,8 @@
    :prefix "M-SPC f"
    ("f" . find-file)
    ("r" . counsel-recentf))
+
+(define-key global-map (kbd "M-SPC p") 'projectile-command-map)
 
   (bind-keys
    :prefix-map buffer-prefix
@@ -522,6 +525,16 @@
   (gnus)
   (add-hook 'after-make-frame-functions (lambda (&optional frame) (switch-to-buffer "*Group*")))
 #+end_src
+* Projects
+#+begin_src emacs-lisp :tangle lisp/projects.el
+  (use-package projectile
+    :ensure bbatsov/projectile
+    :ensure pkg-info
+    :config
+    (projectile-mode +1)
+    )
+
+#+end_src
 * News
 #+begin_src emacs-lisp :tangle lisp/news.el
   (modules-load '(mount))
@@ -690,6 +703,15 @@
   (advice-add 'my-night-tasks :after 'after-tracking-task)
 
   #+end_src
+* Utilities
+#+begin_src emacs-lisp :tangle lisp/pdf.el
+  (use-package pdf-tools
+    :ensure t
+    :config
+    (require 'pdf-occur)
+    (require 'pdf-history)
+    (pdf-tools-install))
+#+end_src
 * Config Compile
 #+BEGIN_SRC emacs-lisp :tangle lisp/compile.el
   (defun config-compile()

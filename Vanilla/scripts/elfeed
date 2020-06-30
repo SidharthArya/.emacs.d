@@ -18,9 +18,9 @@
 
 (modules-load '(news))
 (require 'notifications)
-(if (not (equal (format-time-string "%Y-%m-%d" elfeed-search-last-update) (format-time-string "%Y-%m-%d" (current-time))))
+(elfeed)
+(if (not (equal (format-time-string "%Y-%m-%d" (elfeed-db-last-update)) (format-time-string "%Y-%m-%d" (current-time))))
     (progn
-      (elfeed)
       (elfeed-update)
       (while (> (elfeed-queue-count-total) 0)
         (sleep-for 5)
