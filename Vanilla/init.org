@@ -606,7 +606,7 @@
     (load "~/Documents/Org/Personal/tracking.el")
     (defvar my-tracking-drill-prefix "~/Documents/Org/Brain")
     (setq org-drill-maximum-items-per-session nil)
-    (setq org-drill-maximum-duration nil)
+    (setq org-drill-maximum-duration 60)
     (load "~/Documents/Org/Drill/drill.el")
     (defun my-tracking-drill-stuff ()
 
