@@ -671,12 +671,15 @@
                 (insert "," input)
                 (save-buffer)
                 (kill-buffer))))))
-
+    (defun my-tracking-do-plot-charts ()
+      ""
+      (start-process-shell-command "*Charts*" "*Charts*" "python ~/.local/scripts/charts.py"))
 
     (defvar my-morning-tracking-functions '(my-tracking-do-the-writeup
                                             my-tracking-drill-stuff))
     (setq my-night-tracking-functions '(my-tracking-do-check-writeup
                                         my-tracking-do-give-points
+                                        my-tracking-do-plot-charts
                                         my-tracking-drill-stuff))
 
     (defun do-tasks (arg)
