@@ -401,7 +401,7 @@
       ("C-c a" . org-agenda)
       ("C-c l" . org-store-link)
       ("C-c b" . org-switchb)
-      ("C-c B" . org-brain-visualize)
+      ("C-c B" . counsel-brain)
       (:map org-mode-map
             ("C-c t" . org-sidebar-toggle))
       :init
