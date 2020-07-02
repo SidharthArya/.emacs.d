@@ -458,6 +458,13 @@
       :ensure ledger/ledger-mode
       :mode ".ledger")
   #+end_src
+* Files
+  #+begin_src emacs-lisp :tangle lisp/files.el
+    (use-package dired
+      :custom
+      (dired-listing-switches "-alh -v --group-directories-first")
+      (dired-actual-switches "-alh -v --group-directories-first"))
+  #+end_src
 * Notifications
   #+begin_src emacs-lisp :tangle lisp/notifications.el
     (use-package alert
@@ -763,6 +770,14 @@
     (setq user-emacs-directory "~/.emacs.d/doom")
     (load "~/.emacs.d/doom/init.el")
 
+  #+end_src
+* Help
+  #+begin_src emacs-lisp :tangle lisp/help.el
+    (use-package helpful
+      :ensure Wilfred/helpful
+      :ensure dash
+      :ensure Wilfred/elisp-refs
+      :ensure Wilfred/loop.el)
   #+end_src
 * TODO doom-initialize
   
