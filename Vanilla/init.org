@@ -537,7 +537,7 @@
       :config
       (projectile-mode +1))
 
-    (when (modules-loaded-p 'projects)
+    (when (modules-loaded-p 'ivy)
       (use-package counsel-projectile
         :ensure ericdanan/counsel-projectile))
   #+end_src
