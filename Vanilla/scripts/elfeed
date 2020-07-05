@@ -12,7 +12,7 @@
 (require 'use-package)
 
 
-(use-package emacsit-repositories
+(use-package emacsit-use-package
   :custom
   (use-package-ensure-function 'emacsit-use-package-ensure))
 
