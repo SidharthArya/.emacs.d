@@ -2,7 +2,12 @@
 (require 'subr-x)
 (require 'org)
 (require 'notifications)
-(with-current-buffer (find-file-noselect "~/Documents/Org/Brain/Learning/Personality/Quotes.org")
+(setq quote-files-alist '(
+                          "~/Documents/Org/Brain/Learning/Personality/Quotes.org"
+                          "~/Documents/Org/Brain/Me/Lessons.org"
+                          ))
+
+(with-current-buffer (find-file-noselect (nth (random (length quote-files-alist)) quote-files-alist))
   (forward-line (let ((entries
                        (org-map-entries
                         #'(lambda () (line-number-at-pos)) nil 'file)))
