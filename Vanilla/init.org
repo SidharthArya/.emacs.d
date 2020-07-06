@@ -341,6 +341,10 @@
        '((:name "Diary"
                 :category "Diary"
                 :order 1)
+         (:name "Unimportant"
+                :priority "C"
+                :tag "unimportant"
+                :order 6)
          (:name "Deadlines"
                 :deadline t
                 :order 2)
@@ -352,10 +356,6 @@
                 :tag "important"
                 :tag "bill"
                 :order 4)
-         (:name "Unimportant"
-                :priority "C"
-                :tag "unimportant"
-                :order 6)
          (:name "Habit"
                 :habit t
                 :order 7)
