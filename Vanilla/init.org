@@ -546,7 +546,7 @@
       (use-package counsel-projectile
         :ensure ericdanan/counsel-projectile))
   #+end_src
-* News
+* TODO News
   #+begin_src emacs-lisp :tangle lisp/news.el
     (modules-load '(mount))
     (use-package elfeed
@@ -578,6 +578,7 @@
               (< (elfeed-entry-date b) (elfeed-entry-date a)))
           (string< a-tags b-tags)))
       (setf elfeed-search-sort-function #'my-elfeed-feed-sort)
+
 
             ;;; HOOKS
       (add-hook 'elfeed-new-entry-hook
