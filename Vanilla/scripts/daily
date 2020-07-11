@@ -1,0 +1,10 @@
+#!/usr/bin/emacs --script
+(require 'subr-x)
+(require 'org)
+(require 'notifications)
+
+(with-current-buffer (find-file-noselect "~/Documents/Org/Brain/Morning.org")
+  (end-of-buffer)
+  (setq my-objective (replace-regexp-in-string "\\[?\\]?" "" (org-get-entry))))
+
+(notifications-notify :urgency 'low :title "Day Reminder" :body (concat  my-objective))

@@ -26,7 +26,7 @@
                              (news (core web org emoji begin-news not-org))
                              (tracking (core vi ivy org begin-tracking not-org))
                              (programming (compile core appearance vi ivy org programming vc))
-                             (org (compile core appearance programming vi org server web ivy projects finance begin-org core-post dashboard vc custom space))
+                             (org (compile core appearance programming files vi org server web ivy projects finance begin-org core-post dashboard vc custom space))
                              (doom (begin-org doom))
                              (utilities (core pdf))
                              (main (compile coxcore appearance programming vi emoji ivy web org finance news mail server space workspace dashboard core-post))))
@@ -335,7 +335,7 @@
       (alert-default-style 'libnotify)
       (org-alert-notification-title "Organizer")
       (org-directory "~/Documents/Org")
-      (org-agenda-files '("~/Documents/Org/Agenda/notes.org" "~/Documents/Org/Agenda/habits.org" ))
+      (org-agenda-files '("~/Documents/Org/Agenda/notes.org" "~/Documents/Org/Agenda/habits.org" "~/Documents/Org/Agenda/timetable.org"))
       (org-super-agenda-groups
        '((:name "Diary"
                 :category "Diary"
@@ -410,6 +410,7 @@
       (require 'org-tempo)
       (org-super-agenda-mode)
       :config
+      (require 'org-archive)
       (require 'org-clock)
       (require 'ox-hugo)
       (require 'org-hugo-auto-export-mode)

@@ -20,8 +20,5 @@
                                                                                                                         (replace-regexp-in-string "\s*:.*:.*$" "" entry)))) "</i> </span>" ))))
 
   (kill-buffer))
-(with-current-buffer (find-file-noselect "~/Documents/Org/Brain/Morning.org")
-  (end-of-buffer)
-  (setq my-objective (replace-regexp-in-string "\\[?\\]?" "" (org-get-entry))))
 
-(notifications-notify :urgency 'low :title "Day Reminder" :body (concat my-quote "\n" my-objective))
+(notifications-notify :urgency 'low :title "Quote" :body (concat my-quote))
