@@ -304,7 +304,6 @@
     (modules-load '(mount))
     (use-package org
       :if my-documents-mounted
-      :ensure org-clock
       :ensure alphapapa/ts.el
       :ensure t
       ;; :ensure sabof/org-bullets
