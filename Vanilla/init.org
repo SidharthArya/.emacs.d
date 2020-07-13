@@ -577,7 +577,7 @@
           (if (string= a-tags b-tags)
               (< (elfeed-entry-date b) (elfeed-entry-date a)))
           (string< a-tags b-tags)))
-      (setf elfeed-search-sort-function #'my-elfeed-feed-sort)
+      ;;(setf elfeed-search-sort-function #'my-elfeed-feed-sort)
 
 
             ;;; HOOKS
@@ -620,7 +620,7 @@
       (interactive)
       (save-excursion
         (let  ((org-drill-scope (mapcar (lambda (a) (format "%s/%s" my-tracking-drill-prefix a)) my-tracking-drill-files)))
-          (dolist (x (buffer-list)) (with-current-buffer x (condition-case nil (recover-this-file) (error nil))))(org-drill))))
+          (dolist (x (buffer-list)) (with-current-buffer x (condition-case nil (recover-this-file) (error nil))))(org-drill)(dolist (x (buffer-list)) (with-current-buffer x (condition-case nil (recover-this-file) (error nil)))))))
 
     (defun my-tracking-do-the-writeup ()
       ""
