@@ -26,7 +26,7 @@
                              (news (core web org emoji begin-news not-org))
                              (tracking (core vi ivy org begin-tracking not-org))
                              (programming (compile core appearance vi ivy org programming vc))
-                             (org (compile core appearance programming files vi org server web ivy projects finance begin-org core-post dashboard vc custom space))
+                             (org (compile core appearance programming files vi org server web ivy projects finance begin-org core-post dashboard vc pdf custom space))
                              (doom (begin-org doom))
                              (utilities (core pdf))
                              (main (compile coxcore appearance programming vi emoji ivy web org finance news mail server space workspace dashboard core-post))))
@@ -732,6 +732,10 @@
       :config
       (require 'pdf-occur)
       (require 'pdf-history)
+      (require 'pdf-annot)
+      (require 'pdf-links)
+      (require 'pdf-outline)
+      (require 'pdf-sync)
       (pdf-tools-install))
   #+end_src
 * Config Compile
