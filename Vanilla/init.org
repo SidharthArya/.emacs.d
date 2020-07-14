@@ -555,6 +555,7 @@
       :ensure remyhonig/elfeed-org
       :custom
       (elfeed-db-directory "~/Private/News/Feeds")
+      (elfeed-sort-order 'ascending)
       (browse-url-generic-program "firefox")
       (rmh-elfeed-org-files (list "~/Documents/Org/Feeds/feeds.org"))
       (elfeed-sort-order 'descending)
