@@ -238,12 +238,12 @@
       (:map prog-mode-map
             ("C-S-i" . ide-mode))
       (:map ide-mode-map
-            ("C-S-z" . ide-goto-shell)
-            ("C-S-c" . ide-mode-compile)
-            ("C-S-e" . ide-mode-execute)
-            ("C-S-x" . ide-goto-input)
-            ("C-S-s" . ide-goto-output)
-            ("C-S-a" . ide-goto-code)))
+            ("C-S-<down>" . ide/goto-shell)
+            ("C-S-c" . ide/ide-mode-compile)
+            ("C-S-e" . ide/ide-mode-execute)
+            ("C-S-<right>" . ide/goto-input)
+            ("C-S-<up>" . ide/goto-output)
+            ("C-S-<left>" . ide/goto-code)))
     (use-package yasnippet
       :ensure t
       :ensure yasnippet-snippets
