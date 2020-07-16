@@ -24,13 +24,13 @@
                              (minimal (compile core appearance vi))
                              (mail (core mail emoji begin-mail))
                              (news (begin-news))
-;; core web org emoji 
+                             ;; core web org emoji 
                              (tracking (core vi ivy org begin-tracking))
                              (programming (compile core appearance vi ivy org programming vc))
                              (org (compile core appearance programming files vi org server web ivy projects finance begin-org core-post dashboard vc custom pdf space))
                              (doom (begin-org doom))
                              (utilities (core pdf))
-                             (main (compile coxcore appearance programming vi emoji ivy web org finance news mail server space workspace dashboard core-post))))
+                             (main (compile coxcore appearance programming vi emoji ivy web org finance news mail documents server space workspace dashboard core-post))))
       (modules-config-default 'org)
       (modules-path "~/.emacs.d/lisp")
       :config
@@ -557,7 +557,7 @@
       :custom
       (elfeed-db-directory "~/Private/News/Feeds")
       (elfeed-sort-order
-'descending)
+       'descending)
       (browse-url-generic-program "firefox")
       (rmh-elfeed-org-files (list "~/Documents/Org/Feeds/feeds.org"))
       :init
@@ -582,7 +582,7 @@
       ;;(setf elfeed-search-sort-function #'my-elfeed-feed-sort)
 
 
-            ;;; HOOKS
+                ;;; HOOKS
       (add-hook 'elfeed-new-entry-hook
                 (elfeed-make-tagger  :entry-title '"ASL Video Series"
                                      :add 'junk
@@ -728,9 +728,11 @@
 
   #+end_src
 * Utilities
-  #+begin_src emacs-lisp :tangle lisp/pdf.el
+  #+begin_src emacs-lisp :tangle lisp/documents.el
     (use-package pdf-tools
       :ensure t
+      ;; :ensure tali713/esxml
+      ;; :ensure https://depp.brause.cc/nov.el.git
       :config
       (require 'pdf-occur)
       (require 'pdf-history)
