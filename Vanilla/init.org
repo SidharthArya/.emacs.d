@@ -22,11 +22,12 @@
       (modules-config-list '(
                              (none ())
                              (minimal (compile core appearance vi))
-                             (mail (core mail emoji begin-mail not-org))
-                             (news (core web org emoji begin-news not-org))
-                             (tracking (core vi ivy org begin-tracking not-org))
+                             (mail (core mail emoji begin-mail))
+                             (news (begin-news))
+;; core web org emoji 
+                             (tracking (core vi ivy org begin-tracking))
                              (programming (compile core appearance vi ivy org programming vc))
-                             (org (compile core appearance programming files vi org server web ivy projects finance begin-org core-post dashboard vc custom space))
+                             (org (compile core appearance programming files vi org server web ivy projects finance begin-org core-post dashboard vc custom pdf space))
                              (doom (begin-org doom))
                              (utilities (core pdf))
                              (main (compile coxcore appearance programming vi emoji ivy web org finance news mail server space workspace dashboard core-post))))
@@ -555,10 +556,10 @@
       :ensure remyhonig/elfeed-org
       :custom
       (elfeed-db-directory "~/Private/News/Feeds")
-      (elfeed-sort-order 'ascending)
+      (elfeed-sort-order
+'descending)
       (browse-url-generic-program "firefox")
       (rmh-elfeed-org-files (list "~/Documents/Org/Feeds/feeds.org"))
-      (elfeed-sort-order 'descending)
       :init
       (require 'elfeed-org)
       (elfeed-org)
