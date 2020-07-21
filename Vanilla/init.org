@@ -175,8 +175,15 @@
       ("<f2> j" . counsel-set-variable)
       ("C-x b" . ivy-switch-buffer)
       ("C-c v" . ivy-push-view)
-      ("C-c V" . ivy-pop-view)
-      )
+      ("C-c V" . ivy-pop-view))
+
+    (use-package doom-modeline
+      :ensure skeeto/emacs-memoize
+      :ensure seagle0128/doom-modeline
+      :ensure domtronn/all-the-icons.el
+      :ensure https://gitlab.com/bennya/shrink-path.el
+      :config
+      (doom-modeline-mode 1))
   #+end_src
   #+begin_src emacs-lisp :tangle lisp/vi.el
     (use-package evil
