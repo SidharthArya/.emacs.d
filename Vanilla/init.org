@@ -23,7 +23,7 @@
                              (none ())
                              (minimal (compile core appearance vi))
                              (mail (core mail emoji begin-mail))
-                             (news (begin-news))
+                             (news (web begin-news))
                              ;; core web org emoji 
                              (tracking (core vi ivy org begin-tracking))
                              (programming (compile core appearance vi ivy org programming vc))
