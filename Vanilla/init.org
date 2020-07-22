@@ -181,6 +181,9 @@
       :ensure skeeto/emacs-memoize
       :ensure seagle0128/doom-modeline
       :ensure domtronn/all-the-icons.el
+      :ensure magnars/dash.el
+      :ensure magnars/s.el
+      :ensure rejeep/f.el
       :ensure https://gitlab.com/bennya/shrink-path.el
       :config
       (doom-modeline-mode 1))
@@ -348,31 +351,35 @@
        '((:name "Diary"
                 :category "Diary"
                 :order 1)
+         (:name "Remember"
+                :priority "C"
+                :tag "remember"
+                :order 3)
          (:name "Unimportant"
                 :priority "C"
                 :tag "unimportant"
-                :order 6)
+                :order 7)
          (:name "Deadlines"
                 :deadline t
                 :order 2)
          (:name "Started"
                 :todo "STARTED"
-                :order 3)
+                :order 4)
          (:name "Important"
                 :priority "A"
                 :tag "important"
                 :tag "bill"
-                :order 4)
+                :order 5)
          (:name "Habit"
                 :habit t
-                :order 7)
+                :order 8)
          (:name "Personal"
                 :tag ("movies" "tvshows" "tvseries" "books")
-                :order 9)
+                :order 10)
          (:name "Overdue"
                 :deadline past
                 :scheduled past
-                :order 5)))
+                :order 6)))
       (org-agenda-custom-commands
        '(("e" "Exercises" agenda  ""
           ((org-agenda-files (list "~/Documents/Org/Agenda/exercises.org"))
@@ -383,16 +390,20 @@
       (org-id-track-globally t)
       (org-id-locations-file "~/Documents/Org/.org-id-locations")
       (org-capture-templates
-       '(("i" "Important" entry (file+headline "~/Documents/Org//Agenda/notes.org" "Tasks")
+       '(("i" "Important" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
           "* TODO %?\t:important:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n  %i\n  %a")
-         ("u" "Unimportant" entry (file+headline "~/Documents/Org//Agenda/notes.org" "Tasks")
-          "* TODO %?\t:unimportant:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"Sun\"))\n  %i\n  %a")
+         ("u" "unimportant" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
+          "* TODO %?\t:unimportant:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"SUN\"))\n  %i\n  %a")
+         ("r" "Reminder" entry (file+headline "~/Documents/Org/Agenda/notes.org" "tasks")
+          "* %?\t:remember:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n  %i\n  %a")
          ("j" "Journal" entry (file+datetree "~/org/journal.org")
           "* %?\nEntered on %U\n  %i\n  %a")
          ("D" "Diary")
          ("Dd" "Daily Diary" entry (file+headline "~/Documents/Org/Brain/Personal/Diaries.org" "Diary")
           "* %(org-insert-time-stamp (org-read-date nil t \"\"))\n %?")
          ("Ds" "Sleep Journal" entry (file+headline "~/Documents/Org/Brain/Personal/Diaries.org" "Sleep")
+          "* %(org-insert-time-stamp (org-read-date nil t \"\"))\n %?")
+         ("Dw" "Work Diary" entry (file+headline "~/Documents/Org/Brain/Personal/Diaries.org" "Work")
           "* %(org-insert-time-stamp (org-read-date nil t \"\"))\n %?")
          ("Dr" "Regret" entry (file+headline "~/Documents/Org/Brain/Personal/Diaries.org" "Regrets")
           "* %?")
