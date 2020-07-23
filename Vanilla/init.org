@@ -392,7 +392,7 @@
       (org-capture-templates
        '(("i" "Important" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
           "* TODO %?\t:important:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n  %i\n  %a")
-         ("u" "unimportant" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
+         ("u" "Unimportant" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
           "* TODO %?\t:unimportant:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"SUN\"))\n  %i\n  %a")
          ("r" "Reminder" entry (file+headline "~/Documents/Org/Agenda/notes.org" "tasks")
           "* %?\t:remember:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n  %i\n  %a")
