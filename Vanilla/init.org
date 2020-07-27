@@ -462,6 +462,7 @@
       (require 'org-habit)
       (require 'org-brain)
       (require 'org-drill)
+      (require 'org-timer)
       (require 'cl))
   #+END_SRC
   #+begin_src emacs-lisp :tangle lisp/begin-org.el
