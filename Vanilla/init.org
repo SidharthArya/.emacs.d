@@ -112,7 +112,7 @@
     (setq gc-cons-threshold my-temp-gc-cons-threshold )
   #+END_SRC
 * Appearance
-  Mostly related to appearance.
+  Mostly related to Styles i prefer.
   #+BEGIN_SRC emacs-lisp :tangle lisp/appearance.el
     (setq-default display-line-numbers-width-start t
                   display-line-numbers-grow-only t
@@ -125,6 +125,9 @@
 
   #+END_SRC
 * Interface
+  Various completion frameworks and some interface tweaks.
+
+  *IDO*
   #+begin_src emacs-lisp :tangle lisp/ido.el
     (use-package ido
       :ensure t
@@ -139,6 +142,7 @@
       (ido-mode t))
 
   #+end_src
+  *IVY*
   #+begin_src emacs-lisp :tangle lisp/ivy.el
     (use-package swiper
       :ensure t
@@ -188,6 +192,7 @@
       :config
       (doom-modeline-mode 1))
   #+end_src
+  *VIM*
   #+begin_src emacs-lisp :tangle lisp/vi.el
     (use-package evil
       :ensure t
@@ -201,6 +206,7 @@
       (evil-collection-init)
       (evil-mode +1))
   #+end_src
+  *EMOJI*
   #+begin_src emacs-lisp :tangle lisp/emoji.el
     (use-package emojify
       :ensure t
@@ -744,7 +750,7 @@
     (if my-documents-mounted
         (progn
           (run-at-time "04:00am" nil #'my-morning-tasks)
-          (run-at-time "08:00pm" nil #'my-night-tasks)))
+          (run-at-time "08:30pm" nil #'my-night-tasks)))
   #+end_src
   #+begin_src emacs-lisp :tangle lisp/begin-tracking.el
     (modules-load '(tracking))
