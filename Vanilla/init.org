@@ -440,6 +440,8 @@
       (require 'org-tempo)
       (org-super-agenda-mode)
       :config
+
+      (setq-default org-startup-with-inline-images t)
       (require 'org-archive)
       (require 'org-clock)
       (require 'ox-hugo)
