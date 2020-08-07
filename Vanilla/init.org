@@ -279,6 +279,14 @@
     (use-package flycheck
       :ensure t
       :hook (prog-mode . flycheck-mode))
+    (use-package ob-ipython
+      :ensure gregsexton/ob-ipython
+      :config
+      (org-babel-do-load-languages
+       'org-babel-load-languages
+       '((ipython . t)
+         ;; other languages..
+         )))
   #+end_src
   #+begin_src emacs-lisp :tangle lisp/vc.el
     (use-package magit
@@ -373,8 +381,9 @@
                 :order 4)
          (:name "Important"
                 :priority "A"
-                :tag "important"
-                :tag "bill"
+                :not (:and
+                (:not :tag "important")
+                      (:not :tag "bills"))
                 :order 5)
          (:name "Habit"
                 :habit t
@@ -709,16 +718,16 @@
             (setq str (symbol-name (car key)))
           (setq str (symbol-name key)))
 
-      (with-current-buffer (find-file-noselect (concat  my-tracking-points-directory str ".csv"))
-        (if (equal (buffer-size) 0)
-            (insert "Date,Value"))
-        (goto-char (point-max))
-        (if (not (equal (car (split-string (thing-at-point 'line) ","))  (format-time-string "%d-%m-%Y" (current-time))))
-            (progn
-              (when (listp key)
-                (setq input (funcall (car (cdr key)))))
-              (if (equal input nil)
-                  (setq input (read-string (concat (string-trim-right (capitalize (buffer-name)) ".csv") ": "))))
+        (with-current-buffer (find-file-noselect (concat  my-tracking-points-directory str ".csv"))
+          (if (equal (buffer-size) 0)
+              (insert "Date,Value"))
+          (goto-char (point-max))
+          (if (not (equal (car (split-string (thing-at-point 'line) ","))  (format-time-string "%d-%m-%Y" (current-time))))
+              (progn
+                (when (listp key)
+                  (setq input (funcall (car (cdr key)))))
+                (if (equal input nil)
+                    (setq input (read-string (concat (string-trim-right (capitalize (buffer-name)) ".csv") ": "))))
                 (insert "\n")
                 (insert "")
                 (insert (format-time-string "%d-%m-%Y" (current-time)))
