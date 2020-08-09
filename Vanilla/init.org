@@ -279,8 +279,11 @@
     (use-package flycheck
       :ensure t
       :hook (prog-mode . flycheck-mode))
+(modules-load '(org))
     (use-package ob-ipython
       :ensure gregsexton/ob-ipython
+      :ensure s
+      :ensure f
       :config
       (org-babel-do-load-languages
        'org-babel-load-languages
@@ -381,9 +384,7 @@
                 :order 4)
          (:name "Important"
                 :priority "A"
-                :not (:and
-                (:not :tag "important")
-                      (:not :tag "bills"))
+                :tag ("important" "bills")
                 :order 5)
          (:name "Habit"
                 :habit t
@@ -588,7 +589,7 @@
       (use-package counsel-projectile
         :ensure ericdanan/counsel-projectile))
   #+end_src
-* TODO News
+* News
   #+begin_src emacs-lisp :tangle lisp/news.el
     (modules-load '(mount))
     (use-package elfeed
