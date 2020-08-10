@@ -764,7 +764,7 @@
     (if my-documents-mounted
         (progn
           (run-at-time "04:00am" nil #'my-morning-tasks)
-          (run-at-time "08:30pm" nil #'my-night-tasks)))
+          (run-at-time "07:00pm" nil #'my-night-tasks)))
   #+end_src
   #+begin_src emacs-lisp :tangle lisp/begin-tracking.el
     (modules-load '(tracking))
