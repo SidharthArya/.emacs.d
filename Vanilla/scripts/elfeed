@@ -5,10 +5,10 @@
 (setq emacsit::savedir "/home/arya/.emacs.d/packages")
 (setq emacsit::packages  '(
                            jwiegley/use-package
-                           SidharthArya/modules.el
+                           SidharthArya/modular-config.el
                            ))
 (emacsit::load)
-(require 'modules)
+(require 'modular-config)
 (require 'use-package)
 
 
@@ -16,7 +16,7 @@
   :custom
   (use-package-ensure-function 'emacsit-use-package-ensure))
 
-(modules-load '(news))
+(modular-config-modules-load '(news))
 (require 'notifications)
 (elfeed)
 (if (not (equal (format-time-string "%Y-%m-%d" (elfeed-db-last-update)) (format-time-string "%Y-%m-%d" (current-time))))

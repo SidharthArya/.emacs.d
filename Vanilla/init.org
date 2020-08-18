@@ -9,7 +9,7 @@
     (setq emacsit::savedir "/home/arya/.emacs.d/packages")
     (setq emacsit::packages  '(
                                jwiegley/use-package
-                               SidharthArya/modules.el
+                               SidharthArya/modular-config.el
                                ))
     (emacsit::load)
     (require 'use-package)
@@ -17,24 +17,24 @@
       :custom
       (use-package-ensure-function 'emacsit-use-package-ensure))
 
-    (use-package modules
+    (use-package modular-config
       :custom
-      (modules-config-list '(
+      (modular-config-list '(
                              (none ())
                              (minimal (compile core appearance vi))
                              (mail (core mail emoji begin-mail))
                              (news (web begin-news))
                              ;; core web org emoji 
-                             (tracking (core vi ivy org begin-tracking))
+                             (tracking (core org begin-tracking))
                              (programming (compile core appearance vi ivy org programming vc))
-                             (org (compile core appearance programming files vi org server web ivy projects finance begin-org core-post dashboard vc custom pdf space))
+                             (org (compile core appearance programming files org server web projects finance begin-org core-post dashboard vc custom pdf space))
                              (doom (begin-org doom))
                              (utilities (core pdf))
-                             (main (compile coxcore appearance programming vi emoji ivy web org finance news mail documents server space workspace dashboard core-post))))
-      (modules-config-default 'org)
-      (modules-path "~/.emacs.d/lisp")
+                             (main (compile coxcore appearance programming emoji ivy web org finance news mail documents server space workspace dashboard core-post))))
+      (modular-config-default 'org)
+      (modular-config-path "~/.emacs.d/lisp")
       :config
-      (modules-command-line-args-process))
+      (modular-config-command-line-args-process))
   #+END_SRC
 
 * Core
@@ -103,7 +103,7 @@
     (set-frame-size nil 130 40)
     (set-frame-position nil 130 40)
     (setq custom-theme-directory "~/.emacs.d/themes")
-    (load-theme 'doom-one t)
+    (load-theme 'dracula t)
     (add-hook 'kill-emacs-hook 'save-some-buffers)
 
   #+END_SRC
@@ -157,7 +157,7 @@
       :config 
       (ido-mode -1)
       (counsel-mode 1)
-      (when (modules-loaded-p 'vi)
+      (when (modular-config-modules-loaded-p 'vi)
         (evil-define-command Grep (arg)
           (interactive "<a>")
           (counsel-rg arg))
@@ -217,7 +217,7 @@
     (bind-keys
      :prefix-map space-prefix
      :prefix "M-SPC")
-    (when (modules-loaded-p 'org)
+    (when (modular-config-modules-loaded-p 'org)
       (bind-keys
        :prefix-map org-prefix
        :prefix "M-SPC o"
@@ -229,7 +229,7 @@
      :prefix "M-SPC f"
      ("f" . find-file)
      ("r" . counsel-recentf))
-    (when (modules-loaded-p 'projects)
+    (when (modular-config-modules-loaded-p 'projects)
       (define-key global-map (kbd "M-SPC p") 'projectile-command-map)
       (bind-keys :map projectile-command-map
                  ("p" . counsel-projectile-switch-project) 
@@ -242,8 +242,9 @@
      ("b" . counsel-switch-buffer)
      ("n" . counsel-switch-buffer)
      ("B" . ibuffer))
+    (when (modular-config-modules-loaded-p 'vi)
     (evil-define-key 'normal 'global (kbd "SPC") 'space-prefix)
-    (evil-define-key 'normal 'dashboard-mode-map (kbd "SPC") 'space-prefix)
+    (evil-define-key 'normal 'dashboard-mode-map (kbd "SPC") 'space-prefix))
   #+end_src
 * Programming
   #+begin_src emacs-lisp :tangle lisp/programming.el
@@ -279,7 +280,7 @@
     (use-package flycheck
       :ensure t
       :hook (prog-mode . flycheck-mode))
-(modules-load '(org))
+(modular-config-load-modules '(org))
     (use-package ob-ipython
       :ensure gregsexton/ob-ipython
       :ensure s
@@ -296,6 +297,9 @@
       :ensure t
       :bind
       ("C-x g" . magit))
+
+  #+end_src
+  #+begin_src emacs-lisp :tangle lisp/skeleton.el
 
   #+end_src
 * Mounts
@@ -329,7 +333,7 @@
   #+END_SRC
 * Organise
   #+BEGIN_SRC emacs-lisp :tangle lisp/org.el
-    (modules-load '(mount))
+    (modular-config-load-modules '(mount))
     (use-package org
       :if my-documents-mounted
       :ensure alphapapa/ts.el
@@ -585,13 +589,13 @@
       :config
       (projectile-mode +1))
 
-    (when (modules-loaded-p 'ivy)
+    (when (modular-config-modules-loaded-p 'ivy)
       (use-package counsel-projectile
         :ensure ericdanan/counsel-projectile))
   #+end_src
 * News
   #+begin_src emacs-lisp :tangle lisp/news.el
-    (modules-load '(mount))
+    (modular-config-load-modules '(mount))
     (use-package elfeed
       :if my-documents-mounted
       :ensure t
@@ -646,13 +650,13 @@
     (defun my-elfeed-sentinel (name status)
       "NAME STATUS."
       (message "%s %s" name status)
-      (modules-load '(news))
+      (modular-config-load-modules '(news))
       (elfeed)
       (switch-to-buffer "*elfeed-search*"))
   #+end_src
 * Tracking
   #+begin_src emacs-lisp :tangle lisp/tracking.el
-    (modules-load '(mount))
+    (modular-config-load-modules '(mount))
     (load "~/Documents/Org/Personal/tracking.el")
     (defvar my-tracking-drill-prefix "~/Documents/Org/Brain")
     (setq org-drill-maximum-items-per-session nil)
@@ -767,7 +771,7 @@
           (run-at-time "07:00pm" nil #'my-night-tasks)))
   #+end_src
   #+begin_src emacs-lisp :tangle lisp/begin-tracking.el
-    (modules-load '(tracking))
+    (modular-config-load-modules '(tracking))
     (set-frame-parameter nil 'title "Tracking")
     (defun after-tracking-task ()
       ""
