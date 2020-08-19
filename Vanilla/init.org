@@ -27,7 +27,7 @@
                              ;; core web org emoji 
                              (tracking (core org begin-tracking))
                              (programming (compile core appearance vi ivy org programming vc))
-                             (org (compile core appearance programming files org server web projects finance begin-org core-post dashboard vc custom pdf space))
+                             (org (compile core appearance programming ivy vi files org  server web projects finance begin-org core-post dashboard vc custom pdf space))
                              (doom (begin-org doom))
                              (utilities (core pdf))
                              (main (compile coxcore appearance programming emoji ivy web org finance news mail documents server space workspace dashboard core-post))))
