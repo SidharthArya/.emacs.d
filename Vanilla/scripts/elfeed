@@ -16,7 +16,7 @@
   :custom
   (use-package-ensure-function 'emacsit-use-package-ensure))
 
-(modular-config-modules-load '(news))
+(modular-config-load-modules '(news))
 (require 'notifications)
 (elfeed)
 (if (not (equal (format-time-string "%Y-%m-%d" (elfeed-db-last-update)) (format-time-string "%Y-%m-%d" (current-time))))
