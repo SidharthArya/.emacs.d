@@ -439,6 +439,7 @@
       (require 'org)
       (require 'org-super-agenda)
       (require 'org-ql)
+      (require 'org-ql-search)
       (require 'org-tempo)
       (org-super-agenda-mode)
       :config
@@ -473,7 +474,6 @@
       (setq-default org-confirm-babel-evaluate nil)
       (require 'org-habit)
       (require 'org-brain)
-      (require 'cl)
       (require 'org-drill)
       (require 'org-timer))
   #+END_SRC
