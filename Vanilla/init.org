@@ -1,4 +1,4 @@
-#+TITLE: Emacs Init File
++TITLE: Emacs Init File
 #+AUTHOR: Sidharth Arya
 
 * Packages
@@ -13,7 +13,7 @@
                                ))
     (emacsit::load)
     (require 'use-package)
-    (use-package emacsit-use-package
+    (use-package emacsit-repositories
       :custom
       (use-package-ensure-function 'emacsit-use-package-ensure))
 
@@ -27,9 +27,9 @@
                              ;; core web org emoji 
                              (tracking (core org begin-tracking))
                              (programming (compile core appearance vi ivy org programming vc))
-                             (org (compile core appearance programming ivy vi files org  server web projects finance begin-org core-post dashboard vc custom pdf space))
+                             (org (compile core appearance programming ivy vi files web projects finance begin-org core-post dashboard vc custom space org))
                              (doom (begin-org doom))
-                             (utilities (core pdf))
+                             (utilities (core))
                              (main (compile coxcore appearance programming emoji ivy web org finance news mail documents server space workspace dashboard core-post))))
       (modular-config-default 'org)
       (modular-config-path "~/.emacs.d/lisp")
@@ -280,17 +280,6 @@
     (use-package flycheck
       :ensure t
       :hook (prog-mode . flycheck-mode))
-(modular-config-load-modules '(org))
-    (use-package ob-ipython
-      :ensure gregsexton/ob-ipython
-      :ensure s
-      :ensure f
-      :config
-      (org-babel-do-load-languages
-       'org-babel-load-languages
-       '((ipython . t)
-         ;; other languages..
-         )))
   #+end_src
   #+begin_src emacs-lisp :tangle lisp/vc.el
     (use-package magit
@@ -338,9 +327,8 @@
       :if my-documents-mounted
       :ensure alphapapa/ts.el
       :ensure t
-      ;; :ensure sabof/org-bullets
+      :ensure sabof/org-bullets
       :ensure ht
-      ;; :ensure SidharthArya/org-alert
       :ensure s
       :ensure emacsorphanage/ov
       :ensure f
@@ -447,10 +435,10 @@
             ("C-c t" . org-sidebar-toggle))
       :init
       (setq org-version "9999")
+      (defun org-release () "9999")
+      (require 'org)
       (require 'org-super-agenda)
       (require 'org-ql)
-      (require 'org-ql-search)
-      (require 'org-sidebar)
       (require 'org-tempo)
       (org-super-agenda-mode)
       :config
@@ -485,9 +473,9 @@
       (setq-default org-confirm-babel-evaluate nil)
       (require 'org-habit)
       (require 'org-brain)
+      (require 'cl)
       (require 'org-drill)
-      (require 'org-timer)
-      (require 'cl))
+      (require 'org-timer))
   #+END_SRC
   #+begin_src emacs-lisp :tangle lisp/begin-org.el
     (set-frame-parameter nil 'title "Org")
