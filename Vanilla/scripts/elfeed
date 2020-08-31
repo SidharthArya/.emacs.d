@@ -2,6 +2,7 @@
 
 (add-to-list 'load-path "~/.emacs.d/packages/SidharthArya/emacsit")
 (require 'emacsit)
+
 (setq emacsit::savedir "/home/arya/.emacs.d/packages")
 (setq emacsit::packages  '(
                            jwiegley/use-package
@@ -12,7 +13,7 @@
 (require 'use-package)
 
 
-(use-package emacsit-use-package
+(use-package emacsit-repositories
   :custom
   (use-package-ensure-function 'emacsit-use-package-ensure))
 
