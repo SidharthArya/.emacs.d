@@ -1,4 +1,4 @@
-+TITLE: Emacs Init File
+#+TITLE: Emacs Init File
 #+AUTHOR: Sidharth Arya
 
 * Packages
@@ -105,7 +105,7 @@
     (setq custom-theme-directory "~/.emacs.d/themes")
     (load-theme 'dracula t)
     (add-hook 'kill-emacs-hook 'save-some-buffers)
-
+    (global-set-key (kbd "<XF86Favorites>") 'bookmark-jump)
   #+END_SRC
   #+BEGIN_SRC emacs-lisp :tangle lisp/core-post.el
     (setq file-name-handler-alist my-temp-file-name-handler-alist)
@@ -243,8 +243,8 @@
      ("n" . counsel-switch-buffer)
      ("B" . ibuffer))
     (when (modular-config-modules-loaded-p 'vi)
-    (evil-define-key 'normal 'global (kbd "SPC") 'space-prefix)
-    (evil-define-key 'normal 'dashboard-mode-map (kbd "SPC") 'space-prefix))
+      (evil-define-key 'normal 'global (kbd "SPC") 'space-prefix)
+      (evil-define-key 'normal 'dashboard-mode-map (kbd "SPC") 'space-prefix))
   #+end_src
 * Programming
   #+begin_src emacs-lisp :tangle lisp/programming.el
