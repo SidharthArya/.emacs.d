@@ -473,6 +473,7 @@
                      (function org-hugo-new-subtree-post-capture-template)))
       (setq-default org-confirm-babel-evaluate nil)
       (require 'org-habit)
+(setq org-habit-show-habits nil)
       (require 'org-brain)
       (require 'org-drill)
       (require 'org-timer))
