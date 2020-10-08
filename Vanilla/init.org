@@ -99,8 +99,8 @@
     (scroll-bar-mode -1)
     (defvar my-documents-mounted nil)
                                             ;(global-so-long-mode +1)
-    (set-frame-parameter nil 'alpha '(95 . 100))
-    (set-frame-size nil 130 40)
+    ;; (set-frame-parameter nil 'alpha '(95 . 100))
+    ;; (set-frame-size nil 130 40)
     (set-frame-position nil 130 40)
     (setq custom-theme-directory "~/.emacs.d/themes")
     (load-theme 'dracula t)
@@ -451,7 +451,7 @@
       (require 'org-hugo-auto-export-mode)
       (defun org-hugo-new-subtree-post-capture-template ()
         "Returns `org-capture' template string for new Hugo post.
-          See `org-capture-templates' for more information."
+                      See `org-capture-templates' for more information."
         (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
                (fname (org-hugo-slug title)))
           (mapconcat #'identity
@@ -473,10 +473,11 @@
                      (function org-hugo-new-subtree-post-capture-template)))
       (setq-default org-confirm-babel-evaluate nil)
       (require 'org-habit)
-(setq org-habit-show-habits nil)
+      (setq org-habit-show-habits nil)
       (require 'org-brain)
       (require 'org-drill)
-      (require 'org-timer))
+      (require 'org-timer)
+      (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0)))
   #+END_SRC
   #+begin_src emacs-lisp :tangle lisp/begin-org.el
     (set-frame-parameter nil 'title "Org")
