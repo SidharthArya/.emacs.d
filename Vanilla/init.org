@@ -22,8 +22,8 @@
       (modular-config-list '(
                              (none ())
                              (minimal (compile core appearance vi))
-                             (mail (core mail emoji begin-mail))
-                             (news (web appearance begin-news))
+                             (mail (core mail appearance emoji begin-mail))
+                             (news (core web appearance emoji begin-news))
                              ;; core web org emoji 
                              (tracking (core org begin-tracking))
                              (programming (compile core appearance vi ivy org programming vc))
