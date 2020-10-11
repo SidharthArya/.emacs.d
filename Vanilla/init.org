@@ -649,10 +649,10 @@
     (modular-config-load-modules '(mount))
     (load "~/Documents/Org/Personal/tracking.el")
     (defvar my-tracking-drill-prefix "~/Documents/Org/Brain")
-    (setq org-drill-maximum-items-per-session nil)
+    ;(setq org-drill-maximum-items-per-session nil)
     (setq org-drill-leech-method 'warn)
     (setq org-drill-add-random-noise-to-intervals-p t)
-    (setq org-drill-maximum-duration nil)
+    ;(setq org-drill-maximum-duration nil)
     (load "~/Documents/Org/Drill/drill.el")
     (defun my-tracking-drill-stuff ()
 
