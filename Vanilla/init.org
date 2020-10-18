@@ -103,7 +103,7 @@
     ;; (set-frame-size nil 130 40)
     (set-frame-position nil 130 40)
     (setq custom-theme-directory "~/.emacs.d/themes")
-    (load-theme 'dracula t)
+    ;;(load-theme 'dracula t)
     (add-hook 'kill-emacs-hook 'save-some-buffers)
     (global-set-key (kbd "<XF86Favorites>") 'bookmark-jump)
   #+END_SRC
@@ -181,16 +181,16 @@
       ("C-c v" . ivy-push-view)
       ("C-c V" . ivy-pop-view))
 
-    (use-package doom-modeline
-      :ensure skeeto/emacs-memoize
-      :ensure seagle0128/doom-modeline
-      :ensure domtronn/all-the-icons.el
-      :ensure magnars/dash.el
-      :ensure magnars/s.el
-      :ensure rejeep/f.el
-      :ensure https://gitlab.com/bennya/shrink-path.el
-      :config
-      (doom-modeline-mode 1))
+    ;; (use-package doom-modeline
+    ;;   :ensure skeeto/emacs-memoize
+    ;;   :ensure seagle0128/doom-modeline
+    ;;   :ensure domtronn/all-the-icons.el
+    ;;   :ensure magnars/dash.el
+    ;;   :ensure magnars/s.el
+    ;;   :ensure rejeep/f.el
+    ;;   :ensure https://gitlab.com/bennya/shrink-path.el
+    ;;   :config
+    ;;   (doom-modeline-mode 1))
   #+end_src
   *VIM*
   #+begin_src emacs-lisp :tangle lisp/vi.el
