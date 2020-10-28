@@ -21,13 +21,13 @@
       :custom
       (modular-config-list '(
                              (none ())
-                             (minimal (compile core appearance vi))
+                             (minimal (compile core appearance))
                              (mail (core mail appearance emoji begin-mail))
                              (news (core web appearance emoji begin-news))
                              ;; core web org emoji 
-                             (tracking (core org begin-tracking))
-                             (programming (compile core appearance vi ivy org programming vc))
-                             (org (compile core appearance programming ivy vi files web projects finance begin-org core-post dashboard vc custom space org server))
+                             (tracking (core org begin-tracking vi))
+                             (programming (compile core appearance ivy org programming vc))
+                             (org (compile core appearance programming ivy files web projects finance begin-org core-post dashboard vc vi custom space org server))
                              (doom (begin-org doom))
                              (utilities (core))
                              (main (compile coxcore appearance programming emoji ivy web org finance news mail documents server space workspace dashboard core-post))))
