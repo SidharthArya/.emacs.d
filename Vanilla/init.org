@@ -420,10 +420,9 @@
          ("E" "Emotions")
          ("Es" "Sensations" entry (file+headline "~/Documents/Org/Brain/Learning/Personality/EmotionalIntelligence.org" "Sensations")
           "* %? \t:drill:")
-         ("P" "Protocol")
-         ("Pc" "Protocol Text" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Protocol")
+         ("p" "Protocol Text" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Protocol")
           "* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?")
-         ("Pl" "Protocol Link" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Inbox")
+         ("l" "Protocol Link" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Inbox")
           "* %? [[%:link][%:description]] \nCaptured On: %U")))
       :bind
       ("C-c c" . org-capture)
@@ -473,7 +472,6 @@
                      (function org-hugo-new-subtree-post-capture-template)))
       (setq-default org-confirm-babel-evaluate nil)
       (require 'org-habit)
-      (setq org-habit-show-habits nil)
       (require 'org-brain)
       (require 'org-drill)
       (require 'org-timer)
@@ -519,8 +517,8 @@
       :custom
       (browse-url-browser-function 'browse-rules-url)
       (browse-rules '(
-                      (".*" t "firefox" "%s")
-                      (".*thehindu.*" t "firefox" "about:reader?url=%s"))))
+                      (".*" t "firefox-developer-edition" "%s")
+                      (".*thehindu.*" t "firefox-developer-edition" "about:reader?url=%s"))))
   #+end_src
 * Mail
   #+begin_src emacs-lisp :tangle lisp/mail.el
