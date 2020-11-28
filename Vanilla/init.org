@@ -23,11 +23,11 @@
                              (none ())
                              (minimal (compile core appearance))
                              (mail (core mail appearance emoji begin-mail))
-                             (news (core web appearance emoji begin-news))
+                             (news (core web appearance begin-news))
                              ;; core web org emoji 
-                             (tracking (core org begin-tracking vi))
+                             (tracking (core org begin-tracking))
                              (programming (compile core appearance ivy org programming vc))
-                             (org (compile core appearance programming ivy files web projects finance begin-org core-post dashboard vc vi custom space org server))
+                             (org (compile core appearance completion ivy files web projects finance begin-org core-post dashboard vc programming custom space org server auto))
                              (doom (begin-org doom))
                              (utilities (core))
                              (main (compile coxcore appearance programming emoji ivy web org finance news mail documents server space workspace dashboard core-post))))
@@ -103,8 +103,8 @@
     ;; (set-frame-size nil 130 40)
     (set-frame-position nil 130 40)
     (setq custom-theme-directory "~/.emacs.d/themes")
-    ;;(load-theme 'dracula t)
-    (add-hook 'kill-emacs-hook 'save-some-buffers)
+    (load-theme 'tango-dark t)
+    ;; (add-hook 'kill-emacs-hook 'save-some-buffers)
     (global-set-key (kbd "<XF86Favorites>") 'bookmark-jump)
   #+END_SRC
   #+BEGIN_SRC emacs-lisp :tangle lisp/core-post.el
@@ -204,7 +204,8 @@
       :config
       (require 'evil-collection)
       (evil-collection-init)
-      (evil-mode +1))
+      (evil-mode +1)
+      (evil-set-leader 'normal (kbd "\\")))
   #+end_src
   *EMOJI*
   #+begin_src emacs-lisp :tangle lisp/emoji.el
@@ -246,22 +247,35 @@
       (evil-define-key 'normal 'global (kbd "SPC") 'space-prefix)
       (evil-define-key 'normal 'dashboard-mode-map (kbd "SPC") 'space-prefix))
   #+end_src
+* Auto Modes
+  #+begin_src emacs-lisp :tangle lisp/auto.el
+    (use-package haskell-mode :ensure haskell/haskell-mode)
+    (add-to-list 'auto-mode-alist '("\\.hs\\'" . haskell-mode)) 
+  #+end_src
 * Programming
   #+begin_src emacs-lisp :tangle lisp/programming.el
     (use-package ide-mode
       :ensure SidharthArya/emacs-ide-mode
+      :init
+      (require 'ide-mode)
+;          (evil-define-key 'normal prog-mode-map (kbd "<leader> i") 'ide-mode) 
       :config
+
       (require 'ide-mode-recipes)
-      :bind
-      (:map prog-mode-map
-            ("C-S-i" . ide-mode))
-      (:map ide-mode-map
-            ("C-S-<down>" . ide/goto-shell)
-            ("C-S-c" . ide/ide-mode-compile)
-            ("C-S-e" . ide/ide-mode-execute)
-            ("C-S-<right>" . ide/goto-input)
-            ("C-S-<up>" . ide/goto-output)
-            ("C-S-<left>" . ide/goto-code)))
+    :bind
+    (:map ide-mode-map
+          ("C-S-<down>" . ide/goto-shell)
+          ("C-S-c" . ide/ide-mode-compile)
+          ("C-S-e" . ide/ide-mode-execute)
+          ("C-S-<right>" . ide/goto-input)
+          ("C-S-<up>" . ide/goto-output)
+          ("C-S-<left>" . ide/goto-code)))
+
+    (use-package flycheck
+      :ensure t
+      :hook (prog-mode . flycheck-mode))
+  #+end_src
+  #+begin_src emacs-lisp :tangle lisp/completion.el
     (use-package yasnippet
       :ensure t
       :ensure yasnippet-snippets
@@ -277,9 +291,6 @@
       (:map prog-mode-map
             ("TAB" . company-indent-or-complete-common)))
 
-    (use-package flycheck
-      :ensure t
-      :hook (prog-mode . flycheck-mode))
   #+end_src
   #+begin_src emacs-lisp :tangle lisp/vc.el
     (use-package magit
@@ -335,7 +346,6 @@
       :ensure transient
       :ensure emacsmirror/peg
       :ensure alphapapa/org-ql
-      :ensure alphapapa/org-sidebar
       :ensure alphapapa/org-super-agenda
       :ensure Kungsgeten/org-brain
       :ensure org-drill
@@ -430,8 +440,6 @@
       ("C-c l" . org-store-link)
       ("C-c b" . org-switchb)
       ("C-c B" . org-brain-visualize)
-      (:map org-mode-map
-            ("C-c t" . org-sidebar-toggle))
       :init
       (setq org-version "9999")
       (defun org-release () "9999")
@@ -517,8 +525,10 @@
       :custom
       (browse-url-browser-function 'browse-rules-url)
       (browse-rules '(
-                      (".*" t "firefox-developer-edition" "%s")
-                      (".*thehindu.*" t "firefox-developer-edition" "about:reader?url=%s"))))
+                      (".*" t "firefox" "%s")
+                      (".*\.csv.*" t "localc" "%s")
+                      (".*\.DAT.*" t "localc" "%s")
+                      (".*thehindu.*" t "firefox" "about:reader?url=%s"))))
   #+end_src
 * Mail
   #+begin_src emacs-lisp :tangle lisp/mail.el
@@ -549,7 +559,13 @@
                 (nnimap-server-port "imaps")
                 (nnimap-stream ssl))
        (nnir-search-engine imap))
-      (gnus-secondary-select-methods '((nntp "news.gwene.org")))
+      (gnus-secondary-select-methods '((nntp "news.gwene.org")
+
+                                       (nnimap "Manit"
+                                               (nnimap-address "imap.mail.gov.in")
+                                               (nnimap-server-port "imaps")
+                                               (nnimap-stream ssl))
+                                       ))
       :init
       (require 'nnir)
       (add-hook 'gnus-after-getting-new-news-hook 'gnus-notifications)
