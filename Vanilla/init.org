@@ -27,8 +27,8 @@
                              ;; core web org emoji 
                              (tracking (core org begin-tracking))
                              (programming (compile core appearance ivy org programming vc))
-                             (org (compile core appearance completion ivy files web projects finance begin-org vi core-post dashboard vc programming custom space org server auto))
-                             (doom (begin-org doom))
+                             (org (compile begin-org core appearance completion files web finance vi core-post vc programming custom org space server auto))
+                             (doom (compile org doom))
                              (utilities (core))
                              (main (compile coxcore appearance programming emoji ivy web org finance news mail documents server space workspace dashboard core-post))))
       (modular-config-default 'org)
@@ -64,8 +64,8 @@
     ;; insensitivity).
     (setq auto-mode-case-fold nil)
 
-    (setq inhibit-startup-screen t
-          inhibit-startup-message t
+    (setq inhibit-startup-screen nil
+          inhibit-startup-message nil
           inhibit-startup-echo-area-message user-login-name
           inhibit-default-init t
           initial-major-mode 'fundamental-mode
@@ -192,6 +192,11 @@
     ;;   :config
     ;;   (doom-modeline-mode 1))
   #+end_src
+  #+begin_src emacs-lisp :tangle lisp/ido.el
+    (use-package powerido
+      :ensure SidharthArya/powerido)
+
+  #+end_src
   *VIM*
   #+begin_src emacs-lisp :tangle lisp/vi.el
     (use-package evil
@@ -206,6 +211,7 @@
       (evil-collection-init)
       (evil-mode +1)
       (evil-set-leader 'normal (kbd "\\")))
+
   #+end_src
   *EMOJI*
   #+begin_src emacs-lisp :tangle lisp/emoji.el
@@ -225,11 +231,13 @@
        ("a" . org-agenda)
        ("c" . org-capture)))
 
-    (bind-keys
-     :prefix-map file-prefix
-     :prefix "M-SPC f"
-     ("f" . find-file)
-     ("r" . counsel-recentf))
+    (when (modular-config-modules-loaded-p 'files)
+      (bind-keys
+       :prefix-map file-prefix
+       :prefix "M-SPC f"
+       ("f" . find-file)
+       ("r" . counsel-recentf))
+      )
     (when (modular-config-modules-loaded-p 'projects)
       (define-key global-map (kbd "M-SPC p") 'projectile-command-map)
       (bind-keys :map projectile-command-map
@@ -237,12 +245,14 @@
                  ("f" . counsel-projectile-find-file) 
                  ("d" . counsel-projectile-find-dir)))
 
-    (bind-keys
-     :prefix-map buffer-prefix
-     :prefix "M-SPC b"
-     ("b" . counsel-switch-buffer)
-     ("n" . counsel-switch-buffer)
-     ("B" . ibuffer))
+    (when (modular-config-modules-loaded-p 'ivy)
+      (bind-keys
+       :prefix-map buffer-prefix
+       :prefix "M-SPC b"
+       ("b" . counsel-switch-buffer)
+       ("n" . counsel-switch-buffer)
+       ("B" . ibuffer))
+      )
     (when (modular-config-modules-loaded-p 'vi)
       (evil-define-key 'normal 'global (kbd "SPC") 'space-prefix)
       (evil-define-key 'normal 'dashboard-mode-map (kbd "SPC") 'space-prefix))
@@ -258,18 +268,18 @@
       :ensure SidharthArya/emacs-ide-mode
       :init
       (require 'ide-mode)
-;          (evil-define-key 'normal prog-mode-map (kbd "<leader> i") 'ide-mode) 
+                                            ;          (evil-define-key 'normal prog-mode-map (kbd "<leader> i") 'ide-mode) 
       :config
 
       (require 'ide-mode-recipes)
-    :bind
-    (:map ide-mode-map
-          ("C-S-<down>" . ide/goto-shell)
-          ("C-S-c" . ide/ide-mode-compile)
-          ("C-S-e" . ide/ide-mode-execute)
-          ("C-S-<right>" . ide/goto-input)
-          ("C-S-<up>" . ide/goto-output)
-          ("C-S-<left>" . ide/goto-code)))
+      :bind
+      (:map ide-mode-map
+            ("C-S-<down>" . ide/goto-shell)
+            ("C-S-c" . ide/ide-mode-compile)
+            ("C-S-e" . ide/ide-mode-execute)
+            ("C-S-<right>" . ide/goto-input)
+            ("C-S-<up>" . ide/goto-output)
+            ("C-S-<left>" . ide/goto-code)))
 
     (use-package flycheck
       :ensure t
@@ -527,7 +537,7 @@
       (browse-rules '(
                       (".*" t "firefox" "%s")
                       (".*\.csv$" t "localc" "%s")
-;;                      (".*\.DAT.*" t "localc" "%s")
+                      ;;                      (".*\.DAT.*" t "localc" "%s")
                       (".*thehindu.*" t "firefox" "about:reader?url=%s"))))
   #+end_src
 * Mail
@@ -843,6 +853,7 @@
 * Distributions
   #+begin_src emacs-lisp :tangle lisp/doom.el
     (setq user-emacs-directory "~/.emacs.d/doom")
+    (set-frame-parameter nil 'title "Doom")
     (load "~/.emacs.d/doom/init.el")
 
   #+end_src
