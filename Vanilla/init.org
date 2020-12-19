@@ -23,11 +23,11 @@
                              (none ())
                              (minimal (compile core appearance))
                              (mail (core mail appearance emoji begin-mail))
-                             (news (core web appearance begin-news))
+                             (news (begin-news core web appearance core-post))
                              ;; core web org emoji 
                              (tracking (core org begin-tracking))
                              (programming (compile core appearance ivy org programming vc))
-                             (org (compile begin-org core appearance completion files web finance vi core-post vc programming custom org space server auto))
+                             (org (compile begin-org core appearance completion files web finance vi ivy core-post vc programming custom org space server auto))
                              (doom (compile org doom))
                              (utilities (core))
                              (main (compile coxcore appearance programming emoji ivy web org finance news mail documents server space workspace dashboard core-post))))
@@ -661,17 +661,19 @@
     (run-at-time "04:00am" 600 'elfeed-db-save)
   #+end_src
   #+begin_src emacs-lisp :tangle lisp/begin-news.el
-    (set-frame-parameter nil 'title "News")
-    (add-to-list 'kill-emacs-hook 'elfeed-db-unload)
-    (set-process-sentinel (start-process-shell-command "*ELFEED*" "*ELFEED LOG*" "emacs --script ~/.emacs.d/scripts/elfeed") 'my-elfeed-sentinel)
+            (set-frame-parameter nil 'title "News")
+            (add-to-list 'kill-emacs-hook 'elfeed-db-unload)
+            (set-process-sentinel (start-process-shell-command "*ELFEED*" "*ELFEED LOG*" "emacs --script ~/.emacs.d/scripts/elfeed") 'my-elfeed-sentinel)
 
 
-    (defun my-elfeed-sentinel (name status)
-      "NAME STATUS."
-      (message "%s %s" name status)
-      (modular-config-load-modules '(news))
-      (elfeed)
-      (switch-to-buffer "*elfeed-search*"))
+            (defun my-elfeed-sentinel (name status)
+              "NAME STATUS."
+              (message "%s %s" name status)
+              (modular-config-load-modules '(news))
+              (elfeed)
+              (switch-to-buffer "*elfeed-search*")
+              (modular-config-load-modules '(core-post))
+    )
   #+end_src
 * Tracking
   #+begin_src emacs-lisp :tangle lisp/tracking.el
