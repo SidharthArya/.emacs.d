@@ -535,15 +535,17 @@
   #+end_src
 * Web
   #+begin_src emacs-lisp :tangle lisp/web.el
-    (use-package browse-rules
-      :ensure SidharthArya/browse-rules.el
-      :custom
-      (browse-url-browser-function 'browse-rules-url)
-      (browse-rules '(
-                      (".*" t "firefox" "%s")
-                      (".*\.csv$" t "localc" "%s")
-                      ;;                      (".*\.DAT.*" t "localc" "%s")
-                      (".*thehindu.*" t "firefox" "about:reader?url=%s"))))
+        (use-package browse-rules
+          :ensure SidharthArya/browse-rules.el
+          :custom
+          (browse-url-browser-function 'browse-rules-url)
+          (browse-rules '(
+                          (".*" t "firefox" "%s")
+                          (".*\.csv$" t "localc" "%s")
+                          ;;                      (".*\.DAT.*" t "localc" "%s")
+                          (".*thehindu.*" t "firefox" "about:reader?url=%s")
+                          (".*medium.*" t "firefox" "about:reader?url=%s")
+    )))
   #+end_src
 * Mail
   #+begin_src emacs-lisp :tangle lisp/mail.el
