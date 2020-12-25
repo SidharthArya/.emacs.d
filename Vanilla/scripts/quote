@@ -4,9 +4,9 @@
 (require 'notifications)
 (setq quote-files-alist '(
                           "~/Documents/Org/Brain/Learning/Personality/Quotes.org"
-                          "~/Documents/Org/Brain/Me/Lessons.org"
-                          "~/Documents/Org/Brain/Me/Solutions.org"
-                          "~/Documents/Org/Brain/Me/Advice.org"
+                          ;; "~/Documents/Org/Brain/Me/Lessons.org"
+                          ;; "~/Documents/Org/Brain/Me/Solutions.org"
+                          ;; "~/Documents/Org/Brain/Me/Advice.org"
                           ))
 
 (with-current-buffer (find-file-noselect (nth (random (length quote-files-alist)) quote-files-alist))

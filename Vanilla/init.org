@@ -1,6 +1,6 @@
+# -*- mode: org-mode; after-save-hook: config-compile -*-
 #+TITLE: Emacs Init File
 #+AUTHOR: Sidharth Arya
-
 * Packages
   This is where i define the basic settings required for package management.
   #+BEGIN_SRC emacs-lisp :tangle init.el
@@ -577,11 +577,6 @@
                 (nnimap-stream ssl))
        (nnir-search-engine imap))
       (gnus-secondary-select-methods '((nntp "news.gwene.org")
-
-                                       (nnimap "Manit"
-                                               (nnimap-address "imap.mail.gov.in")
-                                               (nnimap-server-port "imaps")
-                                               (nnimap-stream ssl))
                                        ))
       :init
       (require 'nnir)
