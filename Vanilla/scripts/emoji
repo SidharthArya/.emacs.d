@@ -1,0 +1,19 @@
+#!/usr/bin/emacs --script
+
+(add-to-list 'load-path "~/.emacs.d/packages/SidharthArya/emacsit")
+(require 'emacsit)
+
+(setq emacsit::savedir "/home/arya/.emacs.d/packages")
+(setq emacsit::packages  '(
+                           jwiegley/use-package
+                           SidharthArya/modular-config.el
+                           ))
+(setq emacsit::savedir "/home/arya/.emacs.d/packages")
+(use-package emojify
+  :ensure t
+  )       
+(require 'emojify)
+(emojify-list-emojis)
+(with-current-buffer "*Emojis*"
+  (buffer-substring (point-min) (point-max))
+  )
