@@ -319,7 +319,7 @@
       (if  (not my-documents-mounted)
           (if (y-or-n-p "Do you want to mount Secrets?" )
               (progn
-                (shell-command "gocryptfs --extpass 'zenity --password' ~/Private/Drive/Personal ~/Documents" nil)
+                (shell-command "gocryptfs --extpass 'zenity --password' ~/.drive/Personal ~/Documents" nil)
                 (setq my-documents-mounted (equal 1 (string-to-number (shell-command-to-string "mount | grep Secret | wc -l"))))))))
     (my-documents-mount)
 
