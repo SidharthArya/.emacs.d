@@ -203,14 +203,17 @@
       :ensure t
       :ensure emacs-evil/evil-collection
       :ensure noctuid/annalist.el
+      :ensure emacs-evil/goto-chg
       :defer nil
       :custom
       (evil-want-keybinding nil)
       :config
+      (require 'goto-chg)
       (require 'evil-collection)
       (evil-collection-init)
       (evil-mode +1)
       (evil-set-leader 'normal (kbd "\\")))
+
 
   #+end_src
   *EMOJI*
@@ -541,7 +544,7 @@
           (browse-url-browser-function 'browse-rules-url)
           (browse-rules '(
                           (".*" t "firefox" "%s")
-                          (".*\.csv$" t "localc" "%s")
+                 ;;         (".*\.csv$" t "localc" "%s")
                           ;;                      (".*\.DAT.*" t "localc" "%s")
                           (".*thehindu.*" t "firefox" "about:reader?url=%s")
                           (".*medium.*" t "firefox" "about:reader?url=%s")
