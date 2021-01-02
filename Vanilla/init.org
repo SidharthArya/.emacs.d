@@ -22,10 +22,10 @@
       (modular-config-list '(
                              (none ())
                              (minimal (compile core appearance))
-                             (mail (core mail appearance emoji begin-mail))
-                             (news (begin-news core web appearance core-post))
+                             (mail (core mail appearance emoji begin-mail not-org))
+                             (news (begin-news core web appearance core-post not-org))
                              ;; core web org emoji 
-                             (tracking (core org begin-tracking))
+                             (tracking (core org begin-tracking not-org))
                              (programming (compile core appearance ivy org programming vc))
                              (org (compile begin-org core appearance completion files web finance vi ivy core-post vc programming custom org space server auto))
                              (doom (compile org doom))
