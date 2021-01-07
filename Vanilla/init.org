@@ -252,10 +252,11 @@
       (bind-keys
        :prefix-map buffer-prefix
        :prefix "M-SPC b"
+       ("k" . kill-current-buffer)
        ("b" . counsel-switch-buffer)
        ("n" . counsel-switch-buffer)
        ("B" . ibuffer))
-      )
+       )
     (when (modular-config-modules-loaded-p 'vi)
       (evil-define-key 'normal 'global (kbd "SPC") 'space-prefix)
       (evil-define-key 'normal 'dashboard-mode-map (kbd "SPC") 'space-prefix))
