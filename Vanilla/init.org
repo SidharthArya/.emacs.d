@@ -22,7 +22,7 @@
       (modular-config-list '(
                              (none ())
                              (minimal (compile core appearance))
-                             (mail (core mail appearance emoji begin-mail not-org))
+                             (mail (core mail appearance emoji not-org begin-mail))
                              (news (begin-news core web appearance core-post not-org))
                              ;; core web org emoji 
                              (tracking (core org begin-tracking not-org))
@@ -547,8 +547,8 @@
                           (".*" t "qutebrowser" "%s")
                  ;;         (".*\.csv$" t "localc" "%s")
                           ;;                      (".*\.DAT.*" t "localc" "%s")
-                          (".*thehindu.*" t "firefox" "about:reader?url=%s")
-                          (".*medium.*" t "firefox" "about:reader?url=%s")
+                          (".*thehindu.*" t "qutebrowser" "https://outline.com/%s")
+                          (".*medium.*" t "qutebrowser" "%s")
     )))
   #+end_src
 * Mail
