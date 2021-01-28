@@ -1,4 +1,4 @@
-# -*- mode: org-mode; after-save-hook: config-compile -*-
+# -*- mode: org-mode -*-
 #+TITLE: Emacs Init File
 #+AUTHOR: Sidharth Arya
 * Packages
@@ -503,6 +503,40 @@
       (require 'org-download)
       (add-hook 'dired-mode-hook 'org-download-enable)
       )
+    (use-package org-roam
+          :ensure org-roam/org-roam
+          :ensure skeeto/emacsql
+          :ensure cireu/emacsql-sqlite3
+          :hook
+          (after-init . org-roam-mode)
+          :init
+          (require 'emacsql)
+          ;(setq emacsql-sqlite-executable "~/.local/bin/emacsql-sqlite")
+          ;(setq emacsql-sqlite3-executable "~/.local/bin/emacsql-sqlite")
+          :custom
+          (org-roam-directory "~/Documents/Org/Roam")
+          :bind (:map org-roam-mode-map
+                  (("C-c n l" . org-roam)
+                   ("C-c n f" . org-roam-find-file)
+                   ("C-c n g" . org-roam-graph))
+                  :map org-mode-map
+                  (("C-c n i" . org-roam-insert))
+                  (("C-c n I" . org-roam-insert-immediate))))
+    (use-package org-roam-server
+      :ensure skeeto/emacs-web-server
+      :ensure org-roam/org-roam-server
+      :config
+      (setq org-roam-server-host "127.0.0.1"
+            org-roam-server-port 8080
+            org-roam-server-authenticate nil
+            org-roam-server-export-inline-images t
+            org-roam-server-serve-files nil
+            org-roam-server-served-file-extensions '("pdf" "mp4" "ogv")
+            org-roam-server-network-poll t
+            org-roam-server-network-arrows nil
+            org-roam-server-network-label-truncate t
+            org-roam-server-network-label-truncate-length 60
+            org-roam-server-network-label-wrap-length 20))
   #+END_SRC
   #+begin_src emacs-lisp :tangle lisp/begin-org.el
     (set-frame-parameter nil 'title "Org")
