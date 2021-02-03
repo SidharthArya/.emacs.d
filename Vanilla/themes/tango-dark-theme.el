@@ -96,14 +96,14 @@ Semantic, and Ansi-Color faces are included.")
    ;; Mode line faces
    `(mode-line ((,class
 		 (:box nil
-		  :background ,"#222" :foreground ,alum-1 :height 1.0))))
+		  :background ,"#222" :foreground ,alum-1))))
    `(mode-line-inactive ((,class
 			  (:box nil
 				-			   :background ,alum-5 :foreground ,alum-1))))
    `(mode-line-buffer-id ((,class
-			   (:background ,alum-7 :foreground ,"#55aa55" :height 1.0))))
+			   (:background ,alum-7 :foreground ,"#55aa55"))))
       `(mode-line-highlight ((,class
-		 (:background ,alum-6 :foreground ,orange-1 :height 1.1))))
+		 (:background ,alum-6 :foreground ,orange-1))))
    `(compilation-mode-line-fail ((,class (:foreground ,red-3))))
    `(compilation-mode-line-run  ((,class (:foreground ,orange-3))))
    `(compilation-mode-line-exit ((,class (:foreground ,cham-3))))
