@@ -9,9 +9,9 @@
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-c i")
-  (define-key prog-mode-map (kbd "H-\\ l") 'lsp-mode)
+  (evil-define-key 'normla 'prog-mode-map (kbd "\\tl") 'lsp)
   :config
-  (define-key lsp-mode-map (kbd "H-x l") lsp-command-map)
+  (evil-define-key 'normal 'lsp-mode-map (kbd "\\l") lsp-command-map)
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
                                         ;         (prog-mode . lsp)
          ;; if you want which-key integration

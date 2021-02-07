@@ -5,9 +5,9 @@
   :config
   (require 'ide-mode-recipes)
   
-  (define-key prog-mode-map (kbd "H-x") ide-mode-command-map) 
-  (define-key ide-slave-mode-map (kbd "H-x") ide-mode-command-map)
-  (define-key prog-mode-map (kbd "H-\\ i") 'ide-mode) 
+  (evil-define-key 'normal 'prog-mode-map (kbd "\\i") ide-mode-command-map) 
+  (evil-define-key 'normal 'ide-slave-mode-map (kbd "\\i") ide-mode-command-map)
+  (evil-define-key 'normal 'prog-mode-map (kbd "\\ti") 'ide-mode) 
   :bind
   (:map ide-mode-command-map
         ("s" . ide/goto-shell)

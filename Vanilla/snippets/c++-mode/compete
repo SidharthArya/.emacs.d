@@ -11,6 +11,10 @@ typedef long long ll;
 signed main() {
   ios_base::sync_with_stdio(0);
   cin.tie(0); cout.tie(0);
+  ll T;
+  cin >> T;
+  for (int t=0;t<T;t++) {
   $0
+  }
   return 0;
 }

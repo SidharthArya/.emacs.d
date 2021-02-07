@@ -15,12 +15,27 @@
                         #'(lambda () (line-number-at-pos)) nil 'file)))
                   (nth (random (length entries)) entries)))
   (let ((entry (org-get-entry)))
-    (setq my-quote (replace-regexp-in-string "\\[?\\]?" "" (concat "<span foreground=\"#55ff55\">" (replace-regexp-in-string ":drill:" "" (org-get-heading)) "</span>" "\n" "<span foreground=\"#005500\"> <i>"
+    (setq my-quote (replace-regexp-in-string "\\[?\\]?" ""
+                                             (concat
+                                        ;"<span foreground=\"#55ff55\">"
+                                              (replace-regexp-in-string ":drill:" "" (org-get-heading))
+                                        ;"</span>" "\n" "<span foreground=\"#005500\"> <i>"
+                                              "\n\n"
                                                                    (string-trim
                                                                     (replace-regexp-in-string "\n$" ""
                                                                                               (replace-regexp-in-string "\s*SCHEDULED:.*" ""
-                                                                                                                        (replace-regexp-in-string "\s*:.*:.*$" "" entry)))) "</i> </span>" ))))
+                                                                                                                        (replace-regexp-in-string "\s*:.*:.*$" "" entry))))
+                                        ;"</i> </span>"
+                                                                   ))))
 
   (kill-buffer))
 
-(notifications-notify :urgency 'low :title "Quote" :body (concat my-quote))
+;; For Dzen2 
+(with-current-buffer "*scratch*"
+  (insert my-quote)
+  (setq fill-column 200)
+  (fill-region (point-min) (point-max))
+  (setq my-quote (buffer-substring (point-min) (point-max))))
+;(notifications-notify :urgency 'low :title "Quote" :body (concat my-quote))
+
+(shell-command (format "echo -e ' %s' | dzen2 -p 5 -l 10 -ta l -fn NotoSans:size=9 -bg '#FFFFFF' -fg '#000000'" my-quote))

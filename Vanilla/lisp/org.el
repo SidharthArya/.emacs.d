@@ -20,18 +20,78 @@
   :hook (org-mode . visual-line-mode)
   (org-mode . auto-save-mode)
   :init
+  (defun my-org-cmp-utility-property (a b)
+    "Compare two `org-mode' agenda entries, `A' and `B', by some date property.
 
+If a is before b, return -1. If a is after b, return 1. If they
+are equal return t."
+
+    (let* ((a-pos (get-text-property 0 'org-marker a))
+           (b-pos (get-text-property 0 'org-marker b))
+           (sa (float (- 68 (my-org-preprocess-priority (org-entry-get a-pos "PRIORITY")))))
+           (sb (float (- 68 (my-org-preprocess-priority (org-entry-get b-pos "PRIORITY")))))
+           
+           (def (if org-agenda-sort-noeffort-is-high 60 60))
+	   (ea (or (get-text-property
+		    0 'effort-minutes (get-text-property 0 'txt a))
+		   def))
+	   (eb (or (get-text-property
+		    0 'effort-minutes (get-text-property 0 'txt b))
+		   def))
+           (ua (/ sa ea))
+           (ub (/ sb eb)))
+      
+      
+      (cond ((< ua ub)
+             -1)
+            ((> ua ub)
+             +1)
+            (t nil))
+      ))
+  (defun my-org-get-score-current()
+
+    (let* ((a (point))
+           (a-pos (get-text-property a 'org-marker))
+           (sa (float (- 68 (my-org-preprocess-priority (org-entry-get a-pos "PRIORITY"))))))
+      (if (equal sa 68)
+          2
+        sa)))
+
+  (setq org-after-todo-state-change-hook 'my-org-todo-state-change-main)
+  (defun my-org-todo-state-change-main ()
+    (when (equal org-state "DONE")
+      (start-process-shell-command "DUMP POINTS" nil (concat "echo " (format "%s" (my-org-get-score-current)) ">> ~/.cache/org-points-$(date +'%Y%m%d').points"))
+    ))
+
+  (defun my-org-cmp-utility-property-tool (&optional b)
+    "Compare two `org-mode' agenda entries, `A' and `B', by some date property.
+
+If a is before b, return -1. If a is after b, return 1. If they
+are equal return t."
+    (let* ((a (point))
+           (a-pos (get-text-property a 'org-marker))
+           (sa (float (- 68 (my-org-preprocess-priority (org-entry-get a-pos "PRIORITY")))))
+           (def (if org-agenda-sort-noeffort-is-high 60 60))
+	   (ea (or (get-text-property
+		    0 'effort-minutes (get-text-property a 'txt))
+		   def))
+           (ua (/ sa ea)))
+      (if (equal b nil)
+          (message "UA:%s, EA: %s, SA: %s" ua ea sa)
+      (message "UA:%s, EA: %s, SA: %s, B: %s, CMP: %s" ua ea sa b (if (> ua b) "Above" "Below")))
+      ))
+  (defun my-org-preprocess-priority(x)
+    (cond ((equal x nil) 66)
+          ((string-match "[ABC]" x) (string-to-char x))
+          (t (string-to-number x))
+          ))
   (setq org-capture-templates
         '(("i" "Important" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
-           "* TODO %?\t:important:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n  %i\n  %a")
+           "* TODO [#A] %?\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n:PROPERTIES:\n:Effort: 1h\n:END:\n  %i\n  %a")
           ("I" "Important Week End" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
-           "* TODO %?\t:important:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"SUN\"))\n  %i\n  %a")
+           "* TODO [#A] %?\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"SUN\"))\n:PROPERTIES:\n:Effort: 1h\n:END:\n  %i\n  %a")
           ("u" "Unimportant" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
-           "* TODO %?\t:unimportant:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"SUN\"))\n  %i\n  %a")
-          ("r" "Reminder" entry (file+headline "~/Documents/Org/Agenda/notes.org" "tasks")
-           "* %?\t:remember:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n  %i\n  %a")
-          ("j" "Journal" entry (file+datetree "~/org/journal.org")
-           "* %?\nEntered on %U\n  %i\n  %a")
+           "* TODO [#C] %?\nSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"SUN\"))\n:PROPERTIES:\n:Effort: 1h\n:END:\n  %i\n  %a")
           ("D" "Diary")
           ("Dd" "Daily Diary" entry (file+headline "~/Documents/Org/Brain/Personal/Diaries.org" "Diary")
            "* %(org-insert-time-stamp (org-read-date nil t \"\"))\n %?")
@@ -50,6 +110,25 @@
            "* %? [[%:link][%:description]] \nCaptured On: %U")))
 
   :custom
+  (org-agenda-sorting-strategy
+   '((agenda user-defined-down time-up priority-down effort-up)
+     (todo priority-down)
+     (tags priority-down)
+     (search category-keep)))
+  (org-duration-format '(("d" . nil) ("h" . t) ("min" . t)))
+
+  (org-effort-durations
+   `(("min" . 1)
+     ("h" . 60)
+     ;; eight-hour days
+     ("d" . ,(* 60 8))
+     ;; five-day work week
+     ("w" . ,(* 60 8 5))
+     ;; four weeks in a month
+     ("m" . ,(* 60 8 5 4))
+     ;; work a total of 12 months a year --
+     ;; this is independent of holiday and sick time taken
+     ("y" . ,(* 60 8 5 4 12))))
   (org-agenda-skip-deadline-if-done t)
   (org-agenda-skip-scheduled-if-done t)
   (org-agenda-window-setup 'current-window)
@@ -61,7 +140,7 @@
   (alert-default-style 'libnotify)
   (org-alert-notification-title "Organizer")
   (org-directory "~/Documents/Org")
-  (org-agenda-files '("~/Documents/Org/Agenda/notes.org" "~/Documents/Org/Agenda/habits.org" "~/Documents/Org/Agenda/timetable.org"))
+  (org-agenda-files '("~/Documents/Org/Agenda/notes.org" "~/Documents/Org/Agenda/habits.org" "~/Documents/Org/Agenda/books.org" "~/Documents/Org/Agenda/entertainment.org"))
   (org-super-agenda-groups
    '((:name "Diary"
             :category "Diary"
@@ -99,7 +178,23 @@
       ((org-agenda-files (list "~/Documents/Org/Agenda/exercises.org"))
        (org-super-agenda-groups
         '((:auto-category t)))
-       (org-agenda-sorting-strategy '(priority-up effort-down))))))
+       (org-agenda-sorting-strategy '(priority-up effort-up))))
+     ("A" "Agenda Important" agenda  ""
+      ((org-agenda-files (list "~/Documents/Org/Agenda/notes.org"))
+       (org-super-agenda-groups nil)
+       (org-agenda-sorting-strategy '(priority-up effort-up))))
+     ("B" "Book" todo  ""
+      ((org-agenda-files (list "~/Documents/Org/Agenda/books.org"))
+       (org-super-agenda-groups nil)
+       (org-agenda-sorting-strategy '(ts-down priority-up effort-up))))
+     ("u" "Utility Sorted Agenda" agenda ""
+      ((org-agenda-files '("~/Documents/Org/Agenda/notes.org" "~/Documents/Org/Agenda/entertainment.org"))
+       (org-agenda-cmp-user-defined 'my-org-cmp-utility-property))
+      (org-agenda-sorting-strategy '(user-defined-up)))
+     ("E" "Entertainment" todo  ""
+      ((org-agenda-files (list "~/Documents/Org/Agenda/entertainment.org"))
+       (org-super-agenda-groups nil)
+       (org-agenda-sorting-strategy '(ts-up priority-up effort-up))))))
   (org-brain-path "~/Documents/Org/Brain")
   (org-id-track-globally t)
   (org-id-locations-file "~/Documents/Org/.org-id-locations")
@@ -113,13 +208,10 @@
   (setq org-version "9999")
   (defun org-release () "9999")
   (require 'org)
-  (require 'org-super-agenda)
   (require 'org-ql)
   (require 'org-ql-search)
   (require 'org-tempo)
-  (org-super-agenda-mode)
   :config
-
   (setq-default org-startup-with-inline-images t)
   (require 'org-archive)
   (require 'org-clock)
