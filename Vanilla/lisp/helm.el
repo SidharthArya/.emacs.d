@@ -2,6 +2,7 @@
   :ensure jwiegley/emacs-async
   :ensure auto-complete/popup-el
   :ensure emacs-helm/helm
+  :ensure emacs-helm/helm-descbinds
   :custom
   (helm-ff-file-name-history-use-recentf t)
   (recentf-max-menu-items 100)
@@ -13,5 +14,10 @@
 ("C-x C-f" . helm-find-files)
 :config
 (require 'helm-config)
-(helm-mode 1))
+(helm-mode 1)
+(require 'helm-descbinds)
+(helm-descbinds-mode)
+)
 
+(use-package helm-system-packages
+  :ensure emacs-helm/helm-system-packages)
