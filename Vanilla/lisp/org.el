@@ -195,7 +195,7 @@ are equal return t."
       ((org-agenda-files (list "~/Documents/Org/Agenda/entertainment.org"))
        (org-super-agenda-groups nil)
        (org-agenda-sorting-strategy '(ts-up priority-up effort-up))))))
-  (org-brain-path "~/Documents/Org/Brain")
+  ;; (org-brain-path "~/Documents/Org/Brain")
   (org-id-track-globally t)
   (org-id-locations-file "~/Documents/Org/.org-id-locations")
   :bind
@@ -203,7 +203,7 @@ are equal return t."
   ("C-c a" . org-agenda)
   ("C-c l" . org-store-link)
   ("C-c b" . org-switchb)
-  ("C-c B" . org-brain-visualize)
+  ;; ("C-c B" . org-brain-visualize)
   :init
   (setq org-version "9999")
   (defun org-release () "9999")
@@ -241,7 +241,7 @@ are equal return t."
                  (function org-hugo-new-subtree-post-capture-template)))
   (setq-default org-confirm-babel-evaluate nil)
   (require 'org-habit)
-  (require 'org-brain)
+  ;; (require 'org-brain)
   (require 'org-drill)
   (require 'org-timer)
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
@@ -282,3 +282,12 @@ are equal return t."
         org-roam-server-network-label-truncate t
         org-roam-server-network-label-truncate-length 60
         org-roam-server-network-label-wrap-length 20))
+
+(use-package org-ref
+  :ensure jkitchin/org-ref
+  :ensure cpitclaudel/biblio.el
+  :ensure joostkremers/parsebib
+  :ensure tmalsburg/helm-bibtex
+  :ensure hniksic/emacs-htmlize
+  :ensure abo-abo/hydra
+  )
