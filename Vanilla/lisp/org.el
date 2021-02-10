@@ -10,11 +10,9 @@
   :ensure f
   :ensure transient
   :ensure emacsmirror/peg
-  :ensure alphapapa/org-ql
-  :ensure alphapapa/org-super-agenda
-  :ensure Kungsgeten/org-brain
-  :ensure org-drill
-  :ensure kaushalmodi/ox-hugo
+  ;; :ensure Kungsgeten/org-brain
+  ;; :ensure org-drill
+  ;; :ensure kaushalmodi/ox-hugo
   :ensure jwiegley/emacs-async
   :ensure abo-abo/org-download
   :hook (org-mode . visual-line-mode)
@@ -28,9 +26,8 @@ are equal return t."
 
     (let* ((a-pos (get-text-property 0 'org-marker a))
            (b-pos (get-text-property 0 'org-marker b))
-           (sa (float (- 68 (my-org-preprocess-priority (org-entry-get a-pos "PRIORITY")))))
-           (sb (float (- 68 (my-org-preprocess-priority (org-entry-get b-pos "PRIORITY")))))
-           
+           (sa (string-to-number (or (org-entry-get a-pos "SCORE_ON_DONE") "2")))
+           (sb (string-to-number (or (org-entry-get b-pos "SCORE_ON_DONE") "2")))
            (def (if org-agenda-sort-noeffort-is-high 60 60))
 	   (ea (or (get-text-property
 		    0 'effort-minutes (get-text-property 0 'txt a))
@@ -42,12 +39,15 @@ are equal return t."
            (ub (/ sb eb)))
       
       
-      (cond ((< ua ub)
-             -1)
-            ((> ua ub)
-             +1)
-            (t nil))
-      ))
+      (cond 
+       ((< ua ub) -1)
+       ((> ua ub) +1)
+       ((< sa sb) -1)
+       ((> sa sb) +1)
+       ((< ea eb) +1)
+       ((> ea eb) -1)
+       (t nil)
+      )))
   (defun my-org-get-score-current()
 
     (let* ((a (point))
@@ -63,6 +63,22 @@ are equal return t."
       (start-process-shell-command "DUMP POINTS" nil (concat "echo " (format "%s" (my-org-get-score-current)) ">> ~/.cache/org-points-$(date +'%Y%m%d').points"))
     ))
 
+  (defun my-org-cmp-utility-property (a b)
+    "Compare two `org-mode' agenda entries, `A' and `B', by some date property.
+
+If a is before b, return -1. If a is after b, return 1. If they
+are equal return t."
+
+      
+      (cond 
+       ((< ua ub) -1)
+       ((> ua ub) +1)
+       ((< sa sb) -1)
+       ((> sa sb) +1)
+       ((< ea eb) +1)
+       ((> ea eb) -1)
+       (t nil)
+      ))
   (defun my-org-cmp-utility-property-tool (&optional b)
     "Compare two `org-mode' agenda entries, `A' and `B', by some date property.
 
@@ -70,16 +86,17 @@ If a is before b, return -1. If a is after b, return 1. If they
 are equal return t."
     (let* ((a (point))
            (a-pos (get-text-property a 'org-marker))
-           (sa (float (- 68 (my-org-preprocess-priority (org-entry-get a-pos "PRIORITY")))))
+           (sa (string-to-number (or (org-entry-get a-pos "SCORE_ON_DONE") "2")))
            (def (if org-agenda-sort-noeffort-is-high 60 60))
 	   (ea (or (get-text-property
 		    0 'effort-minutes (get-text-property a 'txt))
 		   def))
            (ua (/ sa ea)))
+      
       (if (equal b nil)
           (message "UA:%s, EA: %s, SA: %s" ua ea sa)
-      (message "UA:%s, EA: %s, SA: %s, B: %s, CMP: %s" ua ea sa b (if (> ua b) "Above" "Below")))
-      ))
+      (message "UA:%s, EA: %s, SA: %s, B: %s, CMP: %s" ua ea sa b (if (> ua b) "Above" "Below")))))
+      
   (defun my-org-preprocess-priority(x)
     (cond ((equal x nil) 66)
           ((string-match "[ABC]" x) (string-to-char x))
@@ -110,8 +127,30 @@ are equal return t."
            "* %? [[%:link][%:description]] \nCaptured On: %U")))
 
   :custom
+  (org-agenda-custom-commands
+   '(("e" "Exercises" agenda  ""
+      ((org-agenda-files (list "~/Documents/Org/Agenda/exercises.org"))
+       (org-super-agenda-groups
+        '((:auto-category t)))
+       (org-agenda-sorting-strategy '(priority-up effort-up))))
+     ("A" "Agenda Important" agenda  ""
+      ((org-agenda-files (list "~/Documents/Org/Agenda/notes.org"))
+       (org-super-agenda-groups nil)
+       (org-agenda-sorting-strategy '(priority-up effort-up))))
+     ("B" "Book" todo  ""
+      ((org-agenda-files (list "~/Documents/Org/Agenda/books.org"))
+       (org-super-agenda-groups nil)
+       (org-agenda-sorting-strategy '(ts-down priority-up effort-up))))
+     ("u" "Utility Sorted Agenda" agenda ""
+      ((org-agenda-files '("~/Documents/Org/Agenda/notes.org" "~/Documents/Org/Agenda/entertainment.org"))
+       (org-agenda-cmp-user-defined 'my-org-cmp-utility-property))
+      (org-agenda-sorting-strategy '(user-defined-up)))
+     ("E" "Entertainment" todo  ""
+      ((org-agenda-files (list "~/Documents/Org/Agenda/entertainment.org"))
+       (org-super-agenda-groups nil)
+       (org-agenda-sorting-strategy '(ts-up priority-up effort-up))))))
   (org-agenda-sorting-strategy
-   '((agenda user-defined-down time-up priority-down effort-up)
+   '((agenda user-defined-down scheduled-down deadline-up priority-down effort-up)
      (todo priority-down)
      (tags priority-down)
      (search category-keep)))
@@ -141,6 +180,66 @@ are equal return t."
   (org-alert-notification-title "Organizer")
   (org-directory "~/Documents/Org")
   (org-agenda-files '("~/Documents/Org/Agenda/notes.org" "~/Documents/Org/Agenda/habits.org" "~/Documents/Org/Agenda/books.org" "~/Documents/Org/Agenda/entertainment.org"))
+  ;; (org-brain-path "~/Documents/Org/Brain")
+  (org-id-track-globally t)
+  (org-id-locations-file "~/Documents/Org/.org-id-locations")
+  :bind
+  ("C-c c" . org-capture)
+  ("C-c a" . org-agenda)
+  ("C-c l" . org-store-link)
+  ("C-c b" . org-switchb)
+  ;; ("C-c B" . org-brain-visualize)
+  :init
+  (setq org-version "9999")
+  (defun org-release () "9999")
+  (require 'org)
+  (require 'org-tempo)
+  :config
+  ;; TEMP
+  (setq org-priority-lowest org-lowest-priority)
+  (setq org-priority-highest org-highest-priority)
+  ;; END
+  (setq-default org-startup-with-inline-images t)
+  (require 'org-archive)
+  (require 'org-clock)
+  ;; (require 'ox-hugo)
+  ;; (require 'org-hugo-auto-export-mode)
+  ;; (defun org-hugo-new-subtree-post-capture-template ()
+  ;;   "Returns `org-capture' template string for new Hugo post.
+  ;;                 See `org-capture-templates' for more information."
+  ;;   (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
+  ;;          (fname (org-hugo-slug title)))
+  ;;     (mapconcat #'identity
+  ;;                `(,(concat "* TODO " title)
+  ;;                  ":PROPERTIES:"
+  ;;                  ,(concat ":EXPORT_FILE_NAME: " fname)
+  ;;                  ":END:"
+  ;;                  "%?\n")          ;Place the cursor here finally
+  ;;                "\n")))
+
+  (add-to-list 'org-capture-templates
+               '("b"                ;`org-capture' binding + h
+                 "Blog post"
+                 entry
+                 ;; It is assumed that below file is present in `org-directory'
+                 ;; and that it has a "Blog Ideas" heading. It can even be a
+                 ;; symlink pointing to the actual location of all-posts.org!
+                 (file+olp "~/Documents/Org/Blog/posts.org" "Blog")
+                 (function org-hugo-new-subtree-post-capture-template)))
+  (setq-default org-confirm-babel-evaluate nil)
+  (require 'org-habit)
+  ;; (require 'org-brain)
+  ;; (require 'org-drill)
+  (require 'org-timer)
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+  (require 'org-download)
+  (add-hook 'dired-mode-hook 'org-download-enable))
+
+(use-package org-super-agenda
+  :ensure alphapapa/org-super-agenda
+  :ensure alphapapa/org-ql
+  :after org
+  :custom
   (org-super-agenda-groups
    '((:name "Diary"
             :category "Diary"
@@ -173,80 +272,10 @@ are equal return t."
             :deadline past
             :scheduled past
             :order 6)))
-  (org-agenda-custom-commands
-   '(("e" "Exercises" agenda  ""
-      ((org-agenda-files (list "~/Documents/Org/Agenda/exercises.org"))
-       (org-super-agenda-groups
-        '((:auto-category t)))
-       (org-agenda-sorting-strategy '(priority-up effort-up))))
-     ("A" "Agenda Important" agenda  ""
-      ((org-agenda-files (list "~/Documents/Org/Agenda/notes.org"))
-       (org-super-agenda-groups nil)
-       (org-agenda-sorting-strategy '(priority-up effort-up))))
-     ("B" "Book" todo  ""
-      ((org-agenda-files (list "~/Documents/Org/Agenda/books.org"))
-       (org-super-agenda-groups nil)
-       (org-agenda-sorting-strategy '(ts-down priority-up effort-up))))
-     ("u" "Utility Sorted Agenda" agenda ""
-      ((org-agenda-files '("~/Documents/Org/Agenda/notes.org" "~/Documents/Org/Agenda/entertainment.org"))
-       (org-agenda-cmp-user-defined 'my-org-cmp-utility-property))
-      (org-agenda-sorting-strategy '(user-defined-up)))
-     ("E" "Entertainment" todo  ""
-      ((org-agenda-files (list "~/Documents/Org/Agenda/entertainment.org"))
-       (org-super-agenda-groups nil)
-       (org-agenda-sorting-strategy '(ts-up priority-up effort-up))))))
-  ;; (org-brain-path "~/Documents/Org/Brain")
-  (org-id-track-globally t)
-  (org-id-locations-file "~/Documents/Org/.org-id-locations")
-  :bind
-  ("C-c c" . org-capture)
-  ("C-c a" . org-agenda)
-  ("C-c l" . org-store-link)
-  ("C-c b" . org-switchb)
-  ;; ("C-c B" . org-brain-visualize)
-  :init
-  (setq org-version "9999")
-  (defun org-release () "9999")
-  (require 'org)
+  :config
   (require 'org-ql)
   (require 'org-ql-search)
-  (require 'org-tempo)
-  :config
-  (setq-default org-startup-with-inline-images t)
-  (require 'org-archive)
-  (require 'org-clock)
-  (require 'ox-hugo)
-  (require 'org-hugo-auto-export-mode)
-  (defun org-hugo-new-subtree-post-capture-template ()
-    "Returns `org-capture' template string for new Hugo post.
-                  See `org-capture-templates' for more information."
-    (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
-           (fname (org-hugo-slug title)))
-      (mapconcat #'identity
-                 `(,(concat "* TODO " title)
-                   ":PROPERTIES:"
-                   ,(concat ":EXPORT_FILE_NAME: " fname)
-                   ":END:"
-                   "%?\n")          ;Place the cursor here finally
-                 "\n")))
-
-  (add-to-list 'org-capture-templates
-               '("b"                ;`org-capture' binding + h
-                 "Blog post"
-                 entry
-                 ;; It is assumed that below file is present in `org-directory'
-                 ;; and that it has a "Blog Ideas" heading. It can even be a
-                 ;; symlink pointing to the actual location of all-posts.org!
-                 (file+olp "~/Documents/Org/Blog/posts.org" "Blog")
-                 (function org-hugo-new-subtree-post-capture-template)))
-  (setq-default org-confirm-babel-evaluate nil)
-  (require 'org-habit)
-  ;; (require 'org-brain)
-  (require 'org-drill)
-  (require 'org-timer)
-  (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
-  (require 'org-download)
-  (add-hook 'dired-mode-hook 'org-download-enable)
+  (org-super-agenda-mode +1)
   )
 (use-package org-roam
   :ensure org-roam/org-roam
@@ -260,9 +289,15 @@ are equal return t."
                                         ;(setq emacsql-sqlite3-executable "~/.local/bin/emacsql-sqlite")
   :custom
   (org-roam-directory "~/Documents/Org/Roam")
+  (org-roam-tag-sources '(prop all-directories))
+  (org-roam-db-location "~/Documents/Org/Roam/DB/org-roam.db")
+  (org-roam-index-file "~/Documents/Org/Roam/DB/index.org")
+  (org-roam-completion-system 'helm)
   :bind (:map org-roam-mode-map
               (("C-c n l" . org-roam)
                ("C-c n f" . org-roam-find-file)
+               ("C-c n t" . org-roam-tag-add)
+               ("C-c n T" . org-roam-tag-delete)
                ("C-c n g" . org-roam-graph))
               :map org-mode-map
               (("C-c n i" . org-roam-insert))
@@ -270,6 +305,7 @@ are equal return t."
 (use-package org-roam-server
   :ensure skeeto/emacs-web-server
   :ensure org-roam/org-roam-server
+  :after org
   :config
   (setq org-roam-server-host "127.0.0.1"
         org-roam-server-port 8080
@@ -290,4 +326,11 @@ are equal return t."
   :ensure tmalsburg/helm-bibtex
   :ensure hniksic/emacs-htmlize
   :ensure abo-abo/hydra
-  )
+  :after (org helm))
+(use-package org-fc
+  :ensure l3kn/org-fc
+  :after org
+  :custom
+  (org-fc-directories '("~/Documents/Org/Roam" "~/Documents/Org/Brain")))
+(use-package elgantt
+  :ensure legalnonsense/elgantt)

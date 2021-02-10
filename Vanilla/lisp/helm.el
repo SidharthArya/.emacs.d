@@ -21,3 +21,9 @@
 
 (use-package helm-system-packages
   :ensure emacs-helm/helm-system-packages)
+(use-package helm-org-rifle
+  :ensure alphapapa/org-rifle
+  :ensure dash
+  :ensure f
+  :ensure s
+  )
