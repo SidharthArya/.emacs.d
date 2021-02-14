@@ -88,11 +88,12 @@
   (start-process-shell-command "*Charts*" "*Charts*" "python ~/.local/scripts/charts.py"))
 
 (defvar my-morning-tracking-functions '(my-tracking-do-the-writeup
-                                        my-tracking-drill-stuff))
+                                        ;; my-tracking-drill-stuff
+                                        ))
 (setq my-night-tracking-functions '(
                                     my-tracking-do-give-points
                                     my-tracking-do-plot-charts
-                                    my-tracking-drill-stuff
+                                    ;; my-tracking-drill-stuff
                                     my-tracking-do-check-emotions
                                     ))
 

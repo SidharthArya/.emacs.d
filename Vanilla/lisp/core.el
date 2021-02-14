@@ -12,7 +12,7 @@
 (prefer-coding-system 'utf-8)
 (setq locale-coding-system 'utf-8)
 (setq selection-coding-system 'utf-8)
-
+(set-language-environment "UTF-8")
 ;; Disable warnings from legacy advice system. They aren't useful, and what can
 ;; we do about them, besides changing packages upstream?
 (setq ad-redefinition-action 'accept)

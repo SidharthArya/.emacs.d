@@ -2,7 +2,7 @@
 (use-package org
   :if my-documents-mounted
   :ensure alphapapa/ts.el
-  :ensure t
+  :ensure https://code.orgmode.org/bzg/org-mode.git
   :ensure sabof/org-bullets
   :ensure ht
   :ensure s
@@ -18,49 +18,20 @@
   :hook (org-mode . visual-line-mode)
   (org-mode . auto-save-mode)
   :init
-  (defun my-org-cmp-utility-property (a b)
-    "Compare two `org-mode' agenda entries, `A' and `B', by some date property.
-
-If a is before b, return -1. If a is after b, return 1. If they
-are equal return t."
-
-    (let* ((a-pos (get-text-property 0 'org-marker a))
-           (b-pos (get-text-property 0 'org-marker b))
-           (sa (string-to-number (or (org-entry-get a-pos "SCORE_ON_DONE") "2")))
-           (sb (string-to-number (or (org-entry-get b-pos "SCORE_ON_DONE") "2")))
-           (def (if org-agenda-sort-noeffort-is-high 60 60))
-	   (ea (or (get-text-property
-		    0 'effort-minutes (get-text-property 0 'txt a))
-		   def))
-	   (eb (or (get-text-property
-		    0 'effort-minutes (get-text-property 0 'txt b))
-		   def))
-           (ua (/ sa ea))
-           (ub (/ sb eb)))
-      
-      
-      (cond 
-       ((< ua ub) -1)
-       ((> ua ub) +1)
-       ((< sa sb) -1)
-       ((> sa sb) +1)
-       ((< ea eb) +1)
-       ((> ea eb) -1)
-       (t nil)
-      )))
   (defun my-org-get-score-current()
 
     (let* ((a (point))
            (a-pos (get-text-property a 'org-marker))
-           (sa (float (- 68 (my-org-preprocess-priority (org-entry-get a-pos "PRIORITY"))))))
+           (sa (float (string-to-number (or (org-entry-get a-pos "score_on_done") "2")))))
       (if (equal sa 68)
           2
         sa)))
 
   (setq org-after-todo-state-change-hook 'my-org-todo-state-change-main)
   (defun my-org-todo-state-change-main ()
-    (when (equal org-state "DONE")
-      (start-process-shell-command "DUMP POINTS" nil (concat "echo " (format "%s" (my-org-get-score-current)) ">> ~/.cache/org-points-$(date +'%Y%m%d').points"))
+    (cond
+     ((equal org-state "DONE") (start-process-shell-command "DUMP POINTS" nil (concat "echo " (format "%s" (my-org-get-score-current)) ">> ~/.cache/org-points-$(date +'%Y%m%d').points")))
+     ((equal org-state "CANCELLED") (start-process-shell-command "DUMP POINTS" nil (concat "echo " (format "%s" (- 0 (/ (my-org-get-score-current) 3))) ">> ~/.cache/org-points-$(date +'%Y%m%d').points")))
     ))
 
   (defun my-org-cmp-utility-property (a b)
@@ -68,8 +39,6 @@ are equal return t."
 
 If a is before b, return -1. If a is after b, return 1. If they
 are equal return t."
-
-      
       (cond 
        ((< ua ub) -1)
        ((> ua ub) +1)
@@ -81,12 +50,11 @@ are equal return t."
       ))
   (defun my-org-cmp-utility-property-tool (&optional b)
     "Compare two `org-mode' agenda entries, `A' and `B', by some date property.
-
 If a is before b, return -1. If a is after b, return 1. If they
 are equal return t."
     (let* ((a (point))
            (a-pos (get-text-property a 'org-marker))
-           (sa (string-to-number (or (org-entry-get a-pos "SCORE_ON_DONE") "2")))
+           (sa (float (string-to-number (or (org-entry-get a-pos "SCORE_ON_DONE") "2"))))
            (def (if org-agenda-sort-noeffort-is-high 60 60))
 	   (ea (or (get-text-property
 		    0 'effort-minutes (get-text-property a 'txt))
@@ -102,13 +70,31 @@ are equal return t."
           ((string-match "[ABC]" x) (string-to-char x))
           (t (string-to-number x))
           ))
+  (defun my-org-capture-read (prompt default)
+    (let* ((output (read-string (concat (symbol-name prompt) ": "))))
+      (if (equal output "")
+          (symbol-name default)
+        output)))
   (setq org-capture-templates
-        '(("i" "Important" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
-           "* TODO [#A] %?\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n:PROPERTIES:\n:Effort: 1h\n:END:\n  %i\n  %a")
-          ("I" "Important Week End" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
-           "* TODO [#A] %?\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"SUN\"))\n:PROPERTIES:\n:Effort: 1h\n:END:\n  %i\n  %a")
-          ("u" "Unimportant" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
-           "* TODO [#C] %?\nSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"SUN\"))\n:PROPERTIES:\n:Effort: 1h\n:END:\n  %i\n  %a")
+        '(
+          ("i" "Important")
+          ("it" "Today" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
+           "* TODO [#A] %(my-org-capture-read 'Entry 'Task)\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n:PROPERTIES:\n:Effort: %(my-org-capture-read 'Effort '1h)\n:SCORE_ON_DONE: %(my-org-capture-read 'Score '10)\n:END:\n  %i\n  %a")
+          ("iw" "Weekend" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
+           "* TODO [#A] %(my-org-capture-read 'Entry 'Task)\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"SUN\"))\n:PROPERTIES:\n:Effort: %(my-org-capture-read 'Effort '1h)\n:SCORE_ON_DONE: %(my-org-capture-read 'Score '10)\n:END:\n  %i\n  %a")
+          ("is" "Schedule" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
+           "* TODO [#A] %(my-org-capture-read 'Entry 'Task)\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: %(my-org-capture-read 'Effort '1h)\n:SCORE_ON_DONE: %(my-org-capture-read 'Score '10)\n:END:\n  %i\n  %a")
+          ("id" "Deadline" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
+           "* TODO [#A] %(my-org-capture-read 'Entry 'Task)\n\tDEADLINE:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: %(my-org-capture-read 'Effort '1h)\n:SCORE_ON_DONE: %(my-org-capture-read 'Score '10)\n:END:\n  %i\n  %a")
+          ("u" "Unimportant")
+          ("ut" "Today" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
+           "* TODO [#C] %(my-org-capture-read 'Entry 'Task)\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n:PROPERTIES:\n:Effort: %(my-org-capture-read 'Effort '1h)\n:SCORE_ON_DONE: %(my-org-capture-read 'Score '10)\n:END:\n  %i\n  %a")
+          ("uw" "Weekend" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
+           "* TODO [#C] %(my-org-capture-read 'Entry 'Task)\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"SUN\"))\n:PROPERTIES:\n:Effort: %(my-org-capture-read 'Effort '1h)\n:SCORE_ON_DONE: %(my-org-capture-read 'Score '10)\n:END:\n  %i\n  %a")
+          ("us" "Schedule" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
+           "* TODO [#C] %(my-org-capture-read 'Entry 'Task)\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: %(my-org-capture-read 'Effort '1h)\n:SCORE_ON_DONE: %(my-org-capture-read 'Score '10)\n:END:\n  %i\n  %a")
+          ("ud" "Deadline" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
+           "* TODO [#C] %(my-org-capture-read 'Entry 'Task)\n\tDEADLINE:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: %(my-org-capture-read 'Effort '1h)\n:SCORE_ON_DONE: %(my-org-capture-read 'Score '10)\n:END:\n  %i\n  %a")
           ("D" "Diary")
           ("Dd" "Daily Diary" entry (file+headline "~/Documents/Org/Brain/Personal/Diaries.org" "Diary")
            "* %(org-insert-time-stamp (org-read-date nil t \"\"))\n %?")
@@ -125,7 +111,6 @@ are equal return t."
            "* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?")
           ("l" "Protocol Link" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Inbox")
            "* %? [[%:link][%:description]] \nCaptured On: %U")))
-
   :custom
   (org-agenda-custom-commands
    '(("e" "Exercises" agenda  ""
@@ -142,8 +127,7 @@ are equal return t."
        (org-super-agenda-groups nil)
        (org-agenda-sorting-strategy '(ts-down priority-up effort-up))))
      ("u" "Utility Sorted Agenda" agenda ""
-      ((org-agenda-files '("~/Documents/Org/Agenda/notes.org" "~/Documents/Org/Agenda/entertainment.org"))
-       (org-agenda-cmp-user-defined 'my-org-cmp-utility-property))
+       ((org-agenda-cmp-user-defined 'my-org-cmp-utility-property))
       (org-agenda-sorting-strategy '(user-defined-up)))
      ("E" "Entertainment" todo  ""
       ((org-agenda-files (list "~/Documents/Org/Agenda/entertainment.org"))
@@ -155,7 +139,6 @@ are equal return t."
      (tags priority-down)
      (search category-keep)))
   (org-duration-format '(("d" . nil) ("h" . t) ("min" . t)))
-
   (org-effort-durations
    `(("min" . 1)
      ("h" . 60)
@@ -195,6 +178,37 @@ are equal return t."
   (require 'org)
   (require 'org-tempo)
   :config
+
+  (defun my-org-cmp-utility-property (a b)
+    "Compare two `org-mode' agenda entries, `A' and `B', by some date property.
+
+If a is before b, return -1. If a is after b, return 1. If they
+are equal return t."
+
+    (let* ((a-pos (get-text-property 0 'org-marker a))
+           (b-pos (get-text-property 0 'org-marker b))
+           (sa (float (string-to-number (or (org-entry-get a-pos "score_on_done") "2"))))
+           (sb (float (string-to-number (or (org-entry-get b-pos "SCORE_ON_DONE") "2"))))
+           (def (if org-agenda-sort-noeffort-is-high 60 60))
+	   (ea (or (get-text-property
+		    0 'effort-minutes (get-text-property 0 'txt a))
+		   def))
+	   (eb (or (get-text-property
+		    0 'effort-minutes (get-text-property 0 'txt b))
+		   def))
+           (ua (/ sa ea))
+           (ub (/ sb eb)))
+      
+      
+      (cond 
+       ((< ua ub) -1)
+       ((> ua ub) +1)
+       ((< ea eb) +1)
+       ((> ea eb) -1)
+       ((< sa sb) -1)
+       ((> sa sb) +1)
+       (t nil)
+      )))
   ;; TEMP
   (setq org-priority-lowest org-lowest-priority)
   (setq org-priority-highest org-highest-priority)
@@ -277,6 +291,7 @@ are equal return t."
   (require 'org-ql-search)
   (org-super-agenda-mode +1)
   )
+
 (use-package org-roam
   :ensure org-roam/org-roam
   :ensure skeeto/emacsql
@@ -288,6 +303,7 @@ are equal return t."
                                         ;(setq emacsql-sqlite-executable "~/.local/bin/emacsql-sqlite")
                                         ;(setq emacsql-sqlite3-executable "~/.local/bin/emacsql-sqlite")
   :custom
+  (org-roam-db-update-method 'immediate)
   (org-roam-directory "~/Documents/Org/Roam")
   (org-roam-tag-sources '(prop all-directories))
   (org-roam-db-location "~/Documents/Org/Roam/DB/org-roam.db")
@@ -296,6 +312,7 @@ are equal return t."
   :bind (:map org-roam-mode-map
               (("C-c n l" . org-roam)
                ("C-c n f" . org-roam-find-file)
+               ("C-c n b" . org-roam-switch-to-buffer)
                ("C-c n t" . org-roam-tag-add)
                ("C-c n T" . org-roam-tag-delete)
                ("C-c n g" . org-roam-graph))
@@ -334,3 +351,6 @@ are equal return t."
   (org-fc-directories '("~/Documents/Org/Roam" "~/Documents/Org/Brain")))
 (use-package elgantt
   :ensure legalnonsense/elgantt)
+(use-package org-protocol-capture-html
+  :ensure alphapapa/org-protocol-capture-html)
+
