@@ -28,7 +28,7 @@
       (if (string= a-tags b-tags)
           (< (elfeed-entry-date b) (elfeed-entry-date a)))
       (string< a-tags b-tags)))
-  ;;(setf elfeed-search-sort-function #'my-elfeed-feed-sort)
+  (setf elfeed-search-sort-function #'my-elfeed-feed-sort)
 
 
             ;;; HOOKS
