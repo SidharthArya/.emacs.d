@@ -1,8 +1,8 @@
 (modular-config-load-modules '(mount))
 (use-package elfeed
   :if my-documents-mounted
-  :ensure t
-  :ensure remyhonig/elfeed-org
+  :straight t
+  :straight elfeed-org
   :custom
   (elfeed-db-directory "~/Private/News/Feeds")
   (elfeed-sort-order

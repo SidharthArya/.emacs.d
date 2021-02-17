@@ -1,11 +1,5 @@
 (use-package lsp-mode
-  :ensure emacs-lsp/lsp-mode
-  :ensure dash
-  :ensure f
-  :ensure ht
-  :ensure abo-abo/hydra
-  :ensure jrblevin/markdown-mode
-  :ensure Malabarba/spinner.el
+  :straight lsp-mode
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-c i")
@@ -19,28 +13,16 @@
   :commands lsp)
 
 ;; optionally
-(use-package lsp-ui :ensure emacs-lsp/lsp-ui :commands lsp-ui-mode)
+(use-package lsp-ui :straight t :commands lsp-ui-mode)
 ;; if you are ivy user
-(use-package lsp-ivy :ensure emacs-lsp/lsp-ivy :commands lsp-ivy-workspace-symbol)
-(use-package lsp-treemacs
-  :ensure emacs-lsp/lsp-treemacs
-  :ensure Alexander-Miller/treemacs
-  :ensure abo-abo/ace-window
-  :ensure Alexander-Miller/cfrs
-  :ensure Alexander-Miller/pfuture
-  :load-path "~/.emacs.d/packages/Alexander-Miller/treemacs/src/elisp"
+(use-package lsp-ivy :straight t :commands lsp-ivy-workspace-symbol)
+(use-package lsp-treemacs :straight t
   :commands lsp-treemacs-errors-list)
 
 ;; optionally if you want to use debugger
-(use-package dap-mode
-  :ensure emacs-lsp/dap-mode
-  :ensure tumashu/posframe
-  :ensure alezost/bui.el
-  )
+(use-package dap-mode :straight t)
 ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
 
 ;; optional if you want which-key integration
-(use-package which-key
-  :ensure justbur/emacs-which-key
-  :config
-  (which-key-mode))
+(use-package which-key :straight t :config (which-key-mode))
+

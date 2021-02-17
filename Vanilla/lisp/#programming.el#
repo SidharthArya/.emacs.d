@@ -1,5 +1,5 @@
 (use-package ide-mode
-  :straight (ide-mode :type git :fetcher github :repo "https://github.com/SidharthArya/emacs-ide-mode" :files (:defaults))
+  :straight (emacs-ide-mode :type git :fetcher github :repo "SidharthArya/emacs-ide-mode" )
   :init
   (require 'ide-mode)
   :config
@@ -19,7 +19,6 @@
   :commands ide-mode)
 
 (use-package flycheck
-  :straight t
+  :ensure t
   :hook (prog-mode . flycheck-mode)
   :commands flycheck-mode)
-

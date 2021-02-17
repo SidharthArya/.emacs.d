@@ -52,7 +52,7 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq-default indent-tabs-mode nil)
 (set-register ?f '(file . "~/.emacs.d/init.org"))
-(menu-bar-mode -1)
+;; (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (defvar my-documents-mounted nil)

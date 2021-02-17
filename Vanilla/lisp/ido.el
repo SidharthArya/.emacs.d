@@ -1,5 +1,5 @@
 (use-package ido
-  :ensure t
+  :straight t
   :custom
   (ido-use-filename-at-point 'guess)
   (ido-create-new-buffer 'always)

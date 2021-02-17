@@ -1,9 +1,8 @@
 (use-package evil
-  :ensure t
-  :ensure emacs-evil/evil-collection
-  :ensure noctuid/annalist.el
-  :ensure emacs-evil/goto-chg
-  :ensure emacs-straight/undo-tree
+  :straight t
+  :straight evil-collection
+  :straight goto-chg
+  :straight undo-tree
   :defer nil
   :custom
   (evil-want-keybinding nil)

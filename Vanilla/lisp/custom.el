@@ -4,12 +4,15 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
+ '(helm-minibuffer-history-key "M-p")
  '(ledger-reports
    '(("forecastr" "%(binary) -f %(ledger-file) --forecast=\"d<[next year]\" reg")
      ("bal" "%(binary) -f %(ledger-file) bal")
      ("reg" "%(binary) -f %(ledger-file) reg")
      ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
      ("account" "%(binary) -f %(ledger-file) reg %(account)")))
+ '(org-agenda-files
+   '("~/Private/Seminar/2/BERT_Model/presentation.org" "~/Documents/Org/Agenda/notes.org" "~/Documents/Org/Agenda/habits.org" "~/Documents/Org/Agenda/books.org" "~/Documents/Org/Agenda/entertainment.org") nil nil "Customized with use-package org")
  '(org-duration-units
    `(("min" . 1)
      ("h" . 60)

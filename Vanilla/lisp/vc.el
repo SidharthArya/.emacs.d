@@ -1,5 +1,5 @@
 (use-package magit
-  :ensure t
+  :straight t
   :bind
   ("C-x g" . magit)
   :commands magit)

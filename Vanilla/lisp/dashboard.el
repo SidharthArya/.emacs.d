@@ -1,5 +1,5 @@
 (use-package dashboard
-  :ensure t
+  :straight t
   :custom
   (dashboard-center-content t)
   (dashboard-startup-banner 'logo)

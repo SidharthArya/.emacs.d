@@ -1,5 +1,5 @@
 (use-package swiper
-  :ensure t
+  :straight t
   :custom
   (ivy-use-virtual-buffers t)
   (ivy-height 15)

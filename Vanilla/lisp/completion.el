@@ -1,5 +1,5 @@
 (use-package yasnippet
-  :ensure t
+  :straight t
                                         ;:ensure yasnippet-snippets
   :hook (prog-mode . yas-minor-mode)
   :config
@@ -7,7 +7,7 @@
                                         ;(require 'yasnippet-snippets)
   :commands yas-minor-mode)
 (use-package company
-  :ensure t
+  :straight t
   :hook (prog-mode . company-mode)
   :init
   (require 'company-tng)

@@ -1,5 +1,5 @@
 (use-package gnus
-  :ensure t
+  :straight t
   :custom
   (gnus-home-directory "~/Private/News/Gnus")
   (gnus-default-directory "~/Private/News/Gnus")
@@ -36,7 +36,7 @@
 
 (add-to-list 'kill-emacs-hook 'gnus-group-exit)
 (use-package gnus-desktop-notify
-  :ensure https://gitlab.com/wavexx/gnus-desktop-notify.el
+  :straight t
   :config
   (gnus-desktop-notify-mode)
   (gnus-demon-add-scanmail))
