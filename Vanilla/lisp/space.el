@@ -15,12 +15,10 @@
 
 
 
-;; (bind-keys
-;;  :prefix-map d-prefix
-;;  :prefix "M-SPC d"
-;;  ("t" . helm-world-time)
-;;  ("s" . helm-system-packages))
-
+(bind-keys
+ :map space-prefix
+ ("S t" . helm-world-time)
+ ("S s" . helm-system-packages))
 
 (when (modular-config-modules-loaded-p 'vi)
   (evil-define-key 'normal 'global (kbd "SPC") 'space-prefix)
@@ -28,40 +26,12 @@
   (evil-define-key '(normal visual motion insert) 'global (kbd "C-c") 'space-prefix)
   )
 
-
-;; (when (modular-config-modules-loaded-p 'vc)
-;;   (bind-keys
-;;    :prefix-map g-map
-;;    :prefix "M-SPC g"
-;;    ("c" . magit-commit)
-;;    ("C" . magit-clone)))
-
-
-;; (when (modular-config-loaded-module-p 'vi)
-;;   (bind-keys
-;;    :prefix-map h-map
-;;    :prefix "M-SPC h"
-;;    ("M" . helm-man-woman)
-;;    ("f" . helpful-function)
-;;    ("v" . helpful-variable)
-;;    ("b" . describe-bindings)
-;;    ("." . helpful-at-point)))
-
-
-
-;; (bind-keys
-;;  :prefix-map t-map
-;;  :prefix "M-SPC t"
-;;  ("m" . menu-bar-mode)
-;;  ("t" . tool-bar-mode)
-;;  ("s" . scroll-bar-mode)
-;;  ("i" . ide-mode)
-;;  ("l" . lsp))
-
-;; (bind-keys
-;;  :prefix-map c-map
-;;  :prefix "M-SPC c"
-;;  ("e" . eshell))
+(bind-keys
+ :map space-prefix
+ ("t m" . menu-bar-mode)
+ ("t t" . tool-bar-mode)
+ ("t s" . scroll-bar-mode)
+ )
 
 ;; (evil-define-key
 ;;   'normal org-agenda-mode-map

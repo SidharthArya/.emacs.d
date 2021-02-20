@@ -6,6 +6,7 @@
   :defer nil
   :custom
   (evil-want-keybinding nil)
+  (evil-want-minibuffer t)
   (evil-emacs-state-modes nil)
   :config
   (setq evil-undo-system 'undo-tree)
@@ -18,6 +19,7 @@
   (evil-set-leader 'normal (kbd "\\")))
 (use-package evil-org
   :straight t)
+
 (use-package evil-collection
   :straight t
   :after evil

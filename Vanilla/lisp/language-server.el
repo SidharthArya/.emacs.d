@@ -4,6 +4,9 @@
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-c i")
   (evil-define-key 'normal 'prog-mode-map (kbd "\\tl") 'lsp)
+  :bind
+  (:map space-prefix
+        ("t l" . lsp))
   :config
   (evil-define-key 'normal 'lsp-mode-map (kbd "\\l") lsp-command-map)
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)

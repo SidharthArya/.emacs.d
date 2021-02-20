@@ -9,6 +9,9 @@
   (evil-define-key 'normal 'prog-mode-map (kbd "\\ti") 'ide-mode)
 
   :bind
+  (:map space-prefix
+ ("t i" . ide-mode)
+        )
   (:map ide-mode-command-map
         ("s" . ide/goto-shell)
         ("c" . ide/ide-mode-compile)
