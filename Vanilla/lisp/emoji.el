@@ -1,4 +1,4 @@
 (use-package emojify
-  :ensure t
+  :straight t
   :config
   (global-emojify-mode +1))

@@ -67,13 +67,13 @@ are equal return t."
         '(
           ("i" "Important")
           ("it" "Today" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
-           "* TODO [#A] %(my-org-capture-read 'Entry 'Task)\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n:PROPERTIES:\n:Effort: %(my-org-capture-read 'Effort '1h)\n:SCORE_ON_DONE: %(my-org-capture-read 'Score '10)\n:END:\n  %i\n  %a")
+           "* TODO [#A] %? \n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 30\n:END:\n  %i\n  %a")
           ("iw" "Weekend" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
-           "* TODO [#A] %(my-org-capture-read 'Entry 'Task)\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"SUN\"))\n:PROPERTIES:\n:Effort: %(my-org-capture-read 'Effort '1h)\n:SCORE_ON_DONE: %(my-org-capture-read 'Score '10)\n:END:\n  %i\n  %a")
+           "* TODO [#A] %?\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"SUN\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 20\n:END:\n  %i\n  %a")
           ("is" "Schedule" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
-           "* TODO [#A] %(my-org-capture-read 'Entry 'Task)\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: %(my-org-capture-read 'Effort '1h)\n:SCORE_ON_DONE: %(my-org-capture-read 'Score '10)\n:END:\n  %i\n  %a")
+           "* TODO [#A] %?\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 20\n:END:\n  %i\n  %a")
           ("id" "Deadline" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
-           "* TODO [#A] %(my-org-capture-read 'Entry 'Task)\n\tDEADLINE:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: %(my-org-capture-read 'Effort '1h)\n:SCORE_ON_DONE: %(my-org-capture-read 'Score '10)\n:END:\n  %i\n  %a")
+           "* TODO [#A] %?\n\tDEADLINE:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 10\n:END:\n  %i\n  %a")
           ("u" "Unimportant")
           ("ut" "Today" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
            "* TODO [#C] %(my-org-capture-read 'Entry 'Task)\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n:PROPERTIES:\n:Effort: %(my-org-capture-read 'Effort '1h)\n:SCORE_ON_DONE: %(my-org-capture-read 'Score '10)\n:END:\n  %i\n  %a")
@@ -243,10 +243,13 @@ are equal return t."
    '((:name "Diary"
             :category "Diary"
             :order 1)
+     (:name "Habit"
+            :habit t
+            :order 8)
      (:name "Remember"
             :priority "C"
             :tag "remember"
-            :order 3)
+            :order 5)
      (:name "Unimportant"
             :priority "C"
             :tag "unimportant"
@@ -260,10 +263,7 @@ are equal return t."
      (:name "Important"
             :priority "A"
             :tag ("important" "bills")
-            :order 5)
-     (:name "Habit"
-            :habit t
-            :order 8)
+            :order 3)
      (:name "Personal"
             :tag ("movies" "tvshows" "tvseries" "books")
             :order 10)
@@ -292,16 +292,10 @@ are equal return t."
   (org-roam-db-location "~/Documents/Org/Roam/DB/org-roam.db")
   (org-roam-index-file "~/Documents/Org/Roam/DB/index.org")
   (org-roam-completion-system 'helm)
-  :bind (:map org-roam-mode-map
-              (("C-c n l" . org-roam)
-               ("C-c n f" . org-roam-find-file)
-               ("C-c n b" . org-roam-switch-to-buffer)
-               ("C-c n t" . org-roam-tag-add)
-               ("C-c n T" . org-roam-tag-delete)
-               ("C-c n g" . org-roam-graph))
-              :map org-mode-map
-              (("C-c n i" . org-roam-insert))
-              (("C-c n I" . org-roam-insert-immediate))))
+  :bind
+  (:map org-mode-map
+        (("C-c n i" . org-roam-insert))
+        (("C-c n I" . org-roam-insert-immediate))))
 (use-package org-roam-server
   :straight org-roam-server
   :after org

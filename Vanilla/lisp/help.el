@@ -1,2 +1,7 @@
 (use-package helpful
-  :straight t)
+  :straight t
+  :bind
+  ("C-h f" . helpful-function)
+  ("C-h v" . helpful-variable)
+  ("C-h ." . helpful-at-point))
+

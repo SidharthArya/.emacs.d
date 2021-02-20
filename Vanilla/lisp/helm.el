@@ -25,3 +25,9 @@
   :straight t
   :bind
   ("C-S-s" . helm-swoop))
+
+(use-package helm-projectile
+  :straight t
+  :straight helm-rg
+  :config
+  (helm-projectile-on))
