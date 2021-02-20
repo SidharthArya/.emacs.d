@@ -4,10 +4,10 @@
   (require 'ide-mode)
   :config
   (require 'ide-mode-recipes)
-  
   (evil-define-key 'normal 'prog-mode-map (kbd "\\i") ide-mode-command-map) 
   (evil-define-key 'normal 'ide-slave-mode-map (kbd "\\i") ide-mode-command-map)
-  (evil-define-key 'normal 'prog-mode-map (kbd "\\ti") 'ide-mode) 
+  (evil-define-key 'normal 'prog-mode-map (kbd "\\ti") 'ide-mode)
+
   :bind
   (:map ide-mode-command-map
         ("s" . ide/goto-shell)

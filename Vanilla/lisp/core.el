@@ -1,3 +1,4 @@
+(setq warning-minimum-level :emergency)
 (setq my-temp-gc-cons-threshold gc-cons-threshold)
 (setq gc-cons-threshold most-positive-fixnum)
 (setq load-prefer-newer noninteractive)
@@ -64,3 +65,10 @@
                                         ;(load-theme 'tango-dark t)
 ;; (add-hook 'kill-emacs-hook 'save-some-buffers)
 (global-set-key (kbd "<XF86Favorites>") 'bookmark-jump)
+(use-package saveplace
+  :init
+  (setq-default save-place t)
+  :custom
+  (save-place-file "~/.emacs.d/saveplace")
+  :config
+  (save-place-mode +1))

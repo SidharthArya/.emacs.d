@@ -155,11 +155,14 @@ are equal return t."
   (org-id-track-globally t)
   (org-id-locations-file "~/Documents/Org/.org-id-locations")
   :bind
-  ("C-c c" . org-capture)
-  ("C-c a" . org-agenda)
-  ("C-c l" . org-store-link)
-  ("C-c b" . org-switchb)
-  ;; ("C-c B" . org-brain-visualize)
+  (:map space-prefix
+           ("o c" . org-capture)
+           ("o a" . org-agenda)
+           ("a" . org-agenda)
+           ("c" . org-capture)
+           ("o l" . org-store-link)
+           ("o b" . org-switchb)
+           )
   :config
   (require 'org)
   (require 'org-tempo)
@@ -275,6 +278,7 @@ are equal return t."
   (require 'org-ql)
   (require 'org-ql-search)
   (org-super-agenda-mode +1)
+  (setq org-super-agenda-header-map nil)
   )
 
 (use-package org-roam
@@ -293,12 +297,22 @@ are equal return t."
   (org-roam-index-file "~/Documents/Org/Roam/DB/index.org")
   (org-roam-completion-system 'helm)
   :bind
-  (:map org-mode-map
-        (("C-c n i" . org-roam-insert))
-        (("C-c n I" . org-roam-insert-immediate))))
+   (:map space-prefix
+   ("r l" . org-roam)
+   ("r f" . org-roam-find-file)
+   ("r b" . org-roam-switch-to-buffer)
+   ("r t" . org-roam-tag-add)
+   ("r T" . org-roam-tag-delete)
+   ("r g" . org-roam-graph)
+   ("r i" . org-roam-insert)
+   ("r I" . org-roam-insert-immediate)))
+
 (use-package org-roam-server
   :straight org-roam-server
   :after org
+  :bind
+   (:map space-prefix
+   ("r s" . org-roam-server-mode))
   :config
   (setq org-roam-server-host "127.0.0.1"
         org-roam-server-port 8080
@@ -329,4 +343,5 @@ are equal return t."
 ;;   :straight elgantt)
 ;; (use-package org-protocol-capture-html
 ;;   :straight org-protocol-capture-html)
+
 
