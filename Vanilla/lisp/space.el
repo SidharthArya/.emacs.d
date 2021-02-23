@@ -33,18 +33,19 @@
  ("t s" . scroll-bar-mode)
  )
 
-;; (evil-define-key
-;;   'normal org-agenda-mode-map
-;;   "t" 'org-agenda-todo
-;;   "TAB" 'org-agenda-goto
-;;   "RET" 'org-agenda-switch-to
-;;   "e" 'org-agenda-set-effort
-;;   "B" 'org-agenda-bulk-action
-;;   "M" 'org-agenda-bulk-mark
-;;   "u" 'org-agenda-bulk-unmark
-;;   "U" 'org-agenda-bulk-unmark-all
-;;   "*" 'org-agenda-bulk-mark-all
-;;   "d" 'org-agenda-deadline
-;;   "s" 'org-agenda-schedule
-;;   "/" 'org-agenda-filter
-;;   )
+(evil-define-key
+  'normal org-agenda-mode-map
+  "t" 'org-agenda-todo
+  "TAB" 'org-agenda-goto
+  "r" 'org-agenda-redo-all
+  (kbd "RET") 'org-agenda-switch-to
+  "e" 'org-agenda-set-effort
+  "B" 'org-agenda-bulk-action
+  "M" 'org-agenda-bulk-mark
+  "u" 'org-agenda-bulk-unmark
+  "U" 'org-agenda-bulk-unmark-all
+  "*" 'org-agenda-bulk-mark-all
+  "d" 'org-agenda-deadline
+  "s" 'org-agenda-schedule
+  "/" 'org-agenda-filter
+  )

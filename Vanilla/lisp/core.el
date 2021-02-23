@@ -72,3 +72,4 @@
   (save-place-file "~/.emacs.d/saveplace")
   :config
   (save-place-mode +1))
+

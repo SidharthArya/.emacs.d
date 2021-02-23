@@ -19,6 +19,7 @@
    
   (:map space-prefix
         ("b b" . helm-mini)
+        ("f j" . jump-to-register)
         ("b d" . kill-current-buffer)
         ;; ("b B" . helm-filtered-bookmarks)
         ("f b" . helm-bookmarks)
