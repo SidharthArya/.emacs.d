@@ -46,6 +46,8 @@
   "U" 'org-agenda-bulk-unmark-all
   "*" 'org-agenda-bulk-mark-all
   "d" 'org-agenda-deadline
+  "c" 'org-agenda-capture
+  "k" 'org-habit-toggle-habits
   "s" 'org-agenda-schedule
   "/" 'org-agenda-filter
-  )
+  ) 

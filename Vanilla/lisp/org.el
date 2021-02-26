@@ -1,6 +1,7 @@
 (use-package org
   ;; :if my-documents-mounted
-  :straight (org :type git :fetcher github :repo "https://github.com/bzg/org-mode" :version-regexp ".*9\.3.*")
+  :straight t
+  ;; :straight (org :type git :fetcher github :repo "bzg/org-mode" :version-regexp ".*9\.3.*")
   :straight org-bullets
   :straight org-download
   :hook (org-mode . visual-line-mode)

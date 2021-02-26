@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: fora
+# key: fora
+# --
+
+for (${1:auto} ${2:i}: ${3:vec}){
+$0
+}
