@@ -311,6 +311,7 @@ are equal return t."
   (require 'org-roam-protocol)
   :custom
   (org-roam-db-update-method 'immediate)
+  (org-roam-graph-viewer "/usr/bin/xdg-open")
   (org-roam-directory "~/Documents/Org/Roam")
   (org-roam-tag-sources '(prop all-directories))
   (org-roam-db-location "~/Documents/Org/Roam/DB/org-roam.db")
