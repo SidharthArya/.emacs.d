@@ -116,12 +116,16 @@ are equal return t."
           ("Pud" "Deadline" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Websites")
            "* TODO %:annotation \t:unimportant:\n\tDEADLINE:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 10\n:END:\n  %i\n  %a")))
   :custom
+  (org-id-link-to-org-use-id 'use-existing)
   (org-agenda-custom-commands
    '(("e" "Exercises" agenda  ""
       ((org-agenda-files (list "~/Documents/Org/Agenda/exercises.org"))
        (org-super-agenda-groups
         '((:auto-category t)))
        (org-agenda-sorting-strategy '(priority-up effort-up))))
+     ("d" "Diary" agenda  ""
+      ((org-agenda-files nil)))
+      
      ("A" "Agenda Important" agenda  ""
       ((org-agenda-files (list "~/Documents/Org/Agenda/notes.org"))
        (org-super-agenda-groups nil)
@@ -174,11 +178,15 @@ are equal return t."
   (:map space-prefix
            ("o c" . org-capture)
            ("o a" . org-agenda)
+           ("o d" . (lambda() (interactive) (find-file "~/Documents/Org/diary")))
+           ("o A" . (lambda() (interactive) (find-file "~/Documents/Org/Agenda/approach.org")))
            ("a" . org-agenda)
            ("c" . org-capture)
            ("o l" . org-store-link)
+           ("o L" . org-id-store-link)
            ("o b" . org-switchb)
-           ("o i" . org-insert-link)
+           ("o I" . org-insert-link)
+           ("o i" . org-insert-last-stored-link)
            )
   :config
   (require 'org)
@@ -324,6 +332,8 @@ are equal return t."
    ("r b" . org-roam-switch-to-buffer)
    ("r t" . org-roam-tag-add)
    ("r T" . org-roam-tag-delete)
+   ("r a" . org-roam-alias-add)
+   ("r A" . org-roam-alias-delete)
    ("r g" . org-roam-graph)
    ("r i" . org-roam-insert)
    ("r I" . org-roam-insert-immediate)))
