@@ -73,3 +73,7 @@
   :config
   (save-place-mode +1))
 
+(use-package electric
+  :config
+  (electric-pair-mode +1)
+  )
