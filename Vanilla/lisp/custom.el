@@ -24,7 +24,10 @@
       (* 60 8 5 4 12))) nil nil "Customized with use-package org")
  '(org-export-backends '(ascii beamer html icalendar latex odt))
  '(safe-local-variable-values
-   '((org-roam-index-file . "~/Documents/Org/Roamers/Personal/DB/index.org")
+   '((org-roam-db-location . "./DB/org-roam.db")
+     (org-roam-index-file . "./DB/index.org")
+     (org-roam-directory . ".")
+     (org-roam-index-file . "~/Documents/Org/Roamers/Personal/DB/index.org")
      (org-roam-db-location . "~/Documents/Org/Roamers/Personal/DB/org-roam.db")
      (org-roam-tag-sources quote
                            (prop all-directories))
