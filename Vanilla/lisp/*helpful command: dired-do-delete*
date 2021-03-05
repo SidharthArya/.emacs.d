@@ -1,0 +1,50 @@
+dired-do-delete is an interactive and compiled function defined in
+dired.el.gz.
+
+Signature
+(dired-do-delete &optional ARG)
+
+Documentation
+Delete all marked (or next ARG) files.
+
+dired-recursive-deletes controls whether deletion of
+non-empty directories is allowed.
+
+View in manual
+
+Key Bindings
+dired-mode-map <normal-state> D
+dired-mode-map D
+
+References
+dired-do-delete is unused in dired.el.gz.
+
+Find all references Find callees
+
+Debugging
+Enable edebug Enable tracing
+Disassemble Forget
+
+Source Code
+;; Defined in /usr/share/emacs/27.1/lisp/dired.el.gz
+(defun dired-do-delete (&optional arg)
+  "Delete all marked (or next ARG) files.
+`dired-recursive-deletes' controls whether deletion of
+non-empty directories is allowed."
+  ;; This is more consistent with the file marking feature than
+  ;; dired-do-flagged-delete.
+  (interactive "P")
+  (dired-internal-do-deletions
+   (nreverse
+    ;; this may move point if ARG is an integer
+    (dired-map-over-marks (cons (dired-get-filename) (point))
+			  arg))
+   arg t))
+
+Symbol Properties
+event-symbol-element-mask
+  (dired-do-delete 0)
+event-symbol-elements
+  (dired-do-delete)
+modifier-cache
+  ((0 . dired-do-delete))

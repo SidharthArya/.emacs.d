@@ -336,9 +336,7 @@ are equal return t."
       "* %?\n"
       :file-name "diary/%<%Y-%m-%d>"
       :head "#+title: %<%Y-%m-%d>\n"
-      )
-
-     ))
+      )))
   (org-roam-completion-system 'helm)
   :bind
    (:map space-prefix
@@ -351,7 +349,6 @@ are equal return t."
    ("r t" . org-roam-tag-add)
    ("r T" . org-roam-tag-delete)
    ("r a" . org-roam-alias-add)
-   ("r r" . org-roam-random-note)
    ("r A" . org-roam-alias-delete)
    ("r g" . org-roam-graph)
    ("r i" . org-roam-insert)
@@ -366,10 +363,9 @@ are equal return t."
   :config
   (setq org-roam-server-host "127.0.0.1"
         org-roam-server-port 8080
-        org-roam-server-serve-files t
         org-roam-server-authenticate nil
         org-roam-server-export-inline-images t
-        org-roam-server-serve-files t
+        org-roam-server-serve-files nil
         org-roam-server-served-file-extensions '("pdf" "mp4" "ogv")
         org-roam-server-network-poll t
         org-roam-server-network-arrows nil

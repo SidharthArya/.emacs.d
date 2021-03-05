@@ -1,5 +1,5 @@
 (use-package subed
-  :ensure rndusr/subed
+  :straight (subed :type git :fetcher github :repo "https://github.com/rndusr/subed" :files (:defaults))
   :load-path "~/.emacs.d/packages/rndusr/subed/subed"
   :custom
   (subed-playback-speed-while-typing  0.7)
@@ -13,7 +13,4 @@
   (add-hook 'subed-mode-hook 'save-place-local-mode)
   (add-hook 'subed-mode-hook 'turn-on-auto-fill)
   (add-hook 'subed-mode-hook (lambda () (setq-local fill-column 40)))
-
-  (add-to-list 'auto-mode-alist '("\\.vtt\\'" . subed-mode)) 
-  (add-to-list 'auto-mode-alist '("\\.srt\\'" . subed-mode)) 
-  )
+  :mode ("\\.vtt\\'" "\\.srt\\'"))

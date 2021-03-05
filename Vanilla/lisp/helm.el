@@ -6,7 +6,9 @@
                      ".*~"
                      "/home/arya/.emacs.d/bookmarks"
                      "/home/arya/.emacs.d/url/cookies"
+                     "/home/arya/.emacs.d/lisp/*"
                      "/usr/.*"
+                     "/home/arya/Documents/Org/Roam/.*"
                      )))
 (use-package helm
   :straight t
