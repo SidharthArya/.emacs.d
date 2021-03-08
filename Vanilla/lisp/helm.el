@@ -9,6 +9,7 @@
                      "/home/arya/.emacs.d/lisp/*"
                      "/usr/.*"
                      "/home/arya/Documents/Org/Roam/.*"
+                     "~/Documents/Org/Roam/.*"
                      )))
 (use-package helm
   :straight t
