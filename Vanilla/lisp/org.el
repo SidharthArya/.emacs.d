@@ -396,3 +396,9 @@ are equal return t."
 ;;   :straight org-protocol-capture-html)
 
 
+(use-package org-edna
+  :straight t
+  :after org
+  :config
+  (org-edna-mode +1)
+  )
