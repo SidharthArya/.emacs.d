@@ -1,3 +1,4 @@
+(modular-config-load-modules '(mount))
 (use-package org
   ;; :if my-documents-mounted
   :straight t
@@ -77,21 +78,25 @@ are equal return t."
            "* TODO %? \t:important:\n\tDEADLINE:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 10\n:END:\n  %i\n  %a")
           ("u" "Unimportant")
           ("ut" "Today" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
-           "* TODO %(my-org-capture-read 'Entry 'Task) \t:unimportant:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 10\n:END:\n  %i\n  %a")
+           "* TODO %? \t:unimportant:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 30\n:END:\n  %i\n  %a")
           ("uw" "Weekend" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
-           "* TODO %(my-org-capture-read 'Entry 'Task) \t:unimportant:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"SUN\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 10\n:END:\n  %i\n  %a")
+           "* TODO %? \t:unimportant:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"SUN\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 20\n:END:\n  %i\n  %a")
           ("us" "Schedule" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
-           "* TODO %(my-org-capture-read 'Entry 'Task) \t:unimportant:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 10\n:END:\n  %i\n  %a")
+           "* TODO %? \t:unimportant:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 20\n:END:\n  %i\n  %a")
           ("ud" "Deadline" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
-           "* TODO %(my-org-capture-read 'Entry 'Task) \t:unimportant:\n\tDEADLINE:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 10\n:END:\n  %i\n  %a")
+           "* TODO %? \t:unimportant:\n\tDEADLINE:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 10\n:END:\n  %i\n  %a")
           ("D" "Diary")
           ("Dd" "Daily Diary" entry (file+headline "~/Documents/Org/Brain/Personal/Diaries.org" "Diary")
+           "* %(org-insert-time-stamp (org-read-date nil t \"\"))\n %?")
+          ("Dm" "Meditation Diary" entry (file+headline "~/Documents/Org/Brain/Personal/Meditation.org" "Diary")
            "* %(org-insert-time-stamp (org-read-date nil t \"\"))\n %?")
           ("Ds" "Sleep Journal" entry (file+headline "~/Documents/Org/Brain/Personal/Diaries.org" "Sleep")
            "* %(org-insert-time-stamp (org-read-date nil t \"\"))\n %?")
           ("Dw" "Work Diary" entry (file+headline "~/Documents/Org/Brain/Personal/Diaries.org" "Work")
            "* %(org-insert-time-stamp (org-read-date nil t \"\"))\n %?")
-          ("Dr" "Regret" entry (file+headline "~/Documents/Org/Brain/Personal/Diaries.org" "Regrets")
+          ("Dr" "Research" entry (file+headline "~/Documents/Org/Brain/Personal/Research.org" "Research")
+           "* %?")
+          ("DR" "Regret" entry (file+headline "~/Documents/Org/Brain/Personal/Diaries.org" "Regrets")
            "* %?")
           ("E" "Emotions")
           ("Es" "Sensations" entry (file+headline "~/Documents/Org/Brain/Learning/Personality/EmotionalIntelligence.org" "Sensations")
@@ -126,6 +131,10 @@ are equal return t."
      ("d" "Diary" agenda  ""
       ((org-agenda-files nil)))
       
+     ("f" "Focus Today" agenda ""
+      ((org-agenda-span 'day)
+       (org-agenda-skip-function '(org-agenda-skip-if-not-today))
+       ))
      ("A" "Agenda Important" agenda  ""
       ((org-agenda-files (list "~/Documents/Org/Agenda/notes.org"))
        (org-super-agenda-groups nil)
@@ -134,7 +143,10 @@ are equal return t."
       ((org-agenda-files (list "~/Documents/Org/Agenda/books.org"))
        (org-super-agenda-groups nil)
        (org-agenda-sorting-strategy '(ts-down priority-up effort-up))))
-     ("u" "Utility Sorted Agenda" agenda ""
+     ("h" "Habits" agenda ""
+      ((org-agenda-files (list "~/Documents/Org/Agenda/habits.org"))
+       (org-agenda-sorting-strategy '(time-up))))
+       ("u" "Utility Sorted Agenda" agenda ""
        ((org-agenda-cmp-user-defined 'my-org-cmp-utility-property))
       (org-agenda-sorting-strategy '(user-defined-up)))
      ("E" "Entertainment" todo  ""
@@ -170,7 +182,7 @@ are equal return t."
   (alert-default-style 'libnotify)
   (org-alert-notification-title "Organizer")
   (org-directory "~/Documents/Org")
-  (org-agenda-files '("~/Documents/Org/Agenda/notes.org" "~/Documents/Org/Agenda/habits.org" "~/Documents/Org/Agenda/books.org" "~/Documents/Org/Agenda/entertainment.org"))
+  (org-agenda-files '("~/Documents/Org/Agenda/notes.org" "~/Documents/Org/Agenda/books.org" "~/Documents/Org/Agenda/entertainment.org"))
   ;; (org-brain-path "~/Documents/Org/Brain")
   (org-id-track-globally t)
   (org-id-locations-file "~/Documents/Org/.org-id-locations")
@@ -222,7 +234,51 @@ are equal return t."
        ((< sa sb) -1)
        ((> sa sb) +1)
        (t nil)
-      )))
+       )))
+(defun org-agenda-skip-if-not-today ()
+"If this function returns nil, the current match should not be skipped.
+Otherwise, the function must return a position from where the search
+should be continued."
+  (ignore-errors
+    (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+          (deadline-day
+            (time-to-days
+              (org-time-string-to-time
+                (or (org-entry-get nil "DEADLINE") (org-entry-get nil "SCHEDULED")))))
+          (now (time-to-days (current-time))))
+       (and deadline-day
+            (not (= deadline-day now))
+            subtree-end))))
+
+(defun org-agenda-skip-deadline-if-not-today ()
+"If this function returns nil, the current match should not be skipped.
+Otherwise, the function must return a position from where the search
+should be continued."
+  (ignore-errors
+    (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+          (deadline-day
+            (time-to-days
+              (org-time-string-to-time
+                (org-entry-get nil "DEADLINE"))))
+          (now (time-to-days (current-time))))
+       (and deadline-day
+            (not (= deadline-day now))
+            subtree-end))))
+
+(defun org-agenda-skip-scheduled-if-not-today ()
+"If this function returns nil, the current match should not be skipped.
+Otherwise, the function must return a position from where the search
+should be continued."
+  (ignore-errors
+    (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+          (deadline-day
+            (time-to-days
+              (org-time-string-to-time
+                (org-entry-get nil "SCHEDULED"))))
+          (now (time-to-days (current-time))))
+       (and deadline-day
+            (not (= deadline-day now))
+            subtree-end))))
   ;; TEMP
   (setq org-priority-lowest org-lowest-priority)
   (setq org-priority-highest org-highest-priority)
@@ -317,13 +373,24 @@ are equal return t."
                                         ;(setq emacsql-sqlite3-executable "~/.local/bin/emacsql-sqlite")
   :config
   (require 'org-roam-protocol)
+(setq org-roam-databases '(
+  (main "~/Documents/Org/Roam/Main")
+  (me "~/Documents/Org/Roam/Me")
+  (confidanto "~/Private/Projects/Startup/Confidanto/Notes")))
+                           
+(defun org-roam-select-database ()
+  ""
+  (interactive)
+  (let* ((slipbox (find-from-dict org-roam-databases (intern (completing-read "Slipbox: " org-roam-databases)))))
+    (setq org-roam-directory slipbox)
+    (setq org-roam-db-location (concat slipbox "/DB"))))
+
   :custom
   (org-roam-db-update-method 'immediate)
   (org-roam-graph-viewer "/usr/bin/xdg-open")
-  (org-roam-directory "~/Documents/Org/Roam")
   (org-roam-tag-sources '(prop all-directories))
-  (org-roam-db-location "~/Documents/Org/Roam/DB/org-roam.db")
-  (org-roam-index-file "~/Documents/Org/Roam/DB/index.org")
+  (org-roam-directory "~/Documents/Org/Roam/Main")
+  (org-roam-db-location "~/Documents/Org/Roam/Main/DB")
   (org-roam-dailies-directory "dailies")
   (org-roam-dailies-capture-templates
    '(
@@ -336,11 +403,14 @@ are equal return t."
       "* %?\n"
       :file-name "diary/%<%Y-%m-%d>"
       :head "#+title: %<%Y-%m-%d>\n"
-      )))
+      )
+
+     ))
   (org-roam-completion-system 'helm)
   :bind
    (:map space-prefix
    ("r l" . org-roam)
+   ("r p" . org-roam-select-database)
    ("r f" . my-helm-org-roam-find-file)
    ("r c" . org-roam-capture)
    ("r d" . org-roam-dailies-find-date)
@@ -349,6 +419,7 @@ are equal return t."
    ("r t" . org-roam-tag-add)
    ("r T" . org-roam-tag-delete)
    ("r a" . org-roam-alias-add)
+   ("r r" . org-roam-random-note)
    ("r A" . org-roam-alias-delete)
    ("r g" . org-roam-graph)
    ("r i" . org-roam-insert)
@@ -363,12 +434,13 @@ are equal return t."
   :config
   (setq org-roam-server-host "127.0.0.1"
         org-roam-server-port 8080
+        org-roam-server-serve-files t
         org-roam-server-authenticate nil
         org-roam-server-export-inline-images t
-        org-roam-server-serve-files nil
+        org-roam-server-serve-files t
         org-roam-server-served-file-extensions '("pdf" "mp4" "ogv")
         org-roam-server-network-poll t
-        org-roam-server-network-arrows nil
+        org-roam-server-network-arrows "middle"
         org-roam-server-network-label-truncate t
         org-roam-server-network-label-truncate-length 60
         org-roam-server-network-label-wrap-length 20))
@@ -390,5 +462,32 @@ are equal return t."
 ;;   :straight elgantt)
 ;; (use-package org-protocol-capture-html
 ;;   :straight org-protocol-capture-html)
+
+
+(use-package org-edna
+  :straight t
+  :after org
+  :config
+
+(defun org-edna-finder/next-sibling-children ()
+  (save-excursion
+  (let* ((poiint (point)))
+    (setq point (car (org-edna-finder/next-sibling-wrap 1)))
+    (goto-char point)
+    (org-edna-finder/children)
+    )))
+  (org-edna-mode +1)
+  )
+(use-package calfw
+  :straight t)
+
+(use-package calfw-org
+  :straight t
+  :after calfw
+  :bind
+  (:map space-prefix
+        ("o C" . cfw:open-org-calendar)
+        )
+  )
 
 

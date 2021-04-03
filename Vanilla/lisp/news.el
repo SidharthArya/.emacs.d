@@ -13,18 +13,18 @@
   (require 'elfeed-org)
   (elfeed-org)
   (define-prefix-command 'capture-map)
-  (bind-keys
-   :prefix "c"
-   :prefix-map capture-map
-   ("i t" . (lambda () (interactive) (my-elfeed-send-org-protocol-command "it")))
-   ("i w" . (lambda () (interactive) (my-elfeed-send-org-protocol-command "iw")))
-   ("i d" . (lambda () (interactive) (my-elfeed-send-org-protocol-command "id")))
-   ("i s" . (lambda () (interactive) (my-elfeed-send-org-protocol-command "is")))
-   ("u t" . (lambda () (interactive) (my-elfeed-send-org-protocol-command "ut")))
-   ("u w" . (lambda () (interactive) (my-elfeed-send-org-protocol-command "uw")))
-   ("u s" . (lambda () (interactive) (my-elfeed-send-org-protocol-command "us")))
-   ("u d" . (lambda () (interactive) (my-elfeed-send-org-protocol-command "ud"))))
-  (evil-define-key '(normal visual) elfeed-search-mode-map "c" capture-map)
+  ;; (bind-keys
+  ;;  :prefix "c"
+  ;;  :prefix-map capture-map
+  ;;  ("i t" . (lambda () (interactive) (my-elfeed-send-org-protocol-command "it")))
+  ;;  ("i w" . (lambda () (interactive) (my-elfeed-send-org-protocol-command "iw")))
+  ;;  ("i d" . (lambda () (interactive) (my-elfeed-send-org-protocol-command "id")))
+  ;;  ("i s" . (lambda () (interactive) (my-elfeed-send-org-protocol-command "is")))
+  ;;  ("u t" . (lambda () (interactive) (my-elfeed-send-org-protocol-command "ut")))
+  ;;  ("u w" . (lambda () (interactive) (my-elfeed-send-org-protocol-command "uw")))
+  ;;  ("u s" . (lambda () (interactive) (my-elfeed-send-org-protocol-command "us")))
+  ;;  ("u d" . (lambda () (interactive) (my-elfeed-send-org-protocol-command "ud"))))
+  ;; (evil-define-key '(normal visual) elfeed-search-mode-map "c" capture-map)
 
                              
   (defun my-elfeed-send-org-protocol-command (a)

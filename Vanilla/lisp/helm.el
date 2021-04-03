@@ -19,7 +19,9 @@
   (recentf-max-menu-items 100)
   (recentf-max-saved-items 100)
   :bind
-   
+  ("C-x C-f" . helm-find-files)
+  ("M-x" . helm-M-x)
+  ("C-x b" . helm-mini)
   (:map space-prefix
         ("b b" . helm-mini)
         ("f j" . jump-to-register)
@@ -29,6 +31,7 @@
         ("f f" . helm-find-files)
         ("f d" . dired)
         ("f c" . my-find-config)
+        ("f C" . my-find-system-config)
         ("f r" . helm-recentf)
         ("x" . helm-M-x)
         ;; b
@@ -48,6 +51,7 @@
         )
         
   :config
+  (require 'helm-find)
   (require 'helm-config)
   (helm-mode 1)
   (require 'helm-descbinds)

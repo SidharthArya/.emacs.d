@@ -1,4 +1,4 @@
-;;; tango-dark-theme.el --- Tango-based custom theme for faces
+;;; tango-system-theme.el --- Tango-based custom theme for faces
 
 ;; Copyright (C) 2010-2018 Free Software Foundation, Inc.
 
@@ -27,15 +27,15 @@
 
 ;;; Code:
 
-(deftheme tango-dark
+(deftheme tango-system
   "Face colors using the Tango palette (dark background).
 Basic, Font Lock, Isearch, Gnus, Message, Ediff, Flyspell,
 Semantic, and Ansi-Color faces are included.")
 
 (let ((class '((class color) (min-colors 89)))
       ;; Tango palette colors.
-      (white "#c2c2c7") (black "#111115") (butter-3 "#c4a000")
-      (orange-1 "#fcaf3e") (orange-2 "#f57900") (orange-3 "#ce5c00")
+      (white "#e2e2e7") (black "#111115") (blue "#0042DD")
+      (white-1 "#c2c2c7") (blue-1 "#007AFF") (orange-3 "#ce5c00")
       (choc-1 "#e9b96e") (choc-2 "#c17d11") (choc-3 "#8f5902")
       (cham-1 "#8ae234") (cham-2 "#55aa55") (cham-3 "#4e9a06")
       (blue-1 "#729fcf") (blue-2 "#3465a4") (blue-3 "#204a87")
@@ -48,13 +48,33 @@ Semantic, and Ansi-Color faces are included.")
       (red-0 "#ff4b4b")  (alum-5.5 "#41423f") (alum-7 "#212526"))
 
   (custom-theme-set-faces
-   'tango-dark
+   'tango-system
    `(default ((((class color) (min-colors 4096))
-	       (:foreground ,white :background ,black))
+	       (:foreground ,black :background ,white))
 	      (((class color) (min-colors 256)))))
-)
+   `(cursor ((,class (:background ,blue))))
+   `(fringe ((,class (:background ,white-1))))
+   `(line-number ((t (:foreground ,black :background ,white-1))))
+   `(line-number-current-line ((t (:inherit line-number :foreground ,blue))))
+   `(highlight ((,class (:background ,blue))))
+   `(evil-ex-lazy-highlight ((,class (:background ,blue))))
+   `(lazy-highlight ((,class (:background ,blue))))
+   `(region ((,class (:background ,blue-1))))
+   `(mode-line ((,class
+		 (:box nil
+		       :background ,black :foreground ,white))))
+   ;; Org 
+   `(org-agenda-date ((,class (:foreground ,blue :height 1.3))))
+   `(org-super-agenda-header ((,class (:height 1.2))))
+   ;; Helm
+   `(helm-selection ((, class (:background ,blue :foreground ,white))))
+   `(helm-visible-mark ((, class (:background ,blue-1 :foreground ,black))))
 
-(provide-theme 'tango-dark)
+   `(ledger-font-posting-amount-face ((, class (:foreground ,black))))
+   `(ledger-font-posting-date-face ((, class (:foreground ,black))))
+   ))
+
+(provide-theme 'tango-system)
 
 ;; Local Variables:
 ;; no-byte-compile: t

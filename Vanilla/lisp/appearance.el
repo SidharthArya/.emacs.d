@@ -15,14 +15,14 @@
   (org-mode . my/display-line-numbers))
 
 
-;; (load-theme 'leuven t)
+(load-theme 'tango-system t)
 ;; (straight-use-package 'spacemacs-theme)
 ;; (load-theme 'spacemacs-dark t)
 
-(use-package nimbus-theme
-  :straight t
-  :config
-  (load-theme 'nimbus t))
+;; (use-package nimbus-theme
+;;   :straight t
+;;   :config
+;;   (load-theme 'nimbus t))
 
 ;; (use-package gruvbox-theme
 ;;   :straight t
