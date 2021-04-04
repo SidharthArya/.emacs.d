@@ -35,7 +35,7 @@ Semantic, and Ansi-Color faces are included.")
 (let ((class '((class color) (min-colors 89)))
       ;; Tango palette colors.
       (white "#e2e2e7") (black "#111115") (blue "#0042DD")
-      (white-1 "#c2c2c7") (blue-1 "#007AFF") (orange-3 "#ce5c00")
+      (white-1 "#c2c2c7") (blue-1 "#007AFF") (teal "#55bEF0")
       (choc-1 "#e9b96e") (choc-2 "#c17d11") (choc-3 "#8f5902")
       (cham-1 "#8ae234") (cham-2 "#55aa55") (cham-3 "#4e9a06")
       (blue-1 "#729fcf") (blue-2 "#3465a4") (blue-3 "#204a87")
@@ -50,9 +50,9 @@ Semantic, and Ansi-Color faces are included.")
   (custom-theme-set-faces
    'tango-system
    `(default ((((class color) (min-colors 4096))
-	       (:foreground ,black :background ,white))
+	       (:foreground ,white :background ,black))
 	      (((class color) (min-colors 256)))))
-   `(cursor ((,class (:background ,blue))))
+   `(cursor ((,class (:background ,teal))))
    `(fringe ((,class (:background ,white-1))))
    `(line-number ((t (:foreground ,black :background ,white-1))))
    `(line-number-current-line ((t (:inherit line-number :foreground ,blue))))
@@ -62,7 +62,7 @@ Semantic, and Ansi-Color faces are included.")
    `(region ((,class (:background ,blue-1))))
    `(mode-line ((,class
 		 (:box nil
-		       :background ,black :foreground ,white))))
+		       :background ,white-1 :foreground ,black))))
    ;; Org 
    `(org-agenda-date ((,class (:foreground ,blue :height 1.3))))
    `(org-super-agenda-header ((,class (:height 1.2))))

@@ -15,7 +15,7 @@
   (org-mode . my/display-line-numbers))
 
 
-(load-theme 'tango-system t)
+;; (load-theme 'tango-system t)
 ;; (straight-use-package 'spacemacs-theme)
 ;; (load-theme 'spacemacs-dark t)
 
@@ -28,3 +28,7 @@
 ;;   :straight t
 ;;   :config
 ;;   (load-theme 'gruvbox t))
+(use-package spacemacs-theme
+  :straight t
+  :init
+  (load-theme 'spacemacs-dark t))
