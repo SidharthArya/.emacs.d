@@ -11,30 +11,8 @@
                      "/home/arya/Documents/Org/Roam/.*"
                      "~/Documents/Org/Roam/.*"
                      )))
-(use-package helm
-  :straight t
-  :straight helm-descbinds
-  :custom
-  (helm-ff-file-name-history-use-recentf t)
-  (recentf-max-menu-items 100)
-  (recentf-max-saved-items 100)
-  :bind
-  ("C-x C-f" . helm-find-files)
-  ("M-x" . helm-M-x)
-  ("C-x b" . helm-mini)
-  ("C-h v" . helpful-variable)
-  ("C-h f" . helpful-function)
-  ("C-h k" . helpful-key)
-  (:map space-prefix
-        ("b b" . helm-mini)
-        ("f j" . jump-to-register)
-        ("b d" . kill-current-buffer)
-        ;; ("b B" . helm-filtered-bookmarks)
-        ("f b" . helm-bookmarks)
-        ("f f" . helm-find-files)
-        ("f d" . dired)
-        ("f c" . my-find-config)
         ("f C" . my-find-system-config)
+        ("f c" . my-find-config)
         ("f r" . helm-recentf)
         ("x" . helm-M-x)
         ;; b
@@ -103,17 +81,3 @@
   :config
   (helm-projectile-on))
 
-(defun my-find-config()
-  (interactive)
-  (helm  :sources (helm-build-sync-source "Config: "
-                    :candidates (split-string (string-trim (shell-command-to-string "ls ~/.emacs.d/lisp")))
-            :action
-            '(
-              ("Find File" . (lambda(c) (find-file (concat "~/.emacs.d/lisp/" c))) )))))
-
-(defun my-find-system-config()
-  (interactive)
-  (helm :sources (helm-build-sync-source  "System Config: " :candidates (split-string (string-trim (shell-command-to-string "fd --base-directory=/home/arya/.files")))
-            :action
-            '(
-              ("Find File" . (lambda(c) (find-file (concat "~/.files/" c))))))))

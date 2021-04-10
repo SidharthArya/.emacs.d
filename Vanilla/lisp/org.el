@@ -327,11 +327,12 @@ should be continued."
       )
 
      ))
-  (org-roam-completion-system 'helm)
+  (org-roam-completion-system 'ivy)
   :bind
    (:map space-prefix
    ("r l" . org-roam)
    ("r p" . org-roam-select-database)
+   ("r f" . org-roam-find-file-ivy)
    ("r c" . org-roam-capture)
    ("r d" . org-roam-dailies-find-date)
    ("r C" . org-roam-dailies-capture-today)
@@ -344,6 +345,14 @@ should be continued."
    ("r g" . org-roam-graph)
    ("r i" . org-roam-insert)
    ("r I" . org-roam-insert-immediate)))
+
+
+(use-package org-roam-bibtex
+  :straight t
+  :after org-roam
+  :hook (org-roam-mode . org-roam-bibtex-mode)
+  :config
+  (require 'org-ref))
 
 (use-package org-roam-server
   :straight org-roam-server
@@ -371,12 +380,19 @@ should be continued."
   :after (org helm)
   :custom
   (reftex-default-bibliography '("~/Documents/Org/references.bib"))
-  (bibtex-completion-bibliography "~/Documents/Org/references.bib")
+  (org-ref-default-bibliography '("~/Documents/Org/references.bib"))
+  (bibtex-completion-bibliography '("~/Documents/Org/references.bib"))
   (org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
   )
 (use-package org-fc
   :straight (org-fc :type git :repo "https://git.sr.ht/~l3kn/org-fc" :files (:defaults "awk" "demo.org"))
   :after org
+  :config
+  (require 'org-fc-hydra)
+  :bind
+  (:map space-prefix
+           ("o f r" . org-fc-review)
+           ("o f f" . org-fc-hydra/org-fc-update))
   :custom
   (org-fc-directories '("~/Documents/Org/Roam" "~/Documents/Org/Brain")))
 
@@ -470,3 +486,4 @@ should be continued."
   (:map space-prefix
    ("r f" . helm-org-roam-find-file)
       )))
+

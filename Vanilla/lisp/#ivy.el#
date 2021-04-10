@@ -19,7 +19,6 @@
     (evil-ex-define-cmd "PlugInstall" 'emacsit::get)
     (evil-ex-define-cmd "PlugUpdate" 'emacsit::update-all))
   :bind
-  ("C-x b" . ivy-switch-buffer)
   (:map space-prefix
         ("SPC" . ivy-resume)
   ("i /" . swiper-isearch)
@@ -68,8 +67,8 @@
         ("h v" . counsel-describe-variable)
         ("h l" . counsel-find-library)
         ("h i" . counsel-info-lookup-symbol)
-        (" u" . counsel-unicode-char)
-  ("<f2> j" . counsel-set-variable)
+        ("h u" . counsel-unicode-char)
+        ("h V" . counsel-set-variable)
         ))
 (use-package ivy-hydra
   :straight t)

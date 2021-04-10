@@ -2,7 +2,7 @@
   :straight t
   :bind
   (:map space-prefix
-  ("g" . magit))
+  ("g g" . magit))
   :commands magit)
 
 (use-package git-timemachine
