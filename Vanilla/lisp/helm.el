@@ -25,6 +25,12 @@
   ("C-h v" . helpful-variable)
   ("C-h f" . helpful-function)
   ("C-h k" . helpful-key)
+  (:map helm-map
+        ("TAB" . helm-execute-persistent-action)
+        ("<backtab>" . helm-select-action)
+        ("<C-tab>" . helm-select-action)
+        ("C-o" . helm-select-action)
+        )
   (:map space-prefix
         ("b b" . helm-mini)
         ("f j" . jump-to-register)

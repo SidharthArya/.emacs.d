@@ -37,6 +37,8 @@
            "* %(org-insert-time-stamp (org-read-date nil t \"\"))\n %?")
           ("Dr" "Research" entry (file+headline "~/Documents/Org/Brain/Personal/Research.org" "Research")
            "* %?")
+          ("Dm" "Research" entry (file+headline "~/Documents/Org/Brain/Personal/Meditation.org" "Meditation")
+           "* (org-insert-time-stamp (org-read-date nil t \"\"))\n %?")
           ("DR" "Regret" entry (file+headline "~/Documents/Org/Brain/Personal/Diaries.org" "Regrets")
            "* %?")
           ("E" "Emotions")
@@ -327,12 +329,12 @@ should be continued."
       )
 
      ))
-  (org-roam-completion-system 'ivy)
+  (org-roam-completion-system 'helm)
   :bind
    (:map space-prefix
    ("r l" . org-roam)
    ("r p" . org-roam-select-database)
-   ("r f" . org-roam-find-file-ivy)
+   ("r f" . helm-org-roam-find-file)
    ("r c" . org-roam-capture)
    ("r d" . org-roam-dailies-find-date)
    ("r C" . org-roam-dailies-capture-today)
@@ -482,6 +484,7 @@ should be continued."
 (if (modular-config-modules-loaded-p '(helm))
     (use-package helm-org-roam
       :straight (helm-org-roam :type git :fetcher github :repo "https://github.com/SidharthArya/helm-org-roam" :files (:defaults))
+      :defer nil
       :bind
   (:map space-prefix
    ("r f" . helm-org-roam-find-file)
