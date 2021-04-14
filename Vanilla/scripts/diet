@@ -1,0 +1,35 @@
+#!/usr/bin/emacs --script
+(load (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory) nil 'nomessage)
+(straight-use-package 'use-package)
+
+(use-package modular-config
+  :straight t
+  )
+
+(modular-config-load-modules '(space org))
+
+(require 'notifications)
+
+(with-current-buffer (find-file-noselect "~/Documents/Org/Diet/Diet.org")
+  (let* ((Monday 3)
+         (Tuesday 5)
+         (Wednesday 7)
+         (Thursday 9)
+         (Friday 11)
+         (Saturday 13)
+         (Sunday 15)
+         (day (format-time-string "%A" (current-time)))
+         (diet '())
+         (count '()))
+  (setq diet (delete "" (org-table-get-remote-range "DietPlan" (concat "@2$" (format "%s" (symbol-value (intern day))) "..@>$" (format "%s" (symbol-value (intern day)))))))
+  (setq count (delete "" (org-table-get-remote-range "DietPlan" (concat "@2$" (format "%s" (+ 1 (symbol-value (intern day)))) "..@>$" (format "%s" (+ 1 (symbol-value (intern day))))))))
+  (setq diet (append diet (delete "" (org-table-get-remote-range "DietPlan" "@2$1..@>$1"))))
+  (setq count (append count (delete "" (org-table-get-remote-range "DietPlan" "@2$2..@>$2"))))
+  
+(require 'notifications)
+(notifications-notify :app-name "Emacs" :title "Diet" :body (format "%s" (mapcar* (lambda (a b) (format "%s - %s\n" a b)) diet count)))
+
+        (sleep-for 5)
+  ))
+
+

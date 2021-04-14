@@ -119,7 +119,7 @@
 
 (defun my-find-system-config()
   (interactive)
-  (helm :sources (helm-build-sync-source  "System Config: " :candidates (split-string (string-trim (shell-command-to-string "fd --base-directory=/home/arya/.files")))
+  (helm :sources (helm-build-sync-source  "System Config: " :candidates (split-string (string-trim (shell-command-to-string "fd --base-directory=/home/arya/.files")) "\n")
             :action
             '(
               ("Find File" . (lambda(c) (find-file (concat "~/.files/" c))))))))
