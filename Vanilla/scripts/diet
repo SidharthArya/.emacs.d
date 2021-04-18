@@ -9,7 +9,6 @@
 (modular-config-load-modules '(space org))
 
 (require 'notifications)
-
 (with-current-buffer (find-file-noselect "~/Documents/Org/Diet/Diet.org")
   (let* ((Monday 3)
          (Tuesday 5)

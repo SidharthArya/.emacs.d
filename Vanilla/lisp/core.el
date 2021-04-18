@@ -73,7 +73,12 @@
   :config
   (save-place-mode +1))
 
-(use-package electric
-  :config
-  (electric-pair-mode +1)
-  )
+;; (use-package electric
+;;   :config
+;;   (electric-pair-mode +1)
+;;   )
+(use-package smartparens
+  :straight t)
+
+
+(setq load-path (mapcar (lambda (a) (if (not (string-match-p "org" a)) a)) (delete nil load-path)))

@@ -11,8 +11,7 @@
      ("reg" "%(binary) -f %(ledger-file) reg")
      ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
      ("account" "%(binary) -f %(ledger-file) reg %(account)")))
- '(org-agenda-files
-   '("~/textclassification/notes.org" "~/Documents/Org/Agenda/notes.org" "~/Documents/Org/Agenda/books.org" "~/Documents/Org/Agenda/entertainment.org") nil nil "Customized with use-package org")
+ '(org-agenda-files '("~/Documents/Org/Agenda/projects.org") nil nil "Customized with use-package org")
  '(org-export-backends '(ascii beamer html icalendar latex odt))
  '(safe-local-variable-values
    '((org-roam-db-location . "./DB/org-roam.db")

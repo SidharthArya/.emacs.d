@@ -1,5 +1,4 @@
 (modular-config-load-modules '(mount))
- (setq load-path (mapcar (lambda (a) (if (not (string-match-p "org" a)) a)) load-path))
 (use-package org
   ;; :if my-documents-mounted
   :straight t
@@ -83,6 +82,14 @@
       ((org-agenda-files (list "~/Documents/Org/Agenda/notes.org"))
        (org-super-agenda-groups nil)
        (org-agenda-sorting-strategy '(priority-up effort-up))))
+     ("pa" "Projects Agenda" agenda  ""
+      ((org-agenda-files (list org-projectile-projects-file (concat (projectile-project-root) org-projectile-per-project-filepath)))
+       (org-super-agenda-groups nil)
+       (org-agenda-sorting-strategy '(priority-up effort-up))))
+     ("pt" "Projects Todo" todo  ""
+      ((org-agenda-files (list org-projectile-projects-file (concat (projectile-project-root) org-projectile-per-project-filepath)))
+       (org-super-agenda-groups nil)
+       (org-agenda-sorting-strategy '(priority-up effort-up))))
      ("B" "Book" todo  ""
       ((org-agenda-files (list "~/Documents/Org/Agenda/books.org"))
        (org-super-agenda-groups nil)
@@ -143,6 +150,7 @@
            ("o i" . org-insert-last-stored-link)
            )
   :init
+  (require 'ido)
   (defun my-org-get-score-current()
 
     (let* ((a (point))
@@ -289,6 +297,7 @@ should be continued."
 
 (use-package org-roam
   :straight org-roam
+  :after org
   :hook
   (after-init . org-roam-mode)
   :init
@@ -428,7 +437,7 @@ should be continued."
   :straight t
   :after org
   :config
-  (org-bullets-mode +1))
+  (add-hook 'org-mode-hook #'org-bullets-mode))
 
 (use-package org-download
   :straight t

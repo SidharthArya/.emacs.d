@@ -18,7 +18,8 @@
   (evil-mode +1)
   (evil-set-leader 'normal (kbd "\\")))
 (use-package evil-org
-  :straight t)
+  :straight t
+  :after org)
 
 (use-package evil-collection
   :straight t
