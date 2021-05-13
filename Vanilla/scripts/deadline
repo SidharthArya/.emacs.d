@@ -1,0 +1,20 @@
+#!/usr/bin/emacs --script
+
+(load (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory) nil 'nomessage)
+(straight-use-package 'use-package)
+
+(use-package modular-config
+  :straight t
+  )
+
+(modular-config-load-modules '(space org))
+
+(defun things-needed()
+  ""
+  (let* ((heading (org-get-heading))
+         (time (org-get-deadline-time (point))))
+               (format "%s@%s" heading (format-time-string "%d-%m-%Y %H:%M" time))))
+                  
+(princ (with-current-buffer (find-file-noselect "/home/arya/Documents/Org/Agenda/notes.org")
+  (org-map-entries #'things-needed "DEADLINE>=\"<today>\",/TODO" 'agenda)
+  ))

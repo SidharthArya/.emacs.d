@@ -1,2 +1,2 @@
-(use-package alert
+(use-package notifications
   :ensure t)

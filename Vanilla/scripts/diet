@@ -25,10 +25,10 @@
   (setq diet (append diet (delete "" (org-table-get-remote-range "DietPlan" "@2$1..@>$1"))))
   (setq count (append count (delete "" (org-table-get-remote-range "DietPlan" "@2$2..@>$2"))))
   
-(require 'notifications)
-(notifications-notify :app-name "Emacs" :title "Diet" :body (format "%s" (mapcar* (lambda (a b) (format "%s - %s\n" a b)) diet count)))
-
-        (sleep-for 5)
+;; (require 'notifications)
+;; (notifications-notify :app-name "Emacs" :title "Diet" :body (format "%s" (mapcar* (lambda (a b) (format "%s - %s\n" a b)) diet count)))
+(princ (format "%s" (mapcar* (lambda (a b) (format "%s - %s\n" a b)) diet count)))
+        ;; (sleep-for 5)
   ))
 
 

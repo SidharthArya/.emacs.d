@@ -4,7 +4,7 @@
   :straight t
   :straight elfeed-org
   :custom
-  (elfeed-db-directory "~/Private/News/Feeds")
+  (elfeed-db-directory "~/.news/Feeds")
   (elfeed-sort-order
    'descending)
   (browse-url-generic-program "firefox")
