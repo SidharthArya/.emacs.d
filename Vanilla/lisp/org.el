@@ -499,3 +499,6 @@ should be continued."
    ("r f" . helm-org-roam-find-file)
       )))
 
+(use-package org-google-tasks
+  :straight (org-google-tasks :type git :repo "SidharthArya/org-google-tasks" :files (:defaults) )
+  :straight request)

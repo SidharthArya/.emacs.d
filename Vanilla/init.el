@@ -28,6 +28,7 @@
                          (org (core vi space begin-org appearance completion files web finance helm vc programming custom server auto language-server shell help projects subtitles dashboard core-post org afterload))
                          (chat (core appearance space vi irc slack begin-chat))
                          (orgtest (org))
+			 (wm (wm))
                          (doom (org doom))
                          (utilities (core))
                          (main (core appearance programming emoji ivy web org finance news mail documents server space workspace dashboard core-post))))

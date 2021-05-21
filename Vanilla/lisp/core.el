@@ -6,7 +6,7 @@
 (setq my-temp-file-name-handler-alist file-name-handler-alist)
 (setq file-name-handler-alist nil)
 
-(setq message-log-max 20)
+(setq message-log-max 2000)
 
 ;; UTF-8 support
 (set-charset-priority 'unicode)
