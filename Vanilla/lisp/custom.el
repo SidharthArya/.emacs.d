@@ -11,10 +11,21 @@
      ("reg" "%(binary) -f %(ledger-file) reg")
      ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
      ("account" "%(binary) -f %(ledger-file) reg %(account)")))
- '(org-agenda-files '("~/Documents/Org/Agenda/projects.org") nil nil "Customized with use-package org")
+ '(org-duration-units
+   `(("min" . 1)
+     ("h" . 60)
+     ("d" \,
+      (* 60 8))
+     ("w" \,
+      (* 60 8 5))
+     ("m" \,
+      (* 60 8 5 4))
+     ("y" \,
+      (* 60 8 5 4 12))) nil nil "Customized with use-package org")
  '(org-export-backends '(ascii beamer html icalendar latex odt))
  '(safe-local-variable-values
-   '((org-roam-db-location . "./DB/org-roam.db")
+   '((visual-line-mode)
+     (org-roam-db-location . "./DB/org-roam.db")
      (org-roam-index-file . "./DB/index.org")
      (org-roam-directory . ".")
      (org-roam-index-file . "~/Documents/Org/Roamers/Personal/DB/index.org")
