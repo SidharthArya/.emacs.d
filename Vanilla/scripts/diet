@@ -7,7 +7,9 @@
   )
 
 (modular-config-load-modules '(space org))
-
+(unless (shell-command-to-string "pgrep org")
+(unless (string-match "org-google-tasks-get-tokens" (format "%s" timer-list))
+  (run-at-time nil 3600  'org-google-tasks-get-tokens)))
 (require 'notifications)
 (with-current-buffer (find-file-noselect "~/Documents/Org/Diet/Diet.org")
   (let* ((Monday 3)
@@ -26,9 +28,11 @@
   (setq count (append count (delete "" (org-table-get-remote-range "DietPlan" "@2$2..@>$2"))))
   
 ;; (require 'notifications)
-;; (notifications-notify :app-name "Emacs" :title "Diet" :body (format "%s" (mapcar* (lambda (a b) (format "%s - %s\n" a b)) diet count)))
+(notifications-notify :app-name "Emacs" :title "Diet" :body (format "%s" (mapcar* (lambda (a b) (format "%s - %s\n" a b)) diet count)))
 (princ (format "%s" (mapcar* (lambda (a b) (format "%s - %s\n" a b)) diet count)))
-        ;; (sleep-for 5)
+(unless (org-google-tasks-check-tasklist-today "Diet")
+  (org-google-tasks-insert-list (mapcar* (lambda (a b) (format "%s - %s\n" a b)) diet count) "Diet"))
+(sleep-for 20)
   ))
 
 

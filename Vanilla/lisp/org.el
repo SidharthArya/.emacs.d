@@ -501,4 +501,11 @@ should be continued."
 
 (use-package org-google-tasks
   :straight (org-google-tasks :type git :repo "SidharthArya/org-google-tasks" :files (:defaults) )
-  :straight request)
+  :straight request
+  :custom
+  (org-google-tasks-credential-file "/home/arya/Documents/Org/Bots/Org/google-tasks")
+  (org-google-tasks-use-inheritance t)
+  :config
+  (org-google-tasks-load-credentials)
+  (org-google-tasks-get-remote-list t t)
+  )

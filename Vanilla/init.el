@@ -20,7 +20,7 @@
   (modular-config-list '(
                          (none ())
                          (minimal (core appearance))
-                         (mail (core mail appearance emoji not-org begin-mail))
+                         (mail (core mail appearance emoji not-org mail notmuch begin-mail))
                          (news (begin-news core web appearance helm core-post not-org))
                          ;; core web org emoji 
                          (tracking (core vi space appearance org begin-tracking not-org))
