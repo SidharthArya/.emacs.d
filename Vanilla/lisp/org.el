@@ -507,5 +507,6 @@ should be continued."
   (org-google-tasks-use-inheritance t)
   :config
   (org-google-tasks-load-credentials)
+  (org-google-tasks-get-tokens)
   (org-google-tasks-get-remote-list t t)
   )
