@@ -508,5 +508,8 @@ should be continued."
   :config
   (org-google-tasks-load-credentials)
   (org-google-tasks-get-tokens)
+  (if (equal ':null (gethash "refresh_token" org-google-tasks-credential))
+      (org-google-tasks-get-oauth-code)
+    (org-google-tasks-get-tokens))
   (org-google-tasks-get-remote-list t t)
   )
