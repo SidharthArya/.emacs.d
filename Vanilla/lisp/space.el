@@ -36,7 +36,8 @@
   "k" 'org-habit-toggle-habits
   "s" 'org-agenda-schedule
   "/" 'org-agenda-filter
-  ) 
+  )
+  (define-key space-prefix (kbd ".") 'ffap)
 
   )
 
