@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 declare -A locations=(
 		["Vanilla"]="$HOME/.emacs.d/"
 		["Doom"]="$HOME/.doom.d/"
