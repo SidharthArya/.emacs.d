@@ -14,12 +14,17 @@
                                         ; Adaptive scoring
   (nnheader-file-name-translation-alist '((?[ . ?_) (?] . ?_)) )
   (gnus-select-method
-   '(nnimap "Gmail"
+   '(nnimap "Personal"
             (nnimap-address "imap.gmail.com")
             (nnimap-server-port "imaps")
             (nnimap-stream ssl))
    (nnir-search-engine imap))
-  (gnus-secondary-select-methods '((nntp "news.gwene.org")
+  (gnus-secondary-select-methods '(
+                                   (nnimap "Startup"
+                                           (nnimap-address "imap.gmail.com")
+                                           (nnimap-server-port "imaps")
+                                           (nnimap-stream ssl))
+                                   (nntp "news.gwene.org")
                                    ))
   :init
   (require 'nnir)
@@ -34,3 +39,9 @@
   :config
   (gnus-desktop-notify-mode)
   (gnus-demon-add-scanmail))
+
+(defun gnus-startup-function()
+  ""
+  (gnus)
+  (get-buffer-create "*Group*"))
+(setq initial-buffer-choice 'gnus-startup-function)
