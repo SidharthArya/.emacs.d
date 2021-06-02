@@ -11,6 +11,8 @@
      ("reg" "%(binary) -f %(ledger-file) reg")
      ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
      ("account" "%(binary) -f %(ledger-file) reg %(account)")))
+ '(org-agenda-files
+   '("~/Documents/Org/Blog/blog.org" "~/Documents/Org/Agenda/notes.org" "~/Documents/Org/Agenda/books.org" "~/Documents/Org/Agenda/entertainment.org") nil nil "Customized with use-package org")
  '(org-duration-units
    `(("min" . 1)
      ("h" . 60)

@@ -500,7 +500,7 @@ should be continued."
       )))
 
 (use-package org-google-tasks
-  :straight (org-google-tasks :type git :repo "SidharthArya/org-google-tasks" :files (:defaults) )
+  :straight (org-google-tasks :type git :fetcher github :repo "https://github.com/SidharthArya/org-google-tasks" :files (:defaults) )
   :straight request
   :custom
   (org-google-tasks-credential-file "/home/arya/Documents/Org/Bots/Org/google-tasks")
@@ -515,18 +515,19 @@ should be continued."
   )
 
 (use-package ox-hugo
-  :straight t
+  :straight  (ox-hugo :type git :fetcher github :repo "kaushalmodi/ox-hugo" :files (:defaults))
+  :custom
+  (org-hugo-auto-set-lastmod t)
   :config
   (setq org-hugo-base-dir "~/.blog/")
   (setq org-hugo-front-matter-format 'yaml)
   (defun my-org-roam/publish (file)
   (with-current-buffer (find-file-noselect file)
     (let ((org-id-extra-files (delete 'nil (mapcar (lambda (a) (if (not (string-match-p "\/.*\/" (replace-regexp-in-string org-roam-directory "" a))) a)) (org-roam--list-files org-roam-directory)))))
+    (setq-local org-hugo-base-dir "~/.blog/content")
+    (setq-local org-hugo-section "braindump")
+      (projectile-mode -1)
       (org-hugo-export-wim-to-md))))
-    (projectile-mode -1)
-    (dtrt-indent-mode -1)
-    (setq org-hugo-base-dir "~/.blog/content")
-    (setq org-hugo-section "braindump")
 
   (with-eval-after-load 'org-capture
   (defun org-hugo-new-subtree-post-capture-template ()
