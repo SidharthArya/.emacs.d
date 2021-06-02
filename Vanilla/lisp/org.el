@@ -513,3 +513,80 @@ should be continued."
     (org-google-tasks-get-tokens))
   (org-google-tasks-get-remote-list t t)
   )
+
+(use-package ox-hugo
+  :straight t
+  :config
+  (setq org-hugo-base-dir "~/.blog/")
+  (setq org-hugo-front-matter-format 'yaml)
+  (defun my-org-roam/publish (file)
+  (with-current-buffer (find-file-noselect file)
+    (let ((org-id-extra-files (delete 'nil (mapcar (lambda (a) (if (not (string-match-p "\/.*\/" (replace-regexp-in-string org-roam-directory "" a))) a)) (org-roam--list-files org-roam-directory)))))
+      (org-hugo-export-wim-to-md))))
+    (projectile-mode -1)
+    (dtrt-indent-mode -1)
+    (setq org-hugo-base-dir "~/.blog/content")
+    (setq org-hugo-section "braindump")
+
+  (with-eval-after-load 'org-capture
+  (defun org-hugo-new-subtree-post-capture-template ()
+    "Returns `org-capture' template string for new Hugo post.
+See `org-capture-templates' for more information."
+    (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
+           (fname (org-hugo-slug title)))
+      (mapconcat #'identity
+                 `(
+                   ,(concat "* TODO " title)
+                   ":PROPERTIES:"
+                   ,(concat ":EXPORT_FILE_NAME: " fname)
+                   ,(concat ":EXPORT_DATE: %t")
+                   ":END:"
+                   "%?\n")          ;Place the cursor here finally
+                 "\n")))
+
+  (add-to-list 'org-capture-templates
+               '("b" "Blog"               ))
+  (add-to-list 'org-capture-templates
+               '("be"                
+                 "Emacs"
+                 entry
+                 (file+olp "~/Documents/Org/Blog/blog.org" "Emacs")
+                 (function org-hugo-new-subtree-post-capture-template)))
+  (add-to-list 'org-capture-templates
+               '("bl" 
+                 "Linux"
+                 entry
+                 (file+olp "~/Documents/Org/Blog/blog.org" "Linux")
+                 (function org-hugo-new-subtree-post-capture-template)))
+  (add-to-list 'org-capture-templates
+               '("ba" 
+                 "Artificial Intelligence"
+                 entry
+                 (file+olp "~/Documents/Org/Blog/blog.org" "Artificial Intelligence")
+                 (function org-hugo-new-subtree-post-capture-template)))
+  (add-to-list 'org-capture-templates
+               '("bb" 
+                 "Blog"
+                 entry
+                 (file+olp "~/Documents/Org/Blog/blog.org" "Blog")
+                 (function org-hugo-new-subtree-post-capture-template)))
+  )
+  )
+(use-package citeproc-org
+  :straight t
+  :after (ox-hugo org-ref)
+  :config
+  (citeproc-org-setup)
+(add-to-list 'org-ref-formatted-citation-formats
+             '("md"
+               ("article" . "${author}, *${title}*, ${journal}, *${volume}(${number})*, ${pages} (${year}). ${doi}")
+               ("inproceedings" . "${author}, *${title}*, In ${editor}, ${booktitle} (pp. ${pages}) (${year}). ${address}: ${publisher}.")
+               ("book" . "${author}, *${title}* (${year}), ${address}: ${publisher}.")
+               ("phdthesis" . "${author}, *${title}* (Doctoral dissertation) (${year}). ${school}, ${address}.")
+               ("inbook" . "${author}, *${title}*, In ${editor} (Eds.), ${booktitle} (pp. ${pages}) (${year}). ${address}: ${publisher}.")
+               ("incollection" . "${author}, *${title}*, In ${editor} (Eds.), ${booktitle} (pp. ${pages}) (${year}). ${address}: ${publisher}.")
+               ("proceedings" . "${editor} (Eds.), _${booktitle}_ (${year}). ${address}: ${publisher}.")
+               ("unpublished" . "${author}, *${title}* (${year}). Unpublished manuscript.")
+               ("misc" . "${author} (${year}). *${title}*. Retrieved from [${howpublished}](${howpublished}). ${note}.")
+               (nil . "${author}, *${title}* (${year}).")))
+  )

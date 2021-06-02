@@ -2,6 +2,7 @@
   :straight t
   :config
   (setenv "GIT_ASKPASS" "/home/arya/Documents/Org/Scripts/gitaskpass.sh")
+  (setq transient-default-level 5)
   :bind
   (:map space-prefix
   ("g g" . magit))
