@@ -554,6 +554,18 @@ See `org-capture-templates' for more information."
                  (file+olp "~/Documents/Org/Blog/blog.org" "Emacs")
                  (function org-hugo-new-subtree-post-capture-template)))
   (add-to-list 'org-capture-templates
+               '("bc"                
+                 "Coding"
+                 entry
+                 (file+olp "~/Documents/Org/Blog/blog.org" "Coding")
+                 (function org-hugo-new-subtree-post-capture-template)))
+  (add-to-list 'org-capture-templates
+               '("bp"                
+                 "Philosophy"
+                 entry
+                 (file+olp "~/Documents/Org/Blog/blog.org" "Philosophy")
+                 (function org-hugo-new-subtree-post-capture-template)))
+  (add-to-list 'org-capture-templates
                '("bl" 
                  "Linux"
                  entry
