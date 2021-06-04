@@ -16,7 +16,9 @@
   (global-undo-tree-mode +1)
   ;; (evil-collection-init)
   (evil-mode +1)
+    (evil-define-key 'normal 'global (kbd "~") #'(lambda() (interactive) (switch-to-buffer nil)))
   (evil-set-leader 'normal (kbd "\\")))
+
 (use-package evil-org
   :straight t
   :after org)

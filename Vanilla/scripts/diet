@@ -31,6 +31,7 @@
 (notifications-notify :app-name "Emacs" :title "Diet" :body (format "%s" (mapcar* (lambda (a b) (format "%s - %s\n" a b)) diet count)))
 (princ (format "%s" (mapcar* (lambda (a b) (format "%s - %s\n" a b)) diet count)))
 (unless (org-google-tasks-check-tasklist-today "Diet")
+  (message "%s" "Hello")
   (org-google-tasks-insert-list (mapcar* (lambda (a b) (format "%s - %s\n" a b)) diet count) "Diet"))
 (sleep-for 20)
   ))
