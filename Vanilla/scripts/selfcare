@@ -24,6 +24,7 @@
          (count '()))
   (setq xday (delete "" (org-table-get-remote-range "Plan" (concat "@2$" (format "%s" (symbol-value (intern day))) "..@>$" (format "%s" (symbol-value (intern day)))))))
   (setq xday (append xday (delete "" (org-table-get-remote-range "Plan" "@2$1..@>$1"))))
+(unless (org-google-tasks-check-tasklist-today "Selfcare")
   (mapcar (lambda (x)
             (org-google-tasks-insert-remote-task (car (org-google-tasks-get-tasklist-id-by-name "Selfcare")) x "" (org-google-tasks-convert-time (current-time))  t)
             (message "%s" org-google-tasks-temp-task)
@@ -35,4 +36,4 @@
 (unless (org-google-tasks-check-tasklist-today "Diet")
   (org-google-tasks-insert-list (mapcar* (lambda (a b) (format "%s - %s\n" a b)) xday count) "Exercises"))
 (sleep-for 20)
-))
+)))

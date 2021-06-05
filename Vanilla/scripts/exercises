@@ -24,6 +24,8 @@
          (count '()))
   (setq xday (delete "" (org-table-get-remote-range "Plan" (concat "@2$" (format "%s" (symbol-value (intern day))) "..@>$" (format "%s" (symbol-value (intern day)))))))
   (setq xday (append xday (delete "" (org-table-get-remote-range "Plan" "@2$1..@>$1"))))
+
+(unless (org-google-tasks-check-tasklist-today "Exercises")
   (mapcar (lambda (x)
             (goto-char (org-find-exact-headline-in-buffer x))
             (org-google-tasks-insert-remote-task (car (org-google-tasks-get-tasklist-id-by-name "Exercises")) (org-get-heading) (car (split-string (org-get-entry) "* ")) (org-google-tasks-convert-time (current-time))  t)
@@ -36,9 +38,9 @@
                   ))))  xday)
   
 ;; (require 'notifications)
-(notifications-notify :app-name "Emacs" :title "Diet" :body (format "%s" (mapcar* (lambda (a b) (format "%s - %s\n" a b)) xday count)))
+(notifications-notify :app-name "Emacs" :title "Exercises" :body (format "%s" (mapcar* (lambda (a b) (format "%s - %s\n" a b)) xday count)))
 (princ (format "%s" (mapcar* (lambda (a b) (format "%s - %s\n" a b)) xday count)))
 (unless (org-google-tasks-check-tasklist-today "Diet")
   (org-google-tasks-insert-list (mapcar* (lambda (a b) (format "%s - %s\n" a b)) xday count) "Exercises"))
 (sleep-for 20)
-))
+)))
