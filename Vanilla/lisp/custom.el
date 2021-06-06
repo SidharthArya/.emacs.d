@@ -11,8 +11,6 @@
      ("reg" "%(binary) -f %(ledger-file) reg")
      ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
      ("account" "%(binary) -f %(ledger-file) reg %(account)")))
- '(org-agenda-files
-   '("~/Documents/Org/Blog/blog.org" "~/Documents/Org/Agenda/notes.org" "~/Documents/Org/Agenda/books.org" "~/Documents/Org/Agenda/entertainment.org") nil nil "Customized with use-package org")
  '(org-duration-units
    `(("min" . 1)
      ("h" . 60)
@@ -26,7 +24,9 @@
       (* 60 8 5 4 12))) nil nil "Customized with use-package org")
  '(org-export-backends '(ascii beamer html icalendar latex odt))
  '(safe-local-variable-values
-   '((visual-line-mode)
+   '((org-hugo-section . "braindump")
+     (org-hugo-base-dir . "~/.blog")
+     (visual-line-mode)
      (org-roam-db-location . "./DB/org-roam.db")
      (org-roam-index-file . "./DB/index.org")
      (org-roam-directory . ".")

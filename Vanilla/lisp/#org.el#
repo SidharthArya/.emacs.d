@@ -651,6 +651,7 @@ See `org-capture-templates' for more information."
 (defun my-org-hugo--org-roam-backlinks (x)
   (when (org-roam--org-roam-file-p)
     (replace-string "{" "")
+    (replace-string "}" "")
     (end-of-buffer)
     (my-org-roam-buffer--insert-backlinks)))
 (add-hook 'org-export-before-processing-hook #'my-org-hugo--org-roam-backlinks)
