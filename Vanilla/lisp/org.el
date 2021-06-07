@@ -521,13 +521,6 @@ should be continued."
   :config
   (setq org-hugo-base-dir "~/.blog/")
   (setq org-hugo-front-matter-format 'yaml)
-  (defun my-org-roam/publish (file)
-  (with-current-buffer (find-file-noselect file)
-    (let ((org-id-extra-files (delete 'nil (mapcar (lambda (a) (if (not (string-match-p "\/.*\/" (replace-regexp-in-string org-roam-directory "" a))) a)) (org-roam--list-files org-roam-directory)))))
-    (setq-local org-hugo-base-dir "~/.blog/content")
-    (setq-local org-hugo-section "braindump")
-      (projectile-mode -1)
-      (org-hugo-export-wim-to-md))))
 
   (with-eval-after-load 'org-capture
   (defun org-hugo-new-subtree-post-capture-template ()
@@ -586,16 +579,25 @@ See `org-capture-templates' for more information."
   )
   
 (defun org-hugo--tag-processing-fn-roam-tags(tag-list info)
-  ""
+  "Process org roam tags for org hugo"
   (if (org-roam--org-roam-file-p)
       (append tag-list '("braindump") (mapcar #'downcase (org-roam--extract-tags)))
     tag-list
     ))
+
 (defun org-hugo--org-roam-save-buffer()
   ""
-  (if (org-roam--org-roam-file-p)
-      (when (org-collect-keywords '("EXPORT_HUGO"))
-        (org-hugo-export-wim-to-md))))
+  (when (org-roam--org-roam-file-p)
+    (when (<= (length
+               (split-string
+                (replace-regexp-in-string (expand-file-name org-roam-directory) ""
+                                          (expand-file-name (buffer-file-name org-roam-buffer--current))) "/")) 2)
+      (unless no-trace-links
+        (dolist (links (org-roam--extract-links))
+          (with-current-buffer (find-file-noselect (aref links 1))
+            (org-hugo--org-roam-save-buffer t)
+            (kill-buffer))))
+      (org-hugo-export-wim-to-md))))
 (defun my-org-hugo-org-roam-sync-all()
   ""
   (interactive)
@@ -648,12 +650,13 @@ See `org-capture-templates' for more information."
                         "")
                       "\n\n"))))
       (insert "\n\n* No backlinks!"))))
-(defun my-org-hugo--org-roam-backlinks (x)
+(defun my-org-hugo--org-roam-backlinks (backend)
+  (when (equal backend 'hugo)
   (when (org-roam--org-roam-file-p)
     (replace-string "{" "")
     (replace-string "}" "")
     (end-of-buffer)
-    (my-org-roam-buffer--insert-backlinks)))
+    (my-org-roam-buffer--insert-backlinks))))
 (add-hook 'org-export-before-processing-hook #'my-org-hugo--org-roam-backlinks)
 (add-to-list 'after-save-hook #'org-hugo--org-roam-save-buffer)
  
@@ -664,16 +667,4 @@ See `org-capture-templates' for more information."
   :after (ox-hugo org-ref)
   :config
   (citeproc-org-setup)
-(add-to-list 'org-ref-formatted-citation-formats
-             '("md"
-               ("article" . "${author}, *${title}*, ${journal}, *${volume}(${number})*, ${pages} (${year}). ${doi}")
-               ("inproceedings" . "${author}, *${title}*, In ${editor}, ${booktitle} (pp. ${pages}) (${year}). ${address}: ${publisher}.")
-               ("book" . "${author}, *${title}* (${year}), ${address}: ${publisher}.")
-               ("phdthesis" . "${author}, *${title}* (Doctoral dissertation) (${year}). ${school}, ${address}.")
-               ("inbook" . "${author}, *${title}*, In ${editor} (Eds.), ${booktitle} (pp. ${pages}) (${year}). ${address}: ${publisher}.")
-               ("incollection" . "${author}, *${title}*, In ${editor} (Eds.), ${booktitle} (pp. ${pages}) (${year}). ${address}: ${publisher}.")
-               ("proceedings" . "${editor} (Eds.), _${booktitle}_ (${year}). ${address}: ${publisher}.")
-               ("unpublished" . "${author}, *${title}* (${year}). Unpublished manuscript.")
-               ("misc" . "${author} (${year}). *${title}*. Retrieved from [${howpublished}](${howpublished}). ${note}.")
-               (nil . "${author}, *${title}* (${year}).")))
   )
