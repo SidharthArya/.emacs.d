@@ -296,7 +296,7 @@ should be continued."
   )
 
 (use-package org-roam
-  :straight org-roam
+  :straight (org-roam :host github :repo "org-roam/org-roam" :branch "v2")
   :after org
   :hook
   (after-init . org-roam-mode)
