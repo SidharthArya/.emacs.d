@@ -10,7 +10,6 @@
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
-
 (straight-use-package 'use-package)
 (setq load-path (delete "/usr/share/emacs/27.1/lisp/org" load-path))
 ;(format "%s" (mapcar #'(lambda(a) (string-match "/usr/share/emacs/24.3a) load-path)
