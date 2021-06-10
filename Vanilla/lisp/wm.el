@@ -1,6 +1,9 @@
 (use-package exwm
   :straight t
   :config
+  (require 'exwm)
+  (require 'exwm-randr)
   (require 'exwm-config)
-  (exwm-config-example))
-
+  (exwm-randr-enable)
+  (exwm-config-example)
+  )

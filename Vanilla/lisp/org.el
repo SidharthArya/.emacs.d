@@ -296,7 +296,7 @@ should be continued."
   )
 
 (use-package org-roam
-  :straight (org-roam :host github :repo "org-roam/org-roam" :branch "v2")
+  :straight t
   :hook
   (after-init . org-roam-mode)
   :init
@@ -319,7 +319,7 @@ should be continued."
   :custom
   (org-roam-db-update-method 'immediate)
   (org-roam-graph-viewer "/usr/bin/xdg-open")
-  (org-roam-tag-sources '(prop all-directories))
+  (org-roam-tag-sources '(prop all-directories vanilla))
   (org-roam-directory "~/Documents/Org/Roam")
   (org-roam-db-location "~/Documents/Org/Roam/DB")
   (org-roam-dailies-directory "dailies")
@@ -341,7 +341,6 @@ should be continued."
   :bind
   (:map space-prefix
 	("r l" . org-roam-buffer)
-	("r f" . org-roam-node-find)
 	("r p" . org-roam-select-database)
 	("r c" . org-roam-capture)
 	("r d" . org-roam-dailies-find-date)
@@ -367,7 +366,7 @@ should be continued."
   (require 'org-ref))
 
 (use-package org-roam-server
-  :straight org-roam-server
+  :straight (org-roam-server :type git :fetcher github :repo "SidharthArya/org-roam-server" :files (:defaults "index.html"))
   :after org
   :bind
   (:map space-prefix
@@ -386,7 +385,6 @@ should be continued."
         org-roam-server-network-label-truncate t
         org-roam-server-network-label-truncate-length 60
         org-roam-server-network-label-wrap-length 20))
-
 (use-package org-ref
   :straight t
   :after (org helm)
@@ -491,14 +489,14 @@ should be continued."
   (setq org-super-agenda-header-map nil)
   )
 
-;; (if (modular-config-modules-loaded-p '(helm))
-;;     (use-package helm-org-roam
-;;       :straight (helm-org-roam :type git :fetcher github :repo "https://github.com/SidharthArya/helm-org-roam" :files (:defaults))
-;;       :defer nil
-;;       :bind
-;;       (:map space-prefix
-;; 	    ("r f" . helm-org-roam-find-file)
-;; 	    )))
+(if (modular-config-modules-loaded-p '(helm))
+    (use-package helm-org-roam
+      :straight (helm-org-roam :type git :fetcher github :repo "https://github.com/SidharthArya/helm-org-roam" :files (:defaults))
+      :defer nil
+      :bind
+      (:map space-prefix
+	    ("r f" . helm-org-roam-find-file)
+	    )))
 
 (use-package org-google-tasks
   :straight (org-google-tasks :type git :fetcher github :repo "https://github.com/SidharthArya/org-google-tasks" :files (:defaults) )
