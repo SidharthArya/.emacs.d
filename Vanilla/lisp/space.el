@@ -45,6 +45,9 @@
  ("t m" . menu-bar-mode)
  ("t t" . tool-bar-mode)
  ("t s" . scroll-bar-mode)
+ ("SPC" . helm-find-files)
+ ("," . helm-mini)
+ (":" . helm-M-x)
  )
 
 (global-set-key (kbd "C-c") space-prefix)

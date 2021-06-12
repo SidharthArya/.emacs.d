@@ -340,7 +340,7 @@ should be continued."
   (org-roam-completion-system 'helm)
   :bind
   (:map space-prefix
-	("r l" . org-roam-buffer)
+	("r l" . org-roam)
 	("r p" . org-roam-select-database)
 	("r c" . org-roam-capture)
 	("r d" . org-roam-dailies-find-date)
@@ -492,7 +492,7 @@ should be continued."
 (if (modular-config-modules-loaded-p '(helm))
     (use-package helm-org-roam
       :straight (helm-org-roam :type git :fetcher github :repo "https://github.com/SidharthArya/helm-org-roam" :files (:defaults))
-      :defer nil
+      :defer t
       :bind
       (:map space-prefix
 	    ("r f" . helm-org-roam-find-file)
@@ -515,11 +515,19 @@ should be continued."
 
 (use-package ox-hugo
   :straight  (ox-hugo :type git :fetcher github :repo "kaushalmodi/ox-hugo" :files (:defaults))
+  :defer nil
   :custom
   (org-hugo-auto-set-lastmod t)
   :config
   (setq org-hugo-base-dir "~/.blog/")
   (setq org-hugo-front-matter-format 'yaml)
+  (defun my-org-roam--find-file-hook ()
+    ""
+    (when (org-roam--org-roam-file-p)
+      (add-hook 'after-save-hook #'org-hugo--org-roam-save-buffer)
+      (add-hook 'org-export-before-processing-hook #'my-org-hugo--org-roam-backlinks)
+      ))
+  (add-hook 'find-file-hook #'my-org-roam--find-file-hook)
   (with-eval-after-load 'org-capture
     (defun org-hugo-new-subtree-post-capture-template ()
       "Returns `org-capture' template string for new Hugo post.
@@ -583,7 +591,7 @@ See `org-capture-templates' for more information."
       tag-list
       ))
 
-  (defun org-hugo--org-roam-save-buffer()
+  (defun org-hugo--org-roam-save-buffer(&optional no-trace-links)
     ""
     (when (org-roam--org-roam-file-p)
       (when (<= (length
@@ -655,9 +663,8 @@ See `org-capture-templates' for more information."
 	(replace-string "}" "")
 	(end-of-buffer)
 	(my-org-roam-buffer--insert-backlinks))))
-  (add-hook 'org-export-before-processing-hook #'my-org-hugo--org-roam-backlinks)
+  (require 'ox-hugo)
   (add-to-list 'after-save-hook #'org-hugo--org-roam-save-buffer)
-  
   (add-to-list 'org-hugo-tag-processing-functions 'org-hugo--tag-processing-fn-roam-tags)
   )
 (use-package citeproc-org
