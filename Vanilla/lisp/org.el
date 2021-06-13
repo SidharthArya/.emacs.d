@@ -138,6 +138,7 @@
   :bind
   (:map space-prefix
         ("o c" . org-capture)
+        ("o e" . org-export-dispatch)
         ("o a" . org-agenda)
         ("o d" . (lambda() (interactive) (find-file "~/Documents/Org/diary")))
         ("o A" . (lambda() (interactive) (find-file "~/Documents/Org/Agenda/approach.org")))
@@ -297,6 +298,7 @@ should be continued."
 
 (use-package org-roam
   :straight t
+  :defer nil
   :hook
   (after-init . org-roam-mode)
   :init
@@ -507,14 +509,12 @@ should be continued."
   :config
   (org-google-tasks-load-credentials)
   (org-google-tasks-get-tokens)
-  (if (equal ':null (gethash "refresh_token" org-google-tasks-credential))
-      (org-google-tasks-get-oauth-code)
-    (org-google-tasks-get-tokens))
   (org-google-tasks-get-remote-list t t)
   )
 
 (use-package ox-hugo
   :straight  (ox-hugo :type git :fetcher github :repo "kaushalmodi/ox-hugo" :files (:defaults))
+  :after org
   :defer nil
   :custom
   (org-hugo-auto-set-lastmod t)
@@ -528,7 +528,6 @@ should be continued."
       (add-hook 'org-export-before-processing-hook #'my-org-hugo--org-roam-backlinks)
       ))
   (add-hook 'find-file-hook #'my-org-roam--find-file-hook)
-  (with-eval-after-load 'org-capture
     (defun org-hugo-new-subtree-post-capture-template ()
       "Returns `org-capture' template string for new Hugo post.
 See `org-capture-templates' for more information."
@@ -582,7 +581,7 @@ See `org-capture-templates' for more information."
                    entry
                    (file+olp "~/Documents/Org/Blog/blog.org" "Blog")
                    (function org-hugo-new-subtree-post-capture-template)))
-    )
+    
   
   (defun org-hugo--tag-processing-fn-roam-tags(tag-list info)
     "Process org roam tags for org hugo"
@@ -672,4 +671,10 @@ See `org-capture-templates' for more information."
   :after (ox-hugo org-ref)
   :config
   (citeproc-org-setup)
+  )
+
+(use-package ob-ipython
+  :straight t
+  :custom
+  (ob-ipython-command "~/.local/bin/jupyter")
   )
