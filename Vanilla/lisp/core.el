@@ -82,3 +82,7 @@
 
 
 (setq load-path (mapcar (lambda (a) (if (not (string-match-p "org" a)) a)) (delete nil load-path)))
+(use-package direnv
+  :straight t
+  :config
+  (direnv-mode +1))
