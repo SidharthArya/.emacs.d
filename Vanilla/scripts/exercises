@@ -26,7 +26,8 @@
   (setq xday (delete "" (org-table-get-remote-range "Plan" (concat "@2$" (format "%s" (symbol-value (intern day))) "..@>$" (format "%s" (symbol-value (intern day)))))))
   (setq xday (append xday (delete "" (org-table-get-remote-range "Plan" "@2$1..@>$1"))))
 
-(unless (org-google-tasks-check-tasklist-today "Exercises")
+  (unless (org-google-tasks-check-tasklist-today "Exercises")
+    (message "%s" xday)
   (mapcar (lambda (x)
             (goto-char (org-find-exact-headline-in-buffer x))
             (org-google-tasks-insert-remote-task (car (org-google-tasks-get-tasklist-id-by-name "Exercises")) (org-get-heading) (car (split-string (org-get-entry) "* ")) (org-google-tasks-convert-time (current-time))  t)
