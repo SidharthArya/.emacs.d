@@ -15,3 +15,8 @@
         ("g t" . git-timemachine)
         )
   )
+
+(use-package diff-hl
+  :straight t
+  :config
+  (global-diff-hl-mode))

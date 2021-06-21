@@ -596,7 +596,7 @@ See `org-capture-templates' for more information."
       (when (<= (length
 		 (split-string
                   (replace-regexp-in-string (expand-file-name org-roam-directory) ""
-                                            (expand-file-name (buffer-file-name org-roam-buffer--current))) "/")) 2)
+                                            (expand-file-name (buffer-file-name nil))) "/")) 2)
 	(unless no-trace-links
           (dolist (links (org-roam--extract-links))
             (with-current-buffer (find-file-noselect (aref links 1))
