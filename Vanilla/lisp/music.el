@@ -3,6 +3,7 @@
   :custom
   ;; (emms-directory "~/Music/emms")
   (emms-source-file-default-directory "~/Music")
+  (emms-source-playlist-default-format 'pls)
   (emms-player-list '(emms-player-mpv))
   (emms-playlist-buffer-name "*Music*")
   (emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
@@ -31,6 +32,29 @@
       (setq-local music-file name))
   ))
 
+(defun my-emms-open-playlist(playlist-path)
+  ""
+  (interactive (list (completing-read "Playlist File: " (cdr (cdr (directory-files my-emms-playlist-dir))))))
+  (let* ((name (car (split-string playlist-path "\\.")))
+         (buffer (emms-playlist-new name))
+         )
+    (with-current-buffer buffer
+      (setq-local my-emms-playlist-loaded t)
+      (condition-case nil
+          (emms-insert-playlist (concat my-emms-playlist-dir "/" playlist-path))
+        (error nil)))
+    
+    (switch-to-buffer buffer)
+  ))
+  
+(defun my-emms-save-playlist()
+  ""
+  (interactive)
+  (let* ((name (buffer-name)))
+    
+      (emms-playlist-save 'pls (concat my-emms-playlist-dir "/" name))
+  ))
+  
   (defun my-emms-add-to-playlist(playlist-name)
     ""
     (interactive (list (completing-read "Playlist Name: " my-emms-playlists)))
@@ -57,6 +81,8 @@
   :bind
   (:map space-prefix
         ("m m" . emms)
+        ("m o" . my-emms-open-playlist)
+        ("m s" . my-emms-save-playlist)
         ("m d" . emms-youtube-dl-music-download)
         ("m M" . emms-metaplaylist-mode-go)
         ("m p" . emms-pause)

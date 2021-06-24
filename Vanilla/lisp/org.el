@@ -401,6 +401,7 @@ should be continued."
   :after org
   :config
   (require 'org-fc-hydra)
+  (require 'org-fc-awk)
   :bind
   (:map space-prefix
         ("o f r" . org-fc-review)
