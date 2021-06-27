@@ -20,7 +20,7 @@
                          (none ())
                          (minimal (core appearance))
                          (mail (core vi mail appearance helm space emoji not-org mail gnus begin-mail))
-                         (news (begin-news core vi helm space web appearance helm core-post not-org))
+                         (news (begin-news core vi helm space web appearance helm core-post not-org help))
                          ;; core web org emoji 
                          (tracking (core vi space appearance org begin-tracking not-org))
                          (programming (core appearance ivy org programming vc))

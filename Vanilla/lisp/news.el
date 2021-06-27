@@ -69,6 +69,10 @@
                                  :add 'junk
                                  :remove 'unread))
 
+  (add-hook 'elfeed-new-entry-hook
+            (elfeed-make-tagger  :entry-title '("Bitcoin" "bitcoin" "BTC" "ethereum" "Ethereum" "ETH" "DOGE" "doge" "Doge" "Litecoin" "litecoin" "LTC")
+                                 :add '(crypto important)
+                                 :remove 'unread))
 
   (add-hook 'elfeed-new-entry-hook
             (elfeed-make-tagger  :entry-title '"Dr. Pimple Popper"
