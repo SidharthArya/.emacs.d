@@ -40,14 +40,13 @@
       (mapc #'elfeed-search-update-entry entries)
       (unless (or elfeed-search-remain-on-entry (use-region-p))
         (forward-line)))))
-  (if (modular-config-modules-loaded-p '(vi))
   (evil-define-key* 'normal elfeed-search-mode-map
     "p" 'elfeed-org-protocol-emms
-    "P" 'elfeed-org-protocol-emms-play))
+    "P" 'elfeed-org-protocol-emms-play)
     
 
   :bind
-  (:map elfeed-search-mode-map
+  (:map elfeed-mode-map
         ("C" . elfeed-search-clear-filter)
         )
   :config
@@ -90,7 +89,7 @@
       (browse-url (url-encode-url (concat "org-protocol:/emms?url=" (url-encode-url (car (car (car (cdr enclosures))))) "&title=" (car enclosures) "&body=" (format "%s" play)))))
 
 
-(defun elfeed-org-protocol-emms-play (enclosures play)
+(defun elfeed-org-protocol-emms-play (enclosures)
   ""
-  (interactive (list (helm :sources (helm-build-sync-source "Entries" :candidates (mapcar (lambda (a) (cons (elfeed-entry-title a) (list (elfeed-entry-title a) (elfeed-entry-enclosures a)))) (elfeed-search-selected)))) t))
-      (browse-url (url-encode-url (concat "org-protocol:/emms?url=" (url-encode-url (car (car (car (cdr enclosures))))) "&title=" (car enclosures) "&body=" (format "%s" play)))))
+  (interactive (list (helm :sources (helm-build-sync-source "Entries" :candidates (mapcar (lambda (a) (cons (elfeed-entry-title a) (list (elfeed-entry-title a) (elfeed-entry-enclosures a)))) (elfeed-search-selected))))))
+      (browse-url (url-encode-url (concat "org-protocol:/emms?url=" (url-encode-url (car (car (car (cdr enclosures))))) "&title=" (car enclosures) "&body=" (format "%s" t)))))

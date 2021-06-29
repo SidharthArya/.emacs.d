@@ -33,5 +33,6 @@
                          (main (core appearance programming emoji ivy web org finance news mail documents server space workspace dashboard core-post))))
   (modular-config-default 'org)
   (modular-config-path "~/.emacs.d/lisp")
+  (modular-config-use-separate-bookmarks t)
   :config
   (modular-config-command-line-args-process))

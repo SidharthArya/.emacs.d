@@ -8,6 +8,36 @@
   (emms-playlist-buffer-name "*Music*")
   (emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
   (emms-repeat-playlist t)
+  :init
+  
+  (defun org-protocol-emms(fname)
+    ""
+  (let* ((splitparts (org-protocol-parse-parameters fname nil '(:url :title :body)))
+         (uri (org-protocol-sanitize-uri (plist-get splitparts :url)))
+         (title (plist-get splitparts :title))
+         (body (plist-get splitparts :body))
+         )
+    (when (equal body "save")
+    (let ((track (emms-track 'url uri)))
+	  (emms-track-set track 'info-title title) 
+          (with-current-buffer (my-emms-open-playlist "Queue")
+	    (emms-playlist-insert-track track)
+(my-emms-save-playlist)
+            ))
+    )
+    (unless (equal body "save")
+    (let ((track (emms-track 'url uri)))
+	  (emms-track-set track 'info-title title) 
+	  (with-current-emms-playlist
+	    (emms-playlist-insert-track track)))
+    
+    (when (equal body "t")
+      (with-current-emms-playlist
+      (save-excursion
+        (emms-playlist-last)
+        (emms-playlist-mode-play-current-track)
+        ))))))
+  (add-to-list 'org-protocol-protocol-alist '("emms" :protocol "emms" :function org-protocol-emms))
   :config
   (setq-default emms-playlist-mode-hook '(emms-mark-mode))
   (require 'emms-setup)
@@ -36,7 +66,8 @@
   ""
   (interactive (list (completing-read "Playlist File: " (cdr (cdr (directory-files my-emms-playlist-dir))))))
   (let* ((name (car (split-string playlist-path "\\.")))
-         (buffer (emms-playlist-new name))
+         (path (concat my-emms-playlist-dir "/" name))
+         (buffer (or (ignore-errors (get-buffer name)) (emms-playlist-new name)))
          )
     (with-current-buffer buffer
       (setq-local my-emms-playlist-loaded t)
@@ -51,7 +82,6 @@
   ""
   (interactive)
   (let* ((name (buffer-name)))
-    
       (emms-playlist-save 'pls (concat my-emms-playlist-dir "/" name))
   ))
   
@@ -75,9 +105,8 @@
             
       (my-emms-add-track-to-playlist t)
       )))
-  (defun my-emms-add-track-to-playlist(&optinal file arg tracks)
-    ""
-    )
+  (evil-define-key* 'normal emms-playlist-mode-map
+    "s" 'emms-shuffle)
   :bind
   (:map space-prefix
         ("m m" . emms)
@@ -92,6 +121,7 @@
         ("m /" . emms-browser-search-by-title)
 
         )
+  :commands (emms-track)
   )
 
 

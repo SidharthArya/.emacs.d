@@ -8,4 +8,5 @@
                   ;;                      (".*\.DAT.*" t "localc" "%s")
                   (".*thehindu.*" t "qutebrowser" "https://outline.com/%s")
                   (".*medium.*" t "qutebrowser" "%s")
+                  (".*mp3.*" t "emacsclient" "%s")
                   )))
