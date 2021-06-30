@@ -7,7 +7,7 @@
 (setq file-name-handler-alist nil)
 
 (setq message-log-max 2000)
-
+(auto-fill-mode -1)
 ;; UTF-8 support
 (set-charset-priority 'unicode)
 (prefer-coding-system 'utf-8)
