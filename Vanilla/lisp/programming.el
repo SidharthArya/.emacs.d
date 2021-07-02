@@ -22,7 +22,6 @@
   :commands ide-mode)
 
 (use-package flycheck
-  :straight t
   :hook (prog-mode . flycheck-mode)
   :commands flycheck-mode)
 

@@ -1,7 +1,6 @@
 (modular-config-load-modules '(mount))
 (use-package org
   ;; :if my-documents-mounted
-  :straight t
   :hook (org-mode . visual-line-mode)
   (org-mode . auto-save-mode)
   :custom
@@ -297,7 +296,6 @@ should be continued."
   )
 
 (use-package org-roam
-  :straight t
   :defer nil
   :hook
   (after-init . org-roam-mode)
@@ -359,7 +357,6 @@ should be continued."
 
 
 (use-package org-roam-bibtex
-  :straight t
   :after org-roam
   :hook
   (org-roam-mode . org-roam-bibtex-mode)
@@ -397,7 +394,6 @@ should be continued."
   (org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
   )
 (use-package org-fc
-  :straight (org-fc :type git :repo "https://git.sr.ht/~l3kn/org-fc" :files (:defaults "awk" "demo.org"))
   :after org
   :config
   (require 'org-fc-hydra)
@@ -436,21 +432,17 @@ should be continued."
   )
 
 (use-package org-bullets
-  :straight t
   :after org
   :config
   (add-hook 'org-mode-hook #'org-bullets-mode))
 
 (use-package org-download
-  :straight t
   :after org
   :config
   (add-hook 'dired-mode-hook 'org-download-enable))
 
 
 (use-package org-super-agenda
-  :straight org-super-agenda
-  :straight org-ql
   :after org
   :custom
   (org-super-agenda-groups

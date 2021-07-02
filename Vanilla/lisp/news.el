@@ -51,6 +51,9 @@
         ("C" . elfeed-search-clear-filter)
         )
   :config
+
+(if (not (equal (format-time-string "%Y-%m-%d" (elfeed-db-last-update)) (format-time-string "%Y-%m-%d" (current-time))))
+      (elfeed-update))
   (setq-default elfeed-search-filter  (if
                                           (<= (string-to-number (format-time-string "%u")) 5)
                                           "@2-days-ago -unimportant +unread +important"
@@ -69,20 +72,21 @@
 
 
             ;;; HOOKS
-  (add-hook 'elfeed-new-entry-hook
-            (elfeed-make-tagger  :entry-title '"ASL Video Series"
-                                 :add 'junk
-                                 :remove 'unread))
+  ;; (add-hook 'elfeed-new-entry-hook
+  ;;           (elfeed-make-tagger  :entry-title '"ASL Video Series"
+  ;;                                :add 'junk
+  ;;                                :remove 'unread))
 
-  (add-hook 'elfeed-new-entry-hook
-            (elfeed-make-tagger  :entry-title '("Bitcoin" "bitcoin" "BTC" "ethereum" "Ethereum" "ETH" "DOGE" "doge" "Doge" "Litecoin" "litecoin" "LTC")
-                                 :add '(crypto important)
-                                 :remove 'unread))
+  ;; (add-hook 'elfeed-new-entry-hook
+  ;;           (elfeed-make-tagger  :entry-title '("Bitcoin" "bitcoin" "BTC" "ethereum" "Ethereum" "ETH" "DOGE" "doge" "Doge" "Litecoin" "litecoin" "LTC")
+  ;;                                :add '(crypto important)
+  ;;                                :remove 'unread))
 
-  (add-hook 'elfeed-new-entry-hook
-            (elfeed-make-tagger  :entry-title '"Dr. Pimple Popper"
-                                 :add 'junk
-                                 :remove 'unread)))
+  ;; (add-hook 'elfeed-new-entry-hook
+  ;;           (elfeed-make-tagger  :entry-title '"Dr. Pimple Popper"
+  ;;                                :add 'junk
+  ;;                                :remove 'unread)))
+  )
 (run-at-time "04:00am" 600 'elfeed-db-save)
 (defun elfeed-org-protocol-emms (enclosures play)
   ""
@@ -94,3 +98,14 @@
   ""
   (interactive (list (helm :sources (helm-build-sync-source "Entries" :candidates (mapcar (lambda (a) (cons (elfeed-entry-title a) (list (elfeed-entry-title a) (elfeed-entry-enclosures a)))) (elfeed-search-selected)))) t))
       (browse-url (url-encode-url (concat "org-protocol:/emms?url=" (url-encode-url (car (car (car (cdr enclosures))))) "&title=" (car enclosures) "&body=" (format "%s" play)))))
+(require 'dash)
+(defun my-elfeed-org-update ()
+  "AUtomatically Update the feeds from feeds.org when updated"
+   (setq my-elfeed-org-last (or (and (boundp 'elfeed-feeds) elfeed-feeds) nil))
+  (elfeed)
+  (setq my-elfeed-org-current elfeed-feeds)
+
+  (let ((elfeed-feeds (-difference my-elfeed-org-current my-elfeed-org-last)))
+    (message "%s"  elfeed-feeds)
+    (mapc #'elfeed-update-feed (elfeed--shuffle (elfeed-feed-list))))
+  (setq elfeed-feeds my-elfeed-org-current))

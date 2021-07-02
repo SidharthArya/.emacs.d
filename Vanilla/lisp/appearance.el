@@ -28,7 +28,10 @@
 ;;   :straight t
 ;;   :config
 ;;   (load-theme 'gruvbox t))
-(use-package spacemacs-theme
-  :straight t
+;; (use-package spacemacs-theme
+;;   :straight t
+;;   :init
+;;   (load-theme 'spacemacs-dark t))
+(use-package doom-one
   :init
-  (load-theme 'spacemacs-dark t))
+  (load-theme 'doom-one t))

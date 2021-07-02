@@ -77,12 +77,10 @@
 ;;   :config
 ;;   (electric-pair-mode +1)
 ;;   )
-(use-package smartparens
-  :straight t)
+(use-package smartparens)
 
 
 (setq load-path (mapcar (lambda (a) (if (not (string-match-p "org" a)) a)) (delete nil load-path)))
 (use-package direnv
-  :straight t
   :config
   (direnv-mode +1))

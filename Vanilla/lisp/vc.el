@@ -9,7 +9,6 @@
   :commands magit)
 
 (use-package git-timemachine
-  :straight t
   :bind
   (:map space-prefix
         ("g t" . git-timemachine)
@@ -17,6 +16,5 @@
   )
 
 (use-package diff-hl
-  :straight t
   :config
   (global-diff-hl-mode))

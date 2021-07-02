@@ -12,8 +12,6 @@
                      "~/Documents/Org/Roam/.*"
                      )))
 (use-package helm
-  :straight t
-  :straight helm-descbinds
   :custom
   (helm-ff-file-name-history-use-recentf t)
   (recentf-max-menu-items 100)
@@ -67,12 +65,10 @@
   (helm-descbinds-mode)
   )
 
-(use-package helm-system-packages
-  :straight helm-system-packages)
+(use-package helm-system-packages)
 ;; (use-package helm-org-rifle
 ;;   :straight helm-org-rifle)
 (use-package helm-swoop
-  :straight t
   :bind
   (:map space-prefix
         ("/" . helm-swoop)
@@ -81,8 +77,6 @@
 
 (use-package helm-projectile
   :after projectile
-  :straight t
-  :straight helm-rg
   :bind
   (:map space-prefix
         ("p p" . helm-projectile)
