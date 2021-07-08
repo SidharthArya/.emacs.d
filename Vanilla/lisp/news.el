@@ -1,18 +1,12 @@
 (modular-config-load-modules '(mount))
 (use-package elfeed
   :if my-documents-mounted
-  :straight t
-  :straight elfeed-org
   :custom
   (elfeed-db-directory "~/.news/Feeds")
   (elfeed-sort-order
    'descending)
   (browse-url-generic-program "firefox")
-  (rmh-elfeed-org-files (list "~/Documents/Org/Feeds/feeds.org"))
-  :init
-  (require 'elfeed-org)
-  (elfeed-org)
-  (define-prefix-command 'capture-map)
+  ;; (define-prefix-command 'capture-map)
   ;; (bind-keys
   ;;  :prefix "c"
   ;;  :prefix-map capture-map
@@ -27,6 +21,14 @@
   ;; (evil-define-key '(normal visual) elfeed-search-mode-map "c" capture-map)
 
                              
+
+  :bind
+  (:map elfeed-search-mode-map
+        ("C" . elfeed-search-clear-filter)
+        )
+  :config
+
+  
   (defun my-elfeed-send-org-protocol-command (a)
     (interactive)
     (let ((entries (elfeed-search-selected)))
@@ -45,12 +47,6 @@
     "p" 'elfeed-org-protocol-emms
     "P" 'elfeed-org-protocol-emms-play))
     
-
-  :bind
-  (:map elfeed-search-mode-map
-        ("C" . elfeed-search-clear-filter)
-        )
-  :config
 
 (if (not (equal (format-time-string "%Y-%m-%d" (elfeed-db-last-update)) (format-time-string "%Y-%m-%d" (current-time))))
       (elfeed-update))
@@ -87,7 +83,6 @@
   ;;                                :add 'junk
   ;;                                :remove 'unread)))
   )
-(run-at-time "04:00am" 600 'elfeed-db-save)
 (defun elfeed-org-protocol-emms (enclosures play)
   ""
   (interactive (list (helm :sources (helm-build-sync-source "Entries" :candidates (mapcar (lambda (a) (cons (elfeed-entry-title a) (list (elfeed-entry-title a) (elfeed-entry-enclosures a)))) (elfeed-search-selected)))) nil))
@@ -99,13 +94,30 @@
   (interactive (list (helm :sources (helm-build-sync-source "Entries" :candidates (mapcar (lambda (a) (cons (elfeed-entry-title a) (list (elfeed-entry-title a) (elfeed-entry-enclosures a)))) (elfeed-search-selected)))) t))
       (browse-url (url-encode-url (concat "org-protocol:/emms?url=" (url-encode-url (car (car (car (cdr enclosures))))) "&title=" (car enclosures) "&body=" (format "%s" play)))))
 (require 'dash)
-(defun my-elfeed-org-update ()
-  "AUtomatically Update the feeds from feeds.org when updated"
-   (setq my-elfeed-org-last (or (and (boundp 'elfeed-feeds) elfeed-feeds) nil))
-  (elfeed)
-  (setq my-elfeed-org-current elfeed-feeds)
+(use-package elfeed-org
+  :after elfeed
+  :defer nil
+  :custom
+  (rmh-elfeed-org-files (list "~/Documents/Org/Feeds/feeds.org"))
+  :config
+  (elfeed-org)
+  (defun my-elfeed-org-update ()
+    "AUtomatically Update the feeds from feeds.org when updated"
+    (setq my-elfeed-org-last (or (and (boundp 'elfeed-feeds) elfeed-feeds) nil))
+    (elfeed)
+    (setq my-elfeed-org-current elfeed-feeds)
+    
+    (let ((elfeed-feeds (-difference my-elfeed-org-current my-elfeed-org-last)))
+      (message "%s"  elfeed-feeds)
+      (mapc #'elfeed-update-feed (elfeed--shuffle (elfeed-feed-list))))
+    (setq elfeed-feeds my-elfeed-org-current))
+  :commands elfeed)
 
-  (let ((elfeed-feeds (-difference my-elfeed-org-current my-elfeed-org-last)))
-    (message "%s"  elfeed-feeds)
-    (mapc #'elfeed-update-feed (elfeed--shuffle (elfeed-feed-list))))
-  (setq elfeed-feeds my-elfeed-org-current))
+(defun elfeed-startup-function()
+  ""
+  (setq-default after-save-hook 'my-elfeed-org-update)
+  (elfeed)
+  (run-at-time "04:00am" 600 'elfeed-db-save)
+  (if (not (equal (format-time-string "%Y-%m-%d" (elfeed-db-last-update)) (format-time-string "%Y-%m-%d" (current-time))))
+      (elfeed-update))
+  (get-buffer-create "*elfeed-search*"))

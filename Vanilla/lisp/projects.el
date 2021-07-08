@@ -1,5 +1,4 @@
 (use-package projectile
-  :straight t
   :custom
   (projectile-completion-system 'helm)
   :config
@@ -9,7 +8,6 @@
 
 
 (use-package org-projectile
-  :straight t
   :after org
   :bind (:map space-prefix
               ("p O" . org-projectile-project-todo-completing-read)

@@ -42,6 +42,7 @@
 
 (bind-keys
  :map space-prefix
+ ("t h" . hs-minor-mode)
  ("t m" . menu-bar-mode)
  ("t t" . tool-bar-mode)
  ("t s" . scroll-bar-mode)

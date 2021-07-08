@@ -1,0 +1,1 @@
+(org-google-tasks :type git :fetcher github :repo "https://github.com/SidharthArya/org-google-tasks" :files (:defaults))

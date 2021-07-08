@@ -32,6 +32,10 @@
 ;;   :straight t
 ;;   :init
 ;;   (load-theme 'spacemacs-dark t))
-(use-package doom-one
+(use-package zenburn-theme
+  :custom
+  (zenburn-use-variable-pitch t)
+  (zenburn-scale-org-headlines t)
+  (zenburn-scale-outline-headlines t)
   :init
-  (load-theme 'doom-one t))
+  (load-theme 'zenburn t))

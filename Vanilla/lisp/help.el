@@ -1,5 +1,4 @@
 (use-package helpful
-  :straight t
   :bind
   (:map space-prefix
    ("h M" . helm-man-woman)

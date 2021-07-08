@@ -1,5 +1,4 @@
 (use-package emms
-  :straight t
   :custom
   ;; (emms-directory "~/Music/emms")
   (emms-source-file-default-directory "~/Music")

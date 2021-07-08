@@ -1,10 +1,6 @@
 #!/usr/bin/emacs --script
-(load (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory) nil 'nomessage)
-(straight-use-package 'use-package)
-
-(use-package modular-config
-  :straight t
-  )
+(require 'use-package)
+(use-package modular-config)
 
 (modular-config-load-modules '(space org))
 (unless (shell-command-to-string "pgrep org")

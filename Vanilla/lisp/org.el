@@ -365,7 +365,6 @@ should be continued."
   (require 'org-ref))
 
 (use-package org-roam-server
-  :straight (org-roam-server :type git :fetcher github :repo "SidharthArya/org-roam-server" :files (:defaults "index.html"))
   :after org
   :bind
   (:map space-prefix
@@ -385,7 +384,6 @@ should be continued."
         org-roam-server-network-label-truncate-length 60
         org-roam-server-network-label-wrap-length 20))
 (use-package org-ref
-  :straight t
   :after (org helm)
   :custom
   (reftex-default-bibliography '("~/Documents/Org/references.bib"))
@@ -393,48 +391,48 @@ should be continued."
   (bibtex-completion-bibliography '("~/Documents/Org/references.bib"))
   (org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
   )
-(use-package org-fc
-  :after org
-  :config
-  (require 'org-fc-hydra)
-  (require 'org-fc-awk)
-  :bind
-  (:map space-prefix
-        ("o f r" . org-fc-review)
-        ("o f f" . org-fc-hydra/org-fc-update))
-  :custom
-  (org-fc-directories '("~/Documents/Org/Roam" "~/Documents/Org/Brain")))
+;; (use-package org-fc
+;;   :after org
+;;   :config
+;;   (require 'org-fc-hydra)
+;;   (require 'org-fc-awk)
+;;   :bind
+;;   (:map space-prefix
+;;         ("o f r" . org-fc-review)
+;;         ("o f f" . org-fc-hydra/org-fc-update))
+;;   :custom
+;;   (org-fc-directories '("~/Documents/Org/Roam" "~/Documents/Org/Brain")))
 
-(use-package org-edna
-  :straight t
-  :after org
-  :config
+;; (use-package org-edna
+;;   :straight t
+;;   :after org
+;;   :config
 
-  (defun org-edna-finder/next-sibling-children ()
-    (save-excursion
-      (let* ((poiint (point)))
-	(setq point (car (org-edna-finder/next-sibling-wrap 1)))
-	(goto-char point)
-	(org-edna-finder/children)
-	)))
-  (org-edna-mode +1)
-  )
-(use-package calfw
-  :straight t)
+;;   (defun org-edna-finder/next-sibling-children ()
+;;     (save-excursion
+;;       (let* ((poiint (point)))
+;; 	(setq point (car (org-edna-finder/next-sibling-wrap 1)))
+;; 	(goto-char point)
+;; 	(org-edna-finder/children)
+;; 	)))
+;;   (org-edna-mode +1)
+;;   )
+;; (use-package calfw
+;;   :straight t)
 
-(use-package calfw-org
-  :straight t
-  :after calfw
-  :bind
-  (:map space-prefix
-        ("o C" . cfw:open-org-calendar)
-        )
-  )
+;; (use-package calfw-org
+;;   :straight t
+;;   :after calfw
+;;   :bind
+;;   (:map space-prefix
+;;         ("o C" . cfw:open-org-calendar)
+;;         )
+;;   )
 
 (use-package org-bullets
   :after org
-  :config
-  (add-hook 'org-mode-hook #'org-bullets-mode))
+  :hook
+  (org-mode . org-bullets-mode))
 
 (use-package org-download
   :after org
@@ -486,16 +484,13 @@ should be continued."
 
 (if (modular-config-modules-loaded-p '(helm))
     (use-package helm-org-roam
-      :straight (helm-org-roam :type git :fetcher github :repo "https://github.com/SidharthArya/helm-org-roam" :files (:defaults))
-      :defer t
+      :after org-roam
       :bind
       (:map space-prefix
 	    ("r f" . helm-org-roam-find-file)
 	    )))
 
 (use-package org-google-tasks
-  :straight (org-google-tasks :type git :fetcher github :repo "https://github.com/SidharthArya/org-google-tasks" :files (:defaults) )
-  :straight request
   :custom
   (org-google-tasks-credential-file "/home/arya/Documents/Org/Bots/Org/google-tasks")
   (org-google-tasks-use-inheritance t)
@@ -506,7 +501,6 @@ should be continued."
   )
 
 (use-package ox-hugo
-  :straight  (ox-hugo :type git :fetcher github :repo "kaushalmodi/ox-hugo" :files (:defaults))
   :after org
   :defer nil
   :custom
@@ -518,7 +512,7 @@ should be continued."
     ""
     (when (org-roam--org-roam-file-p)
       (add-hook 'after-save-hook #'org-hugo--org-roam-save-buffer)
-      (add-hook 'org-export-before-processing-hook #'my-org-hugo--org-roam-backlinks)
+      (add-hook 'org-export-before-parsing-hook #'my-org-hugo--org-roam-backlinks)
       ))
   (add-hook 'find-file-hook #'my-org-roam--find-file-hook)
     (defun org-hugo-new-subtree-post-capture-template ()
@@ -651,6 +645,7 @@ See `org-capture-templates' for more information."
   (defun my-org-hugo--org-roam-backlinks (backend)
     (when (equal backend 'hugo)
       (when (org-roam--org-roam-file-p)
+	(replace-string "#+ROAM_KEY:" "")
         (beginning-of-buffer)
 	(replace-string "{" "")
         (beginning-of-buffer)
@@ -662,14 +657,12 @@ See `org-capture-templates' for more information."
   (add-to-list 'org-hugo-tag-processing-functions 'org-hugo--tag-processing-fn-roam-tags)
   )
 (use-package citeproc-org
-  :straight t
   :after (ox-hugo org-ref)
   :config
   (citeproc-org-setup)
   )
 
-(use-package ob-ipython
-  :straight t
-  :custom
-  (ob-ipython-command "~/.local/bin/jupyter")
-  )
+;; (use-package ob-ipython
+;;   :custom
+;;   (ob-ipython-command "~/.local/bin/jupyter")
+;;   )

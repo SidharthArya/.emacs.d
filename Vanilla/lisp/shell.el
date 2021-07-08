@@ -1,3 +1,2 @@
-(use-package vterm
-  :straight t)
+(use-package vterm)
 

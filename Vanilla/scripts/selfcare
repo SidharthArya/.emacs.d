@@ -1,9 +1,7 @@
 #!/usr/bin/emacs --script
-(load (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory) nil 'nomessage)
-(straight-use-package 'use-package)
 
+(require 'use-package)
 (use-package modular-config
-  :straight t
   )
 
 (modular-config-load-modules '(space org))
@@ -31,10 +29,11 @@
             (message "%s" org-google-tasks-temp-task)
                   )  xday)
   
-;; (require 'notifications)
-(notifications-notify :app-name "Emacs" :title "Diet" :body (format "%s" (mapcar* (lambda (a b) (format "%s - %s\n" a b)) xday count)))
-(princ (format "%s" (mapcar* (lambda (a b) (format "%s - %s\n" a b)) xday count)))
+  ;; (require 'notifications)
+
+(notifications-notify :app-name "Emacs" :title "Diet" :body (format "%s" (cl-mapcar (lambda (a b) (format "%s - %s\n" a b)) xday count)))
+(princ (format "%s" (cl-mapcar (lambda (a b) (format "%s - %s\n" a b)) xday count)))
 (unless (org-google-tasks-check-tasklist-today "Diet")
-  (org-google-tasks-insert-list (mapcar* (lambda (a b) (format "%s - %s\n" a b)) xday count) "Exercises"))
+  (org-google-tasks-insert-list (cl-mapcar (lambda (a b) (format "%s - %s\n" a b)) xday count) "Exercises"))
 (sleep-for 20)
 )))

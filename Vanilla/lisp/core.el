@@ -7,7 +7,7 @@
 (setq file-name-handler-alist nil)
 
 (setq message-log-max 2000)
-(auto-fill-mode -1)
+;; (auto-fill-mode -1)
 ;; UTF-8 support
 (set-charset-priority 'unicode)
 (prefer-coding-system 'utf-8)
@@ -33,8 +33,7 @@
 (advice-add #'display-startup-echo-area-message :override #'ignore)
 
 (setq idle-update-delay 1.5)
-
-;; (setq auth-sources '("~/.config/authinfo.gpg"))
+;; (use-package auth-source-pass :init (auth-source-pass-enable))
 
 (setq abbrev-file-name "~/.emacs.d/lisp/abbrev.el")
 (setq bookmark-default-file "~/.emacs.d/bookmarks")
@@ -78,9 +77,8 @@
 ;;   (electric-pair-mode +1)
 ;;   )
 (use-package smartparens)
-
-
-(setq load-path (mapcar (lambda (a) (if (not (string-match-p "org" a)) a)) (delete nil load-path)))
+(use-package hs-mode)
+;;(setq load-path (mapcar (lambda (a) (if (not (string-match-p "org" a)) a)) (delete nil load-path)))
 (use-package direnv
   :config
   (direnv-mode +1))

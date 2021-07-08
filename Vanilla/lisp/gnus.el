@@ -1,6 +1,6 @@
 (use-package gnus
-  :straight t
   :custom
+  (gnus-save-newsrc-file nil)
   (gnus-home-directory "~/.news/News/Gnus")
   (gnus-default-directory "~/.news/News/Gnus")
   (gnus-directory "~/.news/News/Gnus/News")
@@ -28,7 +28,7 @@
                                            (nnimap-address "imap.gmail.com")
                                            (nnimap-server-port "imaps")
                                            (nnimap-stream ssl))
-                                   (nntp "news.gwene.org")
+                                   ;; (nntp "news.gwene.org")
                                    ))
   :init
   (require 'nnir)
@@ -39,7 +39,6 @@
 
 (add-to-list 'kill-emacs-hook 'gnus-group-exit)
 (use-package gnus-desktop-notify
-  :straight t
   :config
   (gnus-desktop-notify-mode)
   (gnus-demon-add-scanmail))
@@ -49,3 +48,7 @@
   (gnus)
   (get-buffer-create "*Group*"))
 (setq initial-buffer-choice 'gnus-startup-function)
+
+
+(menu-bar-mode +1)
+(tool-bar-mode +1)

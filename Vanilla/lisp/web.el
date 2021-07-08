@@ -1,5 +1,4 @@
 (use-package browse-rules
-  :straight  (browse-rules :type git :host github :repo "SidharthArya/browse-rules.el" :files (:defaults))
   :custom
   (browse-url-browser-function 'browse-rules-url)
   (browse-rules '(
@@ -9,4 +8,6 @@
                   (".*thehindu.*" t "qutebrowser" "https://outline.com/%s")
                   (".*medium.*" t "qutebrowser" "%s")
                   (".*mp3.*" t "emacsclient" "%s")
+                  (".pdf" nil browse-url-default-browser "%s")
+
                   )))
