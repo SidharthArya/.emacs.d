@@ -12,3 +12,5 @@
   (:map prog-mode-map
         ("TAB" . company-indent-or-complete-common))
   :commands company-mode)
+(use-package company-box
+  :hook (company-mode . company-box-mode))
