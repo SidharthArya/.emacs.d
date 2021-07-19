@@ -82,3 +82,5 @@
 (use-package direnv
   :config
   (direnv-mode +1))
+
+(use-package which-key :config (which-key-mode))

@@ -8,7 +8,7 @@
                          ;; core web org emoji 
                          (tracking (core vi space appearance org begin-tracking not-org))
                          (programming (core appearance ivy org programming vc))
-                         (org (begin-org core vi space helm appearance completion files web finance vc programming custom language-server auto shell help projects straight org wakatime music modeline workspace pdf dashboard afterload server core-post))
+                         (org (begin-org core vi space selectrum appearance completion files web finance vc programming custom language-server auto shell help projects straight org wakatime music modeline workspace pdf dashboard afterload server core-post))
                                ;;web  server  subtitles core-post  ))
                          (chat (core appearance space vi irc slack begin-chat))
                          (orgtest (org))
