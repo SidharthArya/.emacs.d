@@ -340,12 +340,12 @@ should be continued."
   (org-roam-completion-system 'helm)
   :bind
   (:map space-prefix
-	("r l" . org-roam)
 	("r p" . org-roam-select-database)
 	("r c" . org-roam-capture)
 	("r d" . org-roam-dailies-find-date)
 	("r C" . org-roam-dailies-capture-today)
 	("r b" . org-roam-switch-to-buffer)
+	("r f" . org-roam-node-find)
 	("r t" . org-roam-tag-add)
 	("r T" . org-roam-tag-delete)
 	("r a" . org-roam-alias-add)
@@ -356,313 +356,313 @@ should be continued."
 	("r I" . org-roam-insert-immediate)))
 
 
-(use-package org-roam-bibtex
-  :after org-roam
-  :hook
-  (org-roam-mode . org-roam-bibtex-mode)
+;; (use-package org-roam-bibtex
+;;   :after org-roam
+;;   :hook
+;;   (org-roam-mode . org-roam-bibtex-mode)
 
-  :config
-  (require 'org-ref))
-
-(use-package org-roam-server
-  :after org
-  :bind
-  (:map space-prefix
-        ("r s" . org-roam-server-mode)
-        ("r S" . org-roam-server-set-tags))
-  :config
-  (setq org-roam-server-host "127.0.0.1"
-        org-roam-server-port 8080
-        org-roam-server-serve-files t
-        org-roam-server-authenticate nil
-        org-roam-server-export-inline-images t
-        org-roam-server-serve-files t
-        org-roam-server-served-file-extensions '("pdf" "mp4" "ogv")
-        org-roam-server-network-poll t
-        org-roam-server-network-arrows "middle"
-        org-roam-server-network-label-truncate t
-        org-roam-server-network-label-truncate-length 60
-        org-roam-server-network-label-wrap-length 20))
-(use-package org-ref
-  :after (org helm)
-  :custom
-  (reftex-default-bibliography '("~/Documents/Org/references.bib"))
-  (org-ref-default-bibliography '("~/Documents/Org/references.bib"))
-  (bibtex-completion-bibliography '("~/Documents/Org/references.bib"))
-  (org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
-  )
-;; (use-package org-fc
-;;   :after org
 ;;   :config
-;;   (require 'org-fc-hydra)
-;;   (require 'org-fc-awk)
+;;   (require 'org-ref))
+
+;; (use-package org-roam-server
+;;   :after org
 ;;   :bind
 ;;   (:map space-prefix
-;;         ("o f r" . org-fc-review)
-;;         ("o f f" . org-fc-hydra/org-fc-update))
+;;         ("r s" . org-roam-server-mode)
+;;         ("r S" . org-roam-server-set-tags))
+;;   :config
+;;   (setq org-roam-server-host "127.0.0.1"
+;;         org-roam-server-port 8080
+;;         org-roam-server-serve-files t
+;;         org-roam-server-authenticate nil
+;;         org-roam-server-export-inline-images t
+;;         org-roam-server-serve-files t
+;;         org-roam-server-served-file-extensions '("pdf" "mp4" "ogv")
+;;         org-roam-server-network-poll t
+;;         org-roam-server-network-arrows "middle"
+;;         org-roam-server-network-label-truncate t
+;;         org-roam-server-network-label-truncate-length 60
+;;         org-roam-server-network-label-wrap-length 20))
+;; (use-package org-ref
+;;   :after (org helm)
 ;;   :custom
-;;   (org-fc-directories '("~/Documents/Org/Roam" "~/Documents/Org/Brain")))
+;;   (reftex-default-bibliography '("~/Documents/Org/references.bib"))
+;;   (org-ref-default-bibliography '("~/Documents/Org/references.bib"))
+;;   (bibtex-completion-bibliography '("~/Documents/Org/references.bib"))
+;;   (org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
+;;   )
+;; ;; (use-package org-fc
+;; ;;   :after org
+;; ;;   :config
+;; ;;   (require 'org-fc-hydra)
+;; ;;   (require 'org-fc-awk)
+;; ;;   :bind
+;; ;;   (:map space-prefix
+;; ;;         ("o f r" . org-fc-review)
+;; ;;         ("o f f" . org-fc-hydra/org-fc-update))
+;; ;;   :custom
+;; ;;   (org-fc-directories '("~/Documents/Org/Roam" "~/Documents/Org/Brain")))
 
-;; (use-package org-edna
-;;   :straight t
+;; ;; (use-package org-edna
+;; ;;   :straight t
+;; ;;   :after org
+;; ;;   :config
+
+;; ;;   (defun org-edna-finder/next-sibling-children ()
+;; ;;     (save-excursion
+;; ;;       (let* ((poiint (point)))
+;; ;; 	(setq point (car (org-edna-finder/next-sibling-wrap 1)))
+;; ;; 	(goto-char point)
+;; ;; 	(org-edna-finder/children)
+;; ;; 	)))
+;; ;;   (org-edna-mode +1)
+;; ;;   )
+;; ;; (use-package calfw
+;; ;;   :straight t)
+
+;; ;; (use-package calfw-org
+;; ;;   :straight t
+;; ;;   :after calfw
+;; ;;   :bind
+;; ;;   (:map space-prefix
+;; ;;         ("o C" . cfw:open-org-calendar)
+;; ;;         )
+;; ;;   )
+
+;; (use-package org-bullets
+;;   :after org
+;;   :hook
+;;   (org-mode . org-bullets-mode))
+
+;; (use-package org-download
 ;;   :after org
 ;;   :config
+;;   (add-hook 'dired-mode-hook 'org-download-enable))
 
-;;   (defun org-edna-finder/next-sibling-children ()
-;;     (save-excursion
-;;       (let* ((poiint (point)))
-;; 	(setq point (car (org-edna-finder/next-sibling-wrap 1)))
-;; 	(goto-char point)
-;; 	(org-edna-finder/children)
-;; 	)))
-;;   (org-edna-mode +1)
+
+;; (use-package org-super-agenda
+;;   :after org
+;;   :custom
+;;   (org-super-agenda-groups
+;;    '((:name "Diary"
+;;             :category "Diary"
+;;             :order 1)
+;;      (:name "Habit"
+;;             :habit t
+;;             :order 8)
+;;      (:name "Remember"
+;;             :priority "C"
+;;             :tag "remember"
+;;             :order 5)
+;;      (:name "Unimportant"
+;;             :priority "C"
+;;             :tag "unimportant"
+;;             :order 7)
+;;      (:name "Deadlines"
+;;             :deadline t
+;;             :order 2)
+;;      (:name "Started"
+;;             :todo "STARTED"
+;;             :order 4)
+;;      (:name "Important"
+;;             :priority "A"
+;;             :tag ("important" "bills")
+;;             :order 3)
+;;      (:name "Personal"
+;;             :tag ("movies" "tvshows" "tvseries" "books")
+;;             :order 10)
+;;      (:name "Overdue"
+;;             :deadline past
+;;             :scheduled past
+;;             :order 6)))
+;;   :config
+;;   (require 'org-ql)
+;;   (require 'org-ql-search)
+;;   (org-super-agenda-mode +1)
+;;   (setq org-super-agenda-header-map nil)
 ;;   )
-;; (use-package calfw
-;;   :straight t)
 
-;; (use-package calfw-org
-;;   :straight t
-;;   :after calfw
-;;   :bind
-;;   (:map space-prefix
-;;         ("o C" . cfw:open-org-calendar)
-;;         )
+;; (if (modular-config-modules-loaded-p '(helm))
+;;     (use-package helm-org-roam
+;;       :after org-roam
+;;       :bind
+;;       (:map space-prefix
+;; 	    ("r f" . helm-org-roam-find-file)
+;; 	    )))
+
+;; (use-package org-google-tasks
+;;   :custom
+;;   (org-google-tasks-credential-file "/home/arya/Documents/Org/Bots/Org/google-tasks")
+;;   (org-google-tasks-use-inheritance t)
+;;   :config
+;;   (org-google-tasks-load-credentials)
+;;   (org-google-tasks-get-tokens)
+;;   (org-google-tasks-get-remote-list t t)
 ;;   )
 
-(use-package org-bullets
-  :after org
-  :hook
-  (org-mode . org-bullets-mode))
+;; (use-package ox-hugo
+;;   :after org
+;;   :defer nil
+;;   :custom
+;;   (org-hugo-auto-set-lastmod t)
+;;   :config
+;;   (setq org-hugo-base-dir "~/.blog/")
+;;   (setq org-hugo-front-matter-format 'yaml)
+;;   (defun my-org-roam--find-file-hook ()
+;;     ""
+;;     (when (org-roam--org-roam-file-p)
+;;       (add-hook 'after-save-hook #'org-hugo--org-roam-save-buffer)
+;;       (add-hook 'org-export-before-parsing-hook #'my-org-hugo--org-roam-backlinks)
+;;       ))
+;;   (add-hook 'find-file-hook #'my-org-roam--find-file-hook)
+;;     (defun org-hugo-new-subtree-post-capture-template ()
+;;       "Returns `org-capture' template string for new Hugo post.
+;; See `org-capture-templates' for more information."
+;;       (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
+;;              (fname (org-hugo-slug title)))
+;; 	(mapconcat #'identity
+;;                    `(
+;;                      ,(concat "* TODO " title)
+;;                      ":PROPERTIES:"
+;;                      ,(concat ":EXPORT_FILE_NAME: " fname)
+;;                      ,(concat ":EXPORT_DATE: %t")
+;;                      ":END:"
+;;                      "%?\n")          ;Place the cursor here finally
+;;                    "\n")))
 
-(use-package org-download
-  :after org
-  :config
-  (add-hook 'dired-mode-hook 'org-download-enable))
-
-
-(use-package org-super-agenda
-  :after org
-  :custom
-  (org-super-agenda-groups
-   '((:name "Diary"
-            :category "Diary"
-            :order 1)
-     (:name "Habit"
-            :habit t
-            :order 8)
-     (:name "Remember"
-            :priority "C"
-            :tag "remember"
-            :order 5)
-     (:name "Unimportant"
-            :priority "C"
-            :tag "unimportant"
-            :order 7)
-     (:name "Deadlines"
-            :deadline t
-            :order 2)
-     (:name "Started"
-            :todo "STARTED"
-            :order 4)
-     (:name "Important"
-            :priority "A"
-            :tag ("important" "bills")
-            :order 3)
-     (:name "Personal"
-            :tag ("movies" "tvshows" "tvseries" "books")
-            :order 10)
-     (:name "Overdue"
-            :deadline past
-            :scheduled past
-            :order 6)))
-  :config
-  (require 'org-ql)
-  (require 'org-ql-search)
-  (org-super-agenda-mode +1)
-  (setq org-super-agenda-header-map nil)
-  )
-
-(if (modular-config-modules-loaded-p '(helm))
-    (use-package helm-org-roam
-      :after org-roam
-      :bind
-      (:map space-prefix
-	    ("r f" . helm-org-roam-find-file)
-	    )))
-
-(use-package org-google-tasks
-  :custom
-  (org-google-tasks-credential-file "/home/arya/Documents/Org/Bots/Org/google-tasks")
-  (org-google-tasks-use-inheritance t)
-  :config
-  (org-google-tasks-load-credentials)
-  (org-google-tasks-get-tokens)
-  (org-google-tasks-get-remote-list t t)
-  )
-
-(use-package ox-hugo
-  :after org
-  :defer nil
-  :custom
-  (org-hugo-auto-set-lastmod t)
-  :config
-  (setq org-hugo-base-dir "~/.blog/")
-  (setq org-hugo-front-matter-format 'yaml)
-  (defun my-org-roam--find-file-hook ()
-    ""
-    (when (org-roam--org-roam-file-p)
-      (add-hook 'after-save-hook #'org-hugo--org-roam-save-buffer)
-      (add-hook 'org-export-before-parsing-hook #'my-org-hugo--org-roam-backlinks)
-      ))
-  (add-hook 'find-file-hook #'my-org-roam--find-file-hook)
-    (defun org-hugo-new-subtree-post-capture-template ()
-      "Returns `org-capture' template string for new Hugo post.
-See `org-capture-templates' for more information."
-      (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
-             (fname (org-hugo-slug title)))
-	(mapconcat #'identity
-                   `(
-                     ,(concat "* TODO " title)
-                     ":PROPERTIES:"
-                     ,(concat ":EXPORT_FILE_NAME: " fname)
-                     ,(concat ":EXPORT_DATE: %t")
-                     ":END:"
-                     "%?\n")          ;Place the cursor here finally
-                   "\n")))
-
-    (add-to-list 'org-capture-templates
-		 '("b" "Blog"               ))
-    (add-to-list 'org-capture-templates
-		 '("be"                
-                   "Emacs"
-                   entry
-                   (file+olp "~/Documents/Org/Blog/blog.org" "Emacs")
-                   (function org-hugo-new-subtree-post-capture-template)))
-    (add-to-list 'org-capture-templates
-		 '("bc"                
-                   "Coding"
-                   entry
-                   (file+olp "~/Documents/Org/Blog/blog.org" "Coding")
-                   (function org-hugo-new-subtree-post-capture-template)))
-    (add-to-list 'org-capture-templates
-		 '("bp"                
-                   "Philosophy"
-                   entry
-                   (file+olp "~/Documents/Org/Blog/blog.org" "Philosophy")
-                   (function org-hugo-new-subtree-post-capture-template)))
-    (add-to-list 'org-capture-templates
-		 '("bl" 
-                   "Linux"
-                   entry
-                   (file+olp "~/Documents/Org/Blog/blog.org" "Linux")
-                   (function org-hugo-new-subtree-post-capture-template)))
-    (add-to-list 'org-capture-templates
-		 '("ba" 
-                   "Artificial Intelligence"
-                   entry
-                   (file+olp "~/Documents/Org/Blog/blog.org" "Artificial Intelligence")
-                   (function org-hugo-new-subtree-post-capture-template)))
-    (add-to-list 'org-capture-templates
-		 '("bb" 
-                   "Blog"
-                   entry
-                   (file+olp "~/Documents/Org/Blog/blog.org" "Blog")
-                   (function org-hugo-new-subtree-post-capture-template)))
+;;     (add-to-list 'org-capture-templates
+;; 		 '("b" "Blog"               ))
+;;     (add-to-list 'org-capture-templates
+;; 		 '("be"                
+;;                    "Emacs"
+;;                    entry
+;;                    (file+olp "~/Documents/Org/Blog/blog.org" "Emacs")
+;;                    (function org-hugo-new-subtree-post-capture-template)))
+;;     (add-to-list 'org-capture-templates
+;; 		 '("bc"                
+;;                    "Coding"
+;;                    entry
+;;                    (file+olp "~/Documents/Org/Blog/blog.org" "Coding")
+;;                    (function org-hugo-new-subtree-post-capture-template)))
+;;     (add-to-list 'org-capture-templates
+;; 		 '("bp"                
+;;                    "Philosophy"
+;;                    entry
+;;                    (file+olp "~/Documents/Org/Blog/blog.org" "Philosophy")
+;;                    (function org-hugo-new-subtree-post-capture-template)))
+;;     (add-to-list 'org-capture-templates
+;; 		 '("bl" 
+;;                    "Linux"
+;;                    entry
+;;                    (file+olp "~/Documents/Org/Blog/blog.org" "Linux")
+;;                    (function org-hugo-new-subtree-post-capture-template)))
+;;     (add-to-list 'org-capture-templates
+;; 		 '("ba" 
+;;                    "Artificial Intelligence"
+;;                    entry
+;;                    (file+olp "~/Documents/Org/Blog/blog.org" "Artificial Intelligence")
+;;                    (function org-hugo-new-subtree-post-capture-template)))
+;;     (add-to-list 'org-capture-templates
+;; 		 '("bb" 
+;;                    "Blog"
+;;                    entry
+;;                    (file+olp "~/Documents/Org/Blog/blog.org" "Blog")
+;;                    (function org-hugo-new-subtree-post-capture-template)))
     
   
-  (defun org-hugo--tag-processing-fn-roam-tags(tag-list info)
-    "Process org roam tags for org hugo"
-    (if (org-roam--org-roam-file-p)
-	(append tag-list '("braindump") (mapcar #'downcase (org-roam--extract-tags)))
-      tag-list
-      ))
+;;   (defun org-hugo--tag-processing-fn-roam-tags(tag-list info)
+;;     "Process org roam tags for org hugo"
+;;     (if (org-roam--org-roam-file-p)
+;; 	(append tag-list '("braindump") (mapcar #'downcase (org-roam--extract-tags)))
+;;       tag-list
+;;       ))
 
-  (defun org-hugo--org-roam-save-buffer(&optional no-trace-links)
-    ""
-    (when (org-roam--org-roam-file-p)
-      (when (<= (length
-		 (split-string
-                  (replace-regexp-in-string (expand-file-name org-roam-directory) ""
-                                            (expand-file-name (buffer-file-name nil))) "/")) 2)
-	(unless no-trace-links
-          (dolist (links (org-roam--extract-links))
-            (with-current-buffer (find-file-noselect (aref links 1))
-              (org-hugo--org-roam-save-buffer t)
-              (kill-buffer))))
-	(org-hugo-export-wim-to-md))))
-  (defun my-org-hugo-org-roam-sync-all()
-    ""
-    (interactive)
-    (dolist (fil (split-string (string-trim (shell-command-to-string (concat "ls " org-roam-directory "/*.org")))))
-      (with-current-buffer (find-file-noselect fil)
-	(org-hugo-export-wim-to-md)
-	(kill-buffer))))
-  (defun my-org-roam-buffer--insert-backlinks ()
-    "Insert the org-roam-buffer backlinks string for the current buffer."
-    (let (props file-from)
-      (if-let* ((file-path (buffer-file-name org-roam-buffer--current))
-		(titles (with-current-buffer (find-file-noselect file-path)
-                          (org-roam--extract-titles)))
-		(backlinks (delete 'nil
-                                   (mapcar
-                                    #'(lambda (a)
-					(if (<= (length
-						 (split-string
-                                                  (replace-regexp-in-string
-                                                   (concat
-                                                    (expand-file-name org-roam-directory)) "" (car a)) "/")) 2) a))
-                                    (org-roam--get-backlinks (push file-path titles)))))
-		(grouped-backlinks (--group-by (nth 0 it) backlinks)))
-          (progn
-            (insert (let ((l (length backlinks)))
-                      (format "\n\n* %s\n"
-                              (org-roam-buffer--pluralize "Backlink" l))))
-            (dolist (group grouped-backlinks)
-              (setq file-from (car group))
-              (setq props (mapcar (lambda (row) (nth 2 row)) (cdr group)))
-              (setq props (seq-sort-by (lambda (p) (plist-get p :point)) #'< props))
-              (insert (format "** %s\n"
-                              (org-roam-format-link file-from
-                                                    (org-roam-db--get-title file-from)
-                                                    "file")))
-              (dolist (prop props)
-		(insert "*** "
-			(if-let ((outline (plist-get prop :outline)))
-                            (-> outline
-				(string-join " > ")
-				(org-roam-buffer-expand-links file-from))
-                          "Top")
-			"\n"
-			(if-let ((content (funcall org-roam-buffer-preview-function file-from (plist-get prop :point))))
-                            (propertize
-                             (s-trim (s-replace "\n" " " (org-roam-buffer-expand-links content file-from)))
-                             'help-echo "mouse-1: visit backlinked note"
-                             'file-from file-from
-                             'file-from-point (plist-get prop :point))
-                          "")
-			"\n\n"))))
-	(insert "\n\n* No backlinks!"))))
-  (defun my-org-hugo--org-roam-backlinks (backend)
-    (when (equal backend 'hugo)
-      (when (org-roam--org-roam-file-p)
-	(replace-string "#+ROAM_KEY:" "")
-        (beginning-of-buffer)
-	(replace-string "{" "")
-        (beginning-of-buffer)
-	(replace-string "}" "")
-	(end-of-buffer)
-	(my-org-roam-buffer--insert-backlinks))))
-  (require 'ox-hugo)
-  (add-to-list 'after-save-hook #'org-hugo--org-roam-save-buffer)
-  (add-to-list 'org-hugo-tag-processing-functions 'org-hugo--tag-processing-fn-roam-tags)
-  )
-(use-package citeproc-org
-  :after (ox-hugo org-ref)
-  :config
-  (citeproc-org-setup)
-  )
-
-;; (use-package ob-ipython
-;;   :custom
-;;   (ob-ipython-command "~/.local/bin/jupyter")
+;;   (defun org-hugo--org-roam-save-buffer(&optional no-trace-links)
+;;     ""
+;;     (when (org-roam--org-roam-file-p)
+;;       (when (<= (length
+;; 		 (split-string
+;;                   (replace-regexp-in-string (expand-file-name org-roam-directory) ""
+;;                                             (expand-file-name (buffer-file-name nil))) "/")) 2)
+;; 	(unless no-trace-links
+;;           (dolist (links (org-roam--extract-links))
+;;             (with-current-buffer (find-file-noselect (aref links 1))
+;;               (org-hugo--org-roam-save-buffer t)
+;;               (kill-buffer))))
+;; 	(org-hugo-export-wim-to-md))))
+;;   (defun my-org-hugo-org-roam-sync-all()
+;;     ""
+;;     (interactive)
+;;     (dolist (fil (split-string (string-trim (shell-command-to-string (concat "ls " org-roam-directory "/*.org")))))
+;;       (with-current-buffer (find-file-noselect fil)
+;; 	(org-hugo-export-wim-to-md)
+;; 	(kill-buffer))))
+;;   (defun my-org-roam-buffer--insert-backlinks ()
+;;     "Insert the org-roam-buffer backlinks string for the current buffer."
+;;     (let (props file-from)
+;;       (if-let* ((file-path (buffer-file-name org-roam-buffer--current))
+;; 		(titles (with-current-buffer (find-file-noselect file-path)
+;;                           (org-roam--extract-titles)))
+;; 		(backlinks (delete 'nil
+;;                                    (mapcar
+;;                                     #'(lambda (a)
+;; 					(if (<= (length
+;; 						 (split-string
+;;                                                   (replace-regexp-in-string
+;;                                                    (concat
+;;                                                     (expand-file-name org-roam-directory)) "" (car a)) "/")) 2) a))
+;;                                     (org-roam--get-backlinks (push file-path titles)))))
+;; 		(grouped-backlinks (--group-by (nth 0 it) backlinks)))
+;;           (progn
+;;             (insert (let ((l (length backlinks)))
+;;                       (format "\n\n* %s\n"
+;;                               (org-roam-buffer--pluralize "Backlink" l))))
+;;             (dolist (group grouped-backlinks)
+;;               (setq file-from (car group))
+;;               (setq props (mapcar (lambda (row) (nth 2 row)) (cdr group)))
+;;               (setq props (seq-sort-by (lambda (p) (plist-get p :point)) #'< props))
+;;               (insert (format "** %s\n"
+;;                               (org-roam-format-link file-from
+;;                                                     (org-roam-db--get-title file-from)
+;;                                                     "file")))
+;;               (dolist (prop props)
+;; 		(insert "*** "
+;; 			(if-let ((outline (plist-get prop :outline)))
+;;                             (-> outline
+;; 				(string-join " > ")
+;; 				(org-roam-buffer-expand-links file-from))
+;;                           "Top")
+;; 			"\n"
+;; 			(if-let ((content (funcall org-roam-buffer-preview-function file-from (plist-get prop :point))))
+;;                             (propertize
+;;                              (s-trim (s-replace "\n" " " (org-roam-buffer-expand-links content file-from)))
+;;                              'help-echo "mouse-1: visit backlinked note"
+;;                              'file-from file-from
+;;                              'file-from-point (plist-get prop :point))
+;;                           "")
+;; 			"\n\n"))))
+;; 	(insert "\n\n* No backlinks!"))))
+;;   (defun my-org-hugo--org-roam-backlinks (backend)
+;;     (when (equal backend 'hugo)
+;;       (when (org-roam--org-roam-file-p)
+;; 	(replace-string "#+ROAM_KEY:" "")
+;;         (beginning-of-buffer)
+;; 	(replace-string "{" "")
+;;         (beginning-of-buffer)
+;; 	(replace-string "}" "")
+;; 	(end-of-buffer)
+;; 	(my-org-roam-buffer--insert-backlinks))))
+;;   (require 'ox-hugo)
+;;   (add-to-list 'after-save-hook #'org-hugo--org-roam-save-buffer)
+;;   (add-to-list 'org-hugo-tag-processing-functions 'org-hugo--tag-processing-fn-roam-tags)
 ;;   )
+;; (use-package citeproc-org
+;;   :after (ox-hugo org-ref)
+;;   :config
+;;   (citeproc-org-setup)
+;;   )
+
+;; ;; (use-package ob-ipython
+;; ;;   :custom
+;; ;;   (ob-ipython-command "~/.local/bin/jupyter")
+;; ;;   )
