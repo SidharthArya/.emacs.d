@@ -1,13 +1,13 @@
-(use-package projectile
-  :custom
-  (projectile-completion-system 'helm)
+(p! projectile
+  :straight t
   :config
   (projectile-mode +1))
 
 
 
 
-(use-package org-projectile
+(p! org-projectile
+  :straight t
   :after org
   :bind (:map space-prefix
               ("p O" . org-projectile-project-todo-completing-read)

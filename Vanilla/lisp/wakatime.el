@@ -1,4 +1,5 @@
-(use-package wakatime-mode
+(p! wakatime-mode
+  :straight t
   :custom
   (wakatime-cli-path "wakatime")
   :config

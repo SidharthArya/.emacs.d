@@ -1,25 +1,25 @@
-(use-package gnus
+(leaf gnus
   :custom
-  (gnus-save-newsrc-file nil)
-  (gnus-home-directory "~/.news/News/Gnus")
-  (gnus-default-directory "~/.news/News/Gnus")
-  (gnus-directory "~/.news/News/Gnus/News")
-  (gnus-agent-directory "~/.news/News/Gnus/News/agent")
-  (gnus-cache-directory "~/.news/News/Gnus/News/cache")
-  (gnus-article-save-directory "~/.news/News/Gnus/News")
-  (gnus-kill-files-directory "~/.news/News/Gnus/News")
-  (message-directory "~/.news/News/Gnus/Mail")
-  (nnfolder-directory "~/.news/News/Gnus/Mail/archive")
-  (gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
+  (gnus-save-newsrc-file . nil)
+  (gnus-home-directory . "~/.news/News/Gnus")
+  (gnus-default-directory . "~/.news/News/Gnus")
+  (gnus-directory . "~/.news/News/Gnus/News")
+  (gnus-agent-directory . "~/.news/News/Gnus/News/agent")
+  (gnus-cache-directory . "~/.news/News/Gnus/News/cache")
+  (gnus-article-save-directory . "~/.news/News/Gnus/News")
+  (gnus-kill-files-directory . "~/.news/News/Gnus/News")
+  (message-directory . "~/.news/News/Gnus/Mail")
+  (nnfolder-directory . "~/.news/News/Gnus/Mail/archive")
+  (gnus-ignored-newsgroups . "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
                                         ; Adaptive scoring
-  (nnheader-file-name-translation-alist '((?[ . ?_) (?] . ?_)) )
-  (gnus-select-method
+  (nnheader-file-name-translation-alist . '((?[ . ?_) (?] . ?_)) )
+  (gnus-select-method .
    '(nnimap "Personal"
             (nnimap-address "imap.gmail.com")
             (nnimap-server-port "imaps")
             (nnimap-stream ssl))
    (nnir-search-engine imap))
-  (gnus-secondary-select-methods '(
+  (gnus-secondary-select-methods . '(
                                    (nnimap "Gida"
                                            (nnimap-address "imap.gida.in")
                                            (nnimap-server-port "imaps")

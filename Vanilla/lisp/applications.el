@@ -1,5 +1,5 @@
-(use-package epc :straight t :defer t )
-(use-package eaf
+(leaf epc :straight t)
+(leaf eaf
   :straight (eaf :type git :fetcher github :repo "manateelazycat/emacs-application-framework" :files (:defaults "app" "core" "*.py"))
   :custom
   (eaf-browser-continue-where-left-off t)

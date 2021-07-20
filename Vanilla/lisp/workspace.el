@@ -1,3 +1,4 @@
-(use-package perspective
+(p! perspective
+  :straight t
   :config
   (persp-mode))

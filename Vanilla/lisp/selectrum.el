@@ -1,7 +1,9 @@
-(use-package selectrum
+(p! selectrum
+  :ensure t
   :config
   (selectrum-mode +1))
-(use-package selectrum-prescient
+(p! selectrum-prescient
+  :ensure t
   :config
   (selectrum-prescient-mode +1)
 (prescient-persist-mode +1))

@@ -1,2 +1,3 @@
-(use-package ledger-mode
+(p! ledger-mode
+  :straight t
   :mode ".ledger")

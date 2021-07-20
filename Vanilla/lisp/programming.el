@@ -21,7 +21,8 @@
 ;;         ("h" . ide/goto-code))
 ;;   :commands ide-mode)
 
-(use-package flycheck
+(p! flycheck
+  :straight t
   :hook (prog-mode . flycheck-mode)
   :commands flycheck-mode)
 

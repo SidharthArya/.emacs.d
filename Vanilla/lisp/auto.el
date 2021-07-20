@@ -1,4 +1,5 @@
-(use-package haskell-mode :commands haskell-mode)
-(use-package rust-mode :commands rust-mode)
+(p! haskell-mode :straight t :commands haskell-mode)
+(p! rust-mode :commands rust-mode)
+(p! nix-mode :commands nix-mode)
 (add-to-list 'auto-mode-alist '("\\.hs\\'" . haskell-mode)) 
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))

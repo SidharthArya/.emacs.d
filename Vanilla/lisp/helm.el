@@ -1,6 +1,6 @@
 (use-package recentf
   :custom
-  (recentf-exclude '(
+  (recentf-exclude . (
                      ".*.orhc-bibtex-cache"
                      "\#.*\#"
                      ".*~"
@@ -13,9 +13,9 @@
                      )))
 (use-package helm
   :custom
-  (helm-ff-file-name-history-use-recentf t)
-  (recentf-max-menu-items 100)
-  (recentf-max-saved-items 100)
+  (helm-ff-file-name-history-use-recentf . t)
+  (recentf-max-menu-items . 100)
+  (recentf-max-saved-items . 100)
   :bind
   ("C-x C-f" . helm-find-files)
   ("M-x" . helm-M-x)

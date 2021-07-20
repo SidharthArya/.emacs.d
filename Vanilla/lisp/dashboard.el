@@ -1,4 +1,5 @@
-(use-package dashboard
+(p! dashboard
+  :straight t
   :custom
   (dashboard-center-content t)
   (dashboard-startup-banner 'logo)

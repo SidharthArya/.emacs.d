@@ -1,2 +1,2 @@
-(use-package general
-  :straight t)
+(leaf general
+  :ensure t)

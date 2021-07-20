@@ -1,5 +1,6 @@
 (modular-config-load-modules '(mount))
 (use-package elfeed
+  :straight t
   :if my-documents-mounted
   :custom
   (elfeed-db-directory "~/.news/Feeds")
@@ -95,6 +96,7 @@
       (browse-url (url-encode-url (concat "org-protocol:/emms?url=" (url-encode-url (car (car (car (cdr enclosures))))) "&title=" (car enclosures) "&body=" (format "%s" play)))))
 (require 'dash)
 (use-package elfeed-org
+  :straight t
   :after elfeed
   :defer nil
   :custom

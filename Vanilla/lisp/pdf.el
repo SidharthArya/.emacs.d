@@ -1,20 +1,23 @@
-(use-package pdf-tools
+(p! pdf-tools
   :config
   (pdf-tools-install))
 
-(use-package org-noter
+(p! org-noter
+  :straight t
   :custom
-  (org-noter-always-create-frame nil)
+  (org-noter-always-create-frame . nil)
   :config
   ;; Your org-noter config ........
   (require 'org-noter-pdftools))
 
 
-(use-package org-pdftools
+(p! org-pdftools
+  :straight t
   :hook (org-mode . org-pdftools-setup-link))
 
 
-(use-package org-noter-pdftools
+(p! org-noter-pdftools
+  :straight t
   :after org-noter
   :config
   ;; Add a function to ensure precise note is inserted

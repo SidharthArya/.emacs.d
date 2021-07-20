@@ -1,2 +1,2 @@
-(use-package vterm)
+(p! vterm)
 

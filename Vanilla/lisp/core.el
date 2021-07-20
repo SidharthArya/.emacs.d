@@ -64,7 +64,7 @@
                                         ;(load-theme 'tango-dark t)
 ;; (add-hook 'kill-emacs-hook 'save-some-buffers)
 (global-set-key (kbd "<XF86Favorites>") 'bookmark-jump)
-(use-package saveplace
+(p! saveplace
   :init
   (setq-default save-place t)
   :custom
@@ -76,11 +76,14 @@
 ;;   :config
 ;;   (electric-pair-mode +1)
 ;;   )
-(use-package smartparens)
-(use-package hs-mode)
+(p! smartparens
+  :straight t)
+(p! hs-mode)
 ;;(setq load-path (mapcar (lambda (a) (if (not (string-match-p "org" a)) a)) (delete nil load-path)))
-(use-package direnv
+(p! direnv
+  :straight t
   :config
   (direnv-mode +1))
 
-(use-package which-key :config (which-key-mode))
+(p! which-key :straight t :config (which-key-mode)
+)

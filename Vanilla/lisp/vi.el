@@ -1,5 +1,7 @@
-(use-package evil
-  :defer nil
+(p! undo-tree
+  :straight t)
+(p! evil
+  :straight t
   :custom
   (evil-want-keybinding nil)
   (evil-want-minibuffer t)
@@ -15,10 +17,12 @@
     (evil-define-key 'normal 'global (kbd "~") #'(lambda() (interactive) (switch-to-buffer nil)))
   (evil-set-leader 'normal (kbd "\\")))
 
-(use-package evil-org
+(p! evil-org
+  :straight t
   :after org)
 
-(use-package evil-collection
+(p! evil-collection
+  :ensure t
   :after evil
   :config
   (evil-collection-init))

@@ -1,10 +1,12 @@
-(use-package yasnippet
+(p! yasnippet
+  :straight t
   :hook (prog-mode . yas-minor-mode)
   :config
   (yas-reload-all)
                                         ;(require 'yasnippet-snippets)
   :commands yas-minor-mode)
-(use-package company
+(p! company
+  :straight t
   :hook (prog-mode . company-mode)
   :init
   (require 'company-tng)
@@ -12,5 +14,7 @@
   (:map prog-mode-map
         ("TAB" . company-indent-or-complete-common))
   :commands company-mode)
-(use-package company-box
+(p! company-box
+  :ensure t
+  :after company
   :hook (company-mode . company-box-mode))

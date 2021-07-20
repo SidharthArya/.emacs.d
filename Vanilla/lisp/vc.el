@@ -1,4 +1,5 @@
-(use-package magit
+(p! magit
+  :straight t
   :config
   (setenv "GIT_ASKPASS" "/home/arya/Documents/Org/Scripts/gitaskpass.sh")
   (setq transient-default-level 5)
@@ -8,13 +9,19 @@
   ("g g" . magit))
   :commands magit)
 
-(use-package git-timemachine
+(p! git-timemachine
+  :straight t
   :bind
   (:map space-prefix
         ("g t" . git-timemachine)
         )
   )
 
-(use-package diff-hl
+(p! diff-hl
+  :straight t
   :config
   (global-diff-hl-mode))
+
+(p! forge
+  :straight t
+  )
