@@ -502,6 +502,9 @@ should be continued."
 	    )))
 
 (use-package org-google-tasks
+  :straight (org-google-tasks
+             :type git :fetcher "github" :repo "SidharthArya/org-google-tasks.el"
+             :files (:defaults))
   :custom
   (org-google-tasks-credential-file "/home/arya/Documents/Org/Bots/Org/google-tasks")
   (org-google-tasks-use-inheritance t)
