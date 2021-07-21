@@ -1,11 +1,12 @@
 (p! emms
   :straight t
+  :straight emms-player-mpv
   :after org
   :custom
   ;; (emms-directory "~/Music/emms")
   (emms-source-file-default-directory "~/Music")
   (emms-source-playlist-default-format 'pls)
-  (emms-player-list (emms-player-mpv))
+  (emms-player-list '(emms-player-mpv))
   (emms-playlist-buffer-name "*Music*")
   (emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
   (emms-repeat-playlist t)
