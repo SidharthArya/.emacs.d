@@ -39,4 +39,7 @@
 ;;   (zenburn-scale-outline-headlines t)
 ;;   :init
 ;;   (load-theme 'zenburn t))
-(load-theme 'doom-one t)
+(use-package solarized-theme
+  :straight t
+  :config
+  (load-theme 'solarized-zenburn t))
