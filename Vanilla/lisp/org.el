@@ -137,20 +137,18 @@
   (org-id-track-globally t)
   (org-id-locations-file "~/Documents/Org/.org-id-locations")
   :bind
-  (:map space-prefix
-        ("o c" . org-capture)
-        ("o e" . org-export-dispatch)
-        ("o a" . org-agenda)
-        ("o d" . (lambda() (interactive) (find-file "~/Documents/Org/diary")))
-        ("o A" . (lambda() (interactive) (find-file "~/Documents/Org/Agenda/approach.org")))
-        ("a" . org-agenda)
-        ("c" . org-capture)
-        ("o l" . org-store-link)
-        ("o L" . org-id-store-link)
-        ("o b" . org-switchb)
-        ("o I" . org-insert-link)
-        ("o i" . org-insert-last-stored-link)
-        )
+  ("C-c o c" . org-capture)
+  ("C-c o e" . org-export-dispatch)
+  ("C-c o a" . org-agenda)
+  ("C-c o d" . (lambda() (interactive) (find-file "~/Documents/Org/diary")))
+  ("C-c o A" . (lambda() (interactive) (find-file "~/Documents/Org/Agenda/approach.org")))
+  ("C-c a" . org-agenda)
+  ("C-c c" . org-capture)
+  ("C-c o l" . org-store-link)
+  ("C-c o L" . org-id-store-link)
+  ("C-c o b" . org-switchb)
+  ("C-c o I" . org-insert-link)
+  ("C-c o i" . org-insert-last-stored-link)
   :init
   (require 'ido)
   (defun my-org-get-score-current()
@@ -343,21 +341,20 @@ should be continued."
      ))
   (org-roam-completion-system 'helm)
   :bind
-  (:map space-prefix
-	("r p" . org-roam-select-database)
-	("r c" . org-roam-capture)
-	("r d" . org-roam-dailies-find-date)
-	("r C" . org-roam-dailies-capture-today)
-	("r b" . org-roam-switch-to-buffer)
-	("r f" . org-roam-node-find)
-	("r t" . org-roam-tag-add)
-	("r T" . org-roam-tag-delete)
-	("r a" . org-roam-alias-add)
-	("r r" . org-roam-random-note)
-	("r A" . org-roam-alias-delete)
-	("r g" . org-roam-graph)
-	("r i" . org-roam-node-insert)
-	("r I" . org-roam-insert-immediate)))
+	("C-c r p" . org-roam-select-database)
+	("C-c r c" . org-roam-capture)
+	("C-c r d" . org-roam-dailies-find-date)
+	("C-c r C" . org-roam-dailies-capture-today)
+	("C-c r b" . org-roam-switch-to-buffer)
+	("C-c r f" . org-roam-node-find)
+	("C-c r t" . org-roam-tag-add)
+	("C-c r T" . org-roam-tag-delete)
+	("C-c r a" . org-roam-alias-add)
+	("C-c r r" . org-roam-random-note)
+	("C-c r A" . org-roam-alias-delete)
+	("C-c r g" . org-roam-graph)
+	("C-c r i" . org-roam-node-insert)
+	("C-c r I" . org-roam-insert-immediate))
 
 
 (p! org-roam-bibtex
@@ -406,9 +403,8 @@ should be continued."
   (require 'org-fc-hydra)
   (require 'org-fc-awk)
   :bind
-  (:map space-prefix
-        ("o f r" . org-fc-review)
-        ("o f f" . org-fc-hydra/org-fc-update))
+        ("C-c o f r" . org-fc-review)
+        ("C-c o f f" . org-fc-hydra/org-fc-update)
   :custom
   (org-fc-directories '("~/Documents/Org/Roam" "~/Documents/Org/Brain")))
 
@@ -492,14 +488,6 @@ should be continued."
   (org-super-agenda-mode +1)
   (setq org-super-agenda-header-map nil)
   )
-
-(if (modular-config-modules-loaded-p '(helm))
-    (p! helm-org-roam
-      :after org-roam
-      :bind
-      (:map space-prefix
-	    ("r f" . helm-org-roam-find-file)
-	    )))
 
 (use-package org-google-tasks
   :straight (org-google-tasks

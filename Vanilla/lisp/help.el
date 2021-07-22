@@ -1,12 +1,11 @@
 (p! helpful
   :straight t
   :bind
-  (:map space-prefix
-   ("h M" . helm-man-woman)
-   ("h f" . helpful-function)
-   ("h h" . helpful-symbol)
-   ("h v" . helpful-variable)
-   ("h b" . describe-bindings)
-   ("h ." . helpful-at-point))
-  )
+   ("C-c h M" . helm-man-woman)
+   ("C-c h f" . helpful-function)
+   ("C-c h h" . helpful-symbol)
+   ("C-c h v" . helpful-variable)
+   ("C-c h b" . describe-bindings)
+   ("C-c h ." . helpful-at-point))
+  
 
