@@ -11,7 +11,7 @@
   (defun selectrum-open-file-emacs-config ()
     ""
     (interactive)
-    (find-file (completing-read "Recent File: " recentf-list)))
+    (find-file (completing-read "Recent File: " (mapcar #'(lambda((directory-files "~/.emacs.d/lisp"))))
   (selectrum-mode +1))
 (p! selectrum-prescient
   :ensure t
