@@ -356,7 +356,7 @@ should be continued."
 	("r r" . org-roam-random-note)
 	("r A" . org-roam-alias-delete)
 	("r g" . org-roam-graph)
-	("r i" . org-roam-insert)
+	("r i" . org-roam-node-insert)
 	("r I" . org-roam-insert-immediate)))
 
 
@@ -668,7 +668,7 @@ See `org-capture-templates' for more information."
 	(end-of-buffer)
 	(my-org-roam-buffer--insert-backlinks))))
   (require 'ox-hugo)
-  (add-to-list 'after-save-hook #'org-hugo--org-roam-save-buffer)
+  ;; (add-to-list 'after-save-hook #'org-hugo--org-roam-save-buffer)
   (add-to-list 'org-hugo-tag-processing-functions 'org-hugo--tag-processing-fn-roam-tags)
   )
 (p! citeproc-org
