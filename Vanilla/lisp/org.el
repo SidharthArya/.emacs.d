@@ -441,6 +441,7 @@ should be continued."
   (org-mode . org-bullets-mode))
 
 (p! org-download
+  :straight t
   :after org
   :config
   (add-hook 'dired-mode-hook 'org-download-enable))
@@ -490,9 +491,8 @@ should be continued."
   )
 
 (use-package org-google-tasks
-  :straight (org-google-tasks
-             :type git :fetcher "github" :repo "SidharthArya/org-google-tasks.el"
-             :files (:defaults))
+  :straight request
+  :straight (org-google-tasks :fetcher github :repo "https://github.com/SidharthArya/org-google-tasks")
   :custom
   (org-google-tasks-credential-file "/home/arya/Documents/Org/Bots/Org/google-tasks")
   (org-google-tasks-use-inheritance t)

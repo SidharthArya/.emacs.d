@@ -1,4 +1,5 @@
 (use-package display-line-numbers
+  :straight t
   :init
   (defun my/display-line-numbers () 
     (setq display-line-numbers-width-start t
@@ -39,7 +40,7 @@
 ;;   (zenburn-scale-outline-headlines t)
 ;;   :init
 ;;   (load-theme 'zenburn t))
-(use-package solarized-theme
+(p! solarized-theme
   :straight t
   :config
   (load-theme 'solarized-zenburn t))

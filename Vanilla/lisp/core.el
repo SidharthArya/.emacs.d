@@ -65,6 +65,7 @@
 ;; (add-hook 'kill-emacs-hook 'save-some-buffers)
 (global-set-key (kbd "<XF86Favorites>") 'bookmark-jump)
 (p! saveplace
+  :straight t
   :init
   (setq-default save-place t)
   :custom

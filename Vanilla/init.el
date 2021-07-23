@@ -1,4 +1,5 @@
 (load "~/.emacs.d/lisp/straight")
+(straight-use-package 'use-package)
 (defalias 'p! 'use-package)
  (p! modular-config
   :straight t
@@ -11,7 +12,7 @@
                          ;; core web org emoji 
                          (tracking (core vi space appearance org begin-tracking not-org))
                          (programming (core appearance ivy org programming vc))
-                         (org (begin-org core appearance selectrum search vi dashboard org))
+                         (org (begin-org core appearance search selectrum help vi dashboard org))
                                ;;web  server  subtitles core-post  ))
                          (chat (core appearance space vi irc slack begin-chat))
                          (orgtest (org))

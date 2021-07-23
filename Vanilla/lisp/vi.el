@@ -22,7 +22,7 @@
   :after org)
 
 (p! evil-collection
-  :ensure t
+  :straight t
   :after evil
   :config
   (evil-collection-init))

@@ -1,7 +1,9 @@
 #!/usr/bin/emacs --script
-(require 'use-package)
-(use-package modular-config)
-
+(load "~/.emacs.d/lisp/straight")
+(straight-use-package 'modular-config)
+(straight-use-package 'use-package)
+(defalias 'p! 'use-package)
+(require 'modular-config)
 (modular-config-load-modules '(space org))
 (unless (shell-command-to-string "pgrep org")
 (if (org-google-tasks-check-date)
@@ -36,9 +38,9 @@
                   ))))  xday)
   
 ;; (require 'notifications)
-(notifications-notify :app-name "Emacs" :title "Exercises" :body (format "%s" (mapcar* (lambda (a b) (format "%s - %s\n" a b)) xday count)))
-(princ (format "%s" (mapcar* (lambda (a b) (format "%s - %s\n" a b)) xday count)))
+(notifications-notify :app-name "Emacs" :title "Exercises" :body (format "%s" (cl-mapcar (lambda (a b) (format "%s - %s\n" a b)) xday count)))
+(princ (format "%s" (cl-mapcar (lambda (a b) (format "%s - %s\n" a b)) xday count)))
 (unless (org-google-tasks-check-tasklist-today "Diet")
-  (org-google-tasks-insert-list (mapcar* (lambda (a b) (format "%s - %s\n" a b)) xday count) "Exercises"))
+  (org-google-tasks-insert-list (cl-mapcar (lambda (a b) (format "%s - %s\n" a b)) xday count) "Exercises"))
 (sleep-for 20)
 )))
