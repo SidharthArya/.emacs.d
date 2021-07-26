@@ -15,6 +15,6 @@
         ("TAB" . company-indent-or-complete-common))
   :commands company-mode)
 (p! company-box
-  :ensure t
+  :straight t
   :after company
   :hook (company-mode . company-box-mode))

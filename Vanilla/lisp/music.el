@@ -110,19 +110,17 @@
   (evil-define-key* 'normal emms-playlist-mode-map
     "s" 'emms-shuffle)
   :bind
-  (:map space-prefix
-        ("m m" . emms)
-        ("m o" . my-emms-open-playlist)
-        ("m s" . my-emms-save-playlist)
-        ("m d" . emms-youtube-dl-music-download)
-        ("m M" . emms-metaplaylist-mode-go)
-        ("m p" . emms-pause)
-        ("m SPC" . emms-pause)
-        ("m a" . emms-browse-by-album)
-        ("m g" . emms-browse-by-genre)
-        ("m /" . emms-browser-search-by-title)
+        ("C-c m m" . emms)
+        ("C-c m o" . my-emms-open-playlist)
+        ("C-c m s" . my-emms-save-playlist)
+        ("C-c m d" . emms-youtube-dl-music-download)
+        ("C-c m M" . emms-metaplaylist-mode-go)
+        ("C-c m p" . emms-pause)
+        ("C-c m SPC" . emms-pause)
+        ("C-c m a" . emms-browse-by-album)
+        ("C-c m g" . emms-browse-by-genre)
+        ("C-c m /" . emms-browser-search-by-title)
 
-        )
   :commands (emms-track)
   )
 

@@ -7,12 +7,12 @@
   (modular-config-list '(
                          (none ())
                          (minimal (core appearance))
-                         (mail (core appearance space helm emoji not-org mail gnus begin-mail core-post))
-                         (news (core vi space helm web appearance helm core-post not-org help begin-news))
+                         (mail (core appearance selectrum emoji not-org mail gnus begin-mail core-post))
+                         (news (core vi selectrum web appearance helm core-post not-org help begin-news))
                          ;; core web org emoji 
                          (tracking (core vi space appearance org begin-tracking not-org))
                          (programming (core appearance ivy org programming vc))
-                         (org (begin-org core appearance search selectrum help vi dashboard org))
+                         (org (begin-org core appearance search selectrum help vi dashboard org vc completion))
                                ;;web  server  subtitles core-post  ))
                          (chat (core appearance space vi irc slack begin-chat))
                          (orgtest (org))

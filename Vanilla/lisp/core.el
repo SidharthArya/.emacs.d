@@ -6,6 +6,7 @@
 (setq my-temp-file-name-handler-alist file-name-handler-alist)
 (setq file-name-handler-alist nil)
 
+;; (setq load-path (mapcar (lambda (a) (if (not (string-match-p "org" a)) a)) load-path))
 (setq message-log-max 2000)
 ;; (auto-fill-mode -1)
 ;; UTF-8 support

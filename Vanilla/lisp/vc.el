@@ -5,16 +5,13 @@
   (setq transient-default-level 5)
   :bind
   ("C-x g" . magit)
-  (:map space-prefix
-  ("g g" . magit))
+  ("C-c g g" . magit)
   :commands magit)
 
 (p! git-timemachine
   :straight t
   :bind
-  (:map space-prefix
-        ("g t" . git-timemachine)
-        )
+        ("C-c g t" . git-timemachine)
   )
 
 (p! diff-hl
