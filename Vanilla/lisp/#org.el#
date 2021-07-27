@@ -339,7 +339,6 @@ should be continued."
       )
 
      ))
-  (org-roam-completion-system 'helm)
   :bind
 	("C-c r p" . org-roam-select-database)
 	("C-c r c" . org-roam-capture)
