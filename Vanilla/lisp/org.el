@@ -346,6 +346,7 @@ should be continued."
 	("C-c r d" . org-roam-dailies-find-date)
 	("C-c r C" . org-roam-dailies-capture-today)
 	("C-c r b" . org-roam-switch-to-buffer)
+	("C-c r l" . org-roam-buffer)
 	("C-c r f" . org-roam-node-find)
 	("C-c r t" . org-roam-tag-add)
 	("C-c r T" . org-roam-tag-delete)
@@ -353,8 +354,7 @@ should be continued."
 	("C-c r r" . org-roam-random-note)
 	("C-c r A" . org-roam-alias-delete)
 	("C-c r g" . org-roam-graph)
-	("C-c r i" . org-roam-node-insert)
-	("C-c r I" . org-roam-insert-immediate))
+	("C-c r i" . org-roam-node-insert))
 
 
 (p! org-roam-bibtex

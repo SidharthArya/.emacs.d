@@ -9,10 +9,13 @@
                          (minimal (core appearance))
                          (mail (core appearance selectrum emoji not-org mail gnus begin-mail core-post))
                          (news (core vi selectrum web appearance helm core-post not-org help begin-news))
-                         ;; core web org emoji 
+                         ;; core web org emoji
+                         (base (core appearance search selectrum help vi))
+                         (base-post (core-post))
                          (tracking (core vi space appearance org begin-tracking not-org))
                          (programming (core appearance ivy org programming vc))
-                         (org (begin-org core appearance search selectrum help vi dashboard org vc completion))
+                         (org (begin-org (base) dashboard org vc completion core-post))
+                         (tmp ((base vi) (base-post)))
                                ;;web  server  subtitles core-post  ))
                          (chat (core appearance space vi irc slack begin-chat))
                          (orgtest (org))
@@ -26,23 +29,3 @@
   :config
 
   (modular-config-command-line-args-process))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(evil-emacs-state-modes nil t)
- '(evil-want-keybinding nil t)
- '(evil-want-minibuffer nil t)
- '(package-archives
-   '(("org" . "https://orgmode.org/elpa/")
-     ("melpa" . "https://melpa.org/packages/")
-     ("gnu" . "https://elpa.gnu.org/packages/")))
- '(package-selected-packages
-   '(selectrum-prescient selectrum undo-tree evil-collection evil-org evil general ledger-mode use-package emojify yasnippet which-key smartparens modular-config leaf-keywords hydra haskell-mode feather el-get direnv dashboard company-box blackout)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
