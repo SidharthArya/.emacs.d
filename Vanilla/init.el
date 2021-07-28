@@ -14,7 +14,7 @@
                          (base-post (core-post))
                          (tracking (core vi space appearance org begin-tracking not-org))
                          (programming (core appearance ivy org programming vc))
-                         (org (begin-org (base) dashboard org vc completion core-post))
+                         (org (begin-org (base) dashboard org vc completion language-server core-post))
                          (tmp ((base vi) (base-post)))
                                ;;web  server  subtitles core-post  ))
                          (chat (core appearance space vi irc slack begin-chat))
