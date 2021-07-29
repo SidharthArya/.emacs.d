@@ -517,7 +517,7 @@ should be continued."
       (add-hook 'after-save-hook #'org-hugo--org-roam-save-buffer)
       (add-hook 'org-export-before-parsing-hook #'my-org-hugo--org-roam-backlinks)
       ))
-  ;; (add-hook 'find-file-hook #'my-org-roam--find-file-hook)
+  (add-hook 'find-file-hook #'my-org-roam--find-file-hook)
     (defun org-hugo-new-subtree-post-capture-template ()
       "Returns `org-capture' template string for new Hugo post.
 See `org-capture-templates' for more information."

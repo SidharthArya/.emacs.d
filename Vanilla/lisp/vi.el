@@ -17,9 +17,11 @@
     (evil-define-key 'normal 'global (kbd "~") #'(lambda() (interactive) (switch-to-buffer nil)))
   (evil-set-leader 'normal (kbd "\\")))
 
-(p! evil-org
-  :straight t
-  :after org)
+;; (p! evil-org
+;;   :straight t
+;;   :after org
+;;   :config
+;;   (evil-org-mode +1))
 
 (p! evil-collection
   :straight t
