@@ -89,3 +89,9 @@
 
 (p! which-key :straight t :config (which-key-mode))
 
+(p! recentf
+  :straight t
+  :custom
+  (recentf-max-saved-items 100)
+  (recentf-max-menu-items 100)
+  )

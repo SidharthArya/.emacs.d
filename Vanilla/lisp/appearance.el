@@ -44,3 +44,7 @@
   :straight t
   :config
   (load-theme 'solarized-zenburn t))
+
+(p! hl-line
+  :config
+  (global-hl-line-mode +1))
