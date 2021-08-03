@@ -10,7 +10,7 @@
                          (mail (core appearance selectrum emoji not-org mail gnus begin-mail core-post))
                          (news (core vi selectrum web appearance helm core-post not-org help begin-news))
                          ;; core web org emoji
-                         (base (core appearance search selectrum help))
+                         (base (core appearance search selectrum vi help))
                          (base-post (core-post))
                          (tracking (core vi space appearance org begin-tracking not-org))
                          (programming (core appearance ivy org programming vc))

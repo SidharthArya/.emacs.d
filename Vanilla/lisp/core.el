@@ -95,3 +95,4 @@
   (recentf-max-saved-items 100)
   (recentf-max-menu-items 100)
   )
+(transient-mark-mode -1)
