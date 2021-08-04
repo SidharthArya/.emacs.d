@@ -43,10 +43,10 @@
       (mapc #'elfeed-search-update-entry entries)
       (unless (or elfeed-search-remain-on-entry (use-region-p))
         (forward-line)))))
-  (if (modular-config-modules-loaded-p '(vi))
-  (evil-define-key* 'normal elfeed-search-mode-map
-    "p" 'elfeed-org-protocol-emms
-    "P" 'elfeed-org-protocol-emms-play))
+  ;; (if (modular-config-modules-loaded-p '(vi))
+  ;; (evil-define-key* 'normal elfeed-search-mode-map
+  ;;   "p" 'elfeed-org-protocol-emms
+  ;;   "P" 'elfeed-org-protocol-emms-play))
     
 
 (if (not (equal (format-time-string "%Y-%m-%d" (elfeed-db-last-update)) (format-time-string "%Y-%m-%d" (current-time))))
