@@ -10,11 +10,11 @@
                          (mail (core appearance selectrum emoji not-org mail gnus begin-mail core-post))
                          (news (core vi selectrum web appearance helm core-post not-org help begin-news))
                          ;; core web org emoji
-                         (base (core appearance ivy vi help))
+                         (base (core appearance selectrum vi help))
                          (base-post (core-post))
                          (tracking (core vi space appearance org begin-tracking not-org))
                          (programming (core appearance ivy org programming vc))
-                         (org (begin-org (base) dashboard org vc completion language-server wakatime projects (base-post)))
+                         (org (begin-org (base) dashboard org vc completion language-server wakatime projects server (base-post)))
                          (tmp ((base vi) (base-post)))
                                ;;web  server  subtitles core-post  ))
                          (chat (core appearance space vi irc slack begin-chat))

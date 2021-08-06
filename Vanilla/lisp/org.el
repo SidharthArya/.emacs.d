@@ -511,13 +511,6 @@ should be continued."
   :config
   (setq org-hugo-base-dir "~/.blog/")
   (setq org-hugo-front-matter-format 'yaml)
-  (defun my-org-roam--find-file-hook ()
-    ""
-    (when (org-roam-file-p)
-      (add-hook 'after-save-hook #'org-hugo--org-roam-save-buffer)
-      (add-hook 'org-export-before-parsing-hook #'my-org-hugo--org-roam-backlinks)
-      ))
-  (add-hook 'find-file-hook #'my-org-roam--find-file-hook)
     (defun org-hugo-new-subtree-post-capture-template ()
       "Returns `org-capture' template string for new Hugo post.
 See `org-capture-templates' for more information."
@@ -571,95 +564,12 @@ See `org-capture-templates' for more information."
                    entry
                    (file+olp "~/Documents/Org/Blog/blog.org" "Blog")
                    (function org-hugo-new-subtree-post-capture-template)))
+    :init
+    (require 'ox-hugo)
+    )
     
   
-  (defun org-hugo--tag-processing-fn-roam-tags(tag-list info)
-    "Process org roam tags for org hugo"
-    (if (org-roam-file-p)
-	(append tag-list '("braindump") (mapcar #'downcase (org-roam--extract-tags)))
-      tag-list
-      ))
-
-  (defun org-hugo--org-roam-save-buffer(&optional no-trace-links)
-    ""
-    (when (org-roam-file-p)
-      (when (<= (length
-		 (split-string
-                  (replace-regexp-in-string (expand-file-name org-roam-directory) ""
-                                            (expand-file-name (buffer-file-name nil))) "/")) 2)
-	(unless no-trace-links
-          (dolist (links (org-roam--extract-links))
-            (with-current-buffer (find-file-noselect (aref links 1))
-              (org-hugo--org-roam-save-buffer t)
-              (kill-buffer))))
-	(org-hugo-export-wim-to-md))))
-  (defun my-org-hugo-org-roam-sync-all()
-    ""
-    (interactive)
-    (dolist (fil (split-string (string-trim (shell-command-to-string (concat "ls " org-roam-directory "/*.org")))))
-      (with-current-buffer (find-file-noselect fil)
-	(org-hugo-export-wim-to-md)
-	(kill-buffer))))
-  (defun my-org-roam-buffer--insert-backlinks ()
-    "Insert the org-roam-buffer backlinks string for the current buffer."
-    (let (props file-from)
-      (if-let* ((file-path (buffer-file-name org-roam-buffer--current))
-		(titles (with-current-buffer (find-file-noselect file-path)
-                          (org-roam--extract-titles)))
-		(backlinks (delete 'nil
-                                   (mapcar
-                                    #'(lambda (a)
-					(if (<= (length
-						 (split-string
-                                                  (replace-regexp-in-string
-                                                   (concat
-                                                    (expand-file-name org-roam-directory)) "" (car a)) "/")) 2) a))
-                                    (org-roam--get-backlinks (push file-path titles)))))
-		(grouped-backlinks (--group-by (nth 0 it) backlinks)))
-          (progn
-            (insert (let ((l (length backlinks)))
-                      (format "\n\n* %s\n"
-                              (org-roam-buffer--pluralize "Backlink" l))))
-            (dolist (group grouped-backlinks)
-              (setq file-from (car group))
-              (setq props (mapcar (lambda (row) (nth 2 row)) (cdr group)))
-              (setq props (seq-sort-by (lambda (p) (plist-get p :point)) #'< props))
-              (insert (format "** %s\n"
-                              (org-roam-format-link file-from
-                                                    (org-roam-db--get-title file-from)
-                                                    "file")))
-              (dolist (prop props)
-		(insert "*** "
-			(if-let ((outline (plist-get prop :outline)))
-                            (-> outline
-				(string-join " > ")
-				(org-roam-buffer-expand-links file-from))
-                          "Top")
-			"\n"
-			(if-let ((content (funcall org-roam-buffer-preview-function file-from (plist-get prop :point))))
-                            (propertize
-                             (s-trim (s-replace "\n" " " (org-roam-buffer-expand-links content file-from)))
-                             'help-echo "mouse-1: visit backlinked note"
-                             'file-from file-from
-                             'file-from-point (plist-get prop :point))
-                          "")
-			"\n\n"))))
-	(insert "\n\n* No backlinks!"))))
-  (defun my-org-hugo--org-roam-backlinks (backend)
-    (when (equal backend 'hugo)
-      (when (org-roam-file-p)
-	(replace-string "#+ROAM_KEY:" "")
-        (beginning-of-buffer)
-	(replace-string "{" "")
-        (beginning-of-buffer)
-	(replace-string "}" "")
-	(end-of-buffer)
-	(my-org-roam-buffer--insert-backlinks))))
-  (require 'ox-hugo)
-  ;; (add-to-list 'after-save-hook #'org-hugo--org-roam-save-buffer)
-  (add-to-list 'org-hugo-tag-processing-functions 'org-hugo--tag-processing-fn-roam-tags)
-  )
-(p! citeproc-org
+  (p! citeproc-org
   :straight t
   :after (ox-hugo org-ref)
   :config
@@ -667,6 +577,17 @@ See `org-capture-templates' for more information."
   )
 
 ;; (use-package ob-ipython
+;;   :straight t
 ;;   :custom
 ;;   (ob-ipython-command "~/.local/bin/jupyter")
 ;;   )
+
+
+;; TODO
+;; (defun org-roam--org-hugo-save ()
+;;   ""
+;;   (if (org-roam-file-p)
+;;   (save-excursion
+;;   (org-hugo-export-wim-to-md))))
+
+;; (add-hook 'after-save-hook 'org-roam--org-hugo-save)

@@ -1,4 +1,5 @@
-(leaf gnus
+(use-package gnus
+  :straight t
   :custom
   (gnus-save-newsrc-file . nil)
   (gnus-home-directory . "~/.news/News/Gnus")
