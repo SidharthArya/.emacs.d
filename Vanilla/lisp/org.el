@@ -138,6 +138,7 @@
   (org-id-locations-file "~/Documents/Org/.org-id-locations")
   :bind
   ("C-c o c" . org-capture)
+  ("C-c o m" . org-id-get-create)
   ("C-c o e" . org-export-dispatch)
   ("C-c o a" . org-agenda)
   ("C-c o d" . (lambda() (interactive) (find-file "~/Documents/Org/diary")))

@@ -1,23 +1,22 @@
-(use-package ide-mode
-  :straight (ide-mode :type git :fetcher github :repo "https://github.com/SidharthArya/emacs-ide-mode" :files (:defaults))
-  :init
-  (require 'ide-mode)
+(p! comp-ide
+  :straight (comp-ide :type git :fetcher github :repo "https://github.com/SidharthArya/comp-ide.el" :files (:defaults))
+  :custom
+  (comp-ide-auto-execute-on-compile t)
   :config
-  (require 'ide-mode-recipes)
-  (evil-define-key 'normal 'prog-mode-map (kbd "\\i") ide-mode-command-map) 
-  (evil-define-key 'normal 'ide-slave-mode-map (kbd "\\i") ide-mode-command-map)
-  (evil-define-key 'normal 'prog-mode-map (kbd "\\ti") 'ide-mode)
-
+  (require 'comp-ide-recipes)
+  (evil-define-key 'normal 'prog-mode-map (kbd "\\i") comp-ide-command-map)
+  (evil-define-key 'normal 'comp-ide-slave-mode-map (kbd "\\i") comp-ide-command-map)
+  (evil-define-key 'normal 'prog-mode-map (kbd "\\ti") 'comp-ide)
   :bind
- ("C-c t i" . ide-mode)
-  (:map ide-mode-command-map
-        ("s" . ide/goto-shell)
-        ("c" . ide/ide-mode-compile)
-        ("e" . ide/ide-mode-execute)
-        ("l" . ide/goto-input)
-        ("k" . ide/goto-output)
-        ("h" . ide/goto-code))
-  :commands ide-mode)
+  ("C-c t i" . comp-ide)
+  (:map comp-ide-command-map
+        ("s" . comp-ide/goto-shell)
+        ("c" . comp-ide/comp-ide-compile)
+        ("e" . comp-ide/comp-ide-execute)
+        ("l" . comp-ide/goto-input)
+        ("k" . comp-ide/goto-output)
+        ("h" . comp-ide/goto-code))
+  :commands comp-ide)
 
 (p! flycheck
   :straight t
