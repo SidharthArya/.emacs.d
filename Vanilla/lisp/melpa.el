@@ -15,6 +15,6 @@ There are two things you can do about this warning:
   )
 (package-initialize)
 (use-package package-build
-  :ensure melpa/melpa)
+  :straight t)
 (use-package package-lint
-  :ensure purcell/package-lint)
+  :straight t)

@@ -10,12 +10,12 @@
   :bind
   ("C-c t i" . comp-ide)
   (:map comp-ide-command-map
-        ("s" . comp-ide/goto-shell)
-        ("c" . comp-ide/comp-ide-compile)
-        ("e" . comp-ide/comp-ide-execute)
-        ("l" . comp-ide/goto-input)
-        ("k" . comp-ide/goto-output)
-        ("h" . comp-ide/goto-code))
+        ("s" . comp-ide-goto-shell)
+        ("c" . comp-ide-comp-ide-compile)
+        ("e" . comp-ide-comp-ide-execute)
+        ("l" . comp-ide-goto-input)
+        ("k" . comp-ide-goto-output)
+        ("h" . comp-ide-goto-code))
   :commands comp-ide)
 
 (p! flycheck
