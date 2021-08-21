@@ -48,7 +48,6 @@
  ("t s" . scroll-bar-mode)
  ("SPC" . helm-find-files)
  ("," . helm-mini)
- (":" . helm-M-x)
- )
+ (":" . helm-M-x))
 
 (global-set-key (kbd "C-c") space-prefix)
