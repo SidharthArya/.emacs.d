@@ -1,6 +1,5 @@
 (p! emms
   :straight t
-  :straight emms-player-mpv
   :after org
   :custom
   ;; (emms-directory "~/Music/emms")
