@@ -82,10 +82,10 @@
   :straight t)
 (p! hs-mode)
 (setq load-path (mapcar (lambda (a) (if (not (string-match-p "org" a)) a)) (delete nil load-path)))
-(p! direnv
-  :straight t
-  :config
-  (direnv-mode +1))
+;; (p! direnv
+;;   :straight t
+;;   :config
+;;   (direnv-mode +1))
 
 (p! which-key :straight t :config (which-key-mode))
 

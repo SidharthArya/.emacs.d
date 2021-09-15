@@ -23,3 +23,5 @@
   :hook (prog-mode . flycheck-mode)
   :commands flycheck-mode)
 
+(p! dart-mode
+  :straight t)
