@@ -19,6 +19,6 @@
   :config
   (global-diff-hl-mode))
 
-(p! forge
-  :straight t
-  )
+;; (p! forge
+;;   :straight t
+;;   )

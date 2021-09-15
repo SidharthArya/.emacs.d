@@ -358,14 +358,14 @@ should be continued."
 	("C-c r i" . org-roam-node-insert))
 
 
-(p! org-roam-bibtex
-  :straight t
-  :after org-roam
-  :hook
-  (org-roam-mode . org-roam-bibtex-mode)
+;; (p! org-roam-bibtex
+;;   :straight t
+;;   :after org-roam
+;;   :hook
+;;   (org-roam-mode . org-roam-bibtex-mode)
 
-  :config
-  (require 'org-ref))
+;;   :config
+;;   (require 'org-ref))
 
 ;; (use-package org-roam-server
 ;;   :after org
@@ -491,104 +491,104 @@ should be continued."
   (setq org-super-agenda-header-map nil)
   )
 
-(use-package org-google-tasks
-  :straight request
-  :straight (org-google-tasks :fetcher github :repo "https://github.com/SidharthArya/org-google-tasks")
-  :custom
-  (org-google-tasks-credential-file "/home/arya/Documents/Org/Bots/Org/google-tasks")
-  (org-google-tasks-use-inheritance t)
-  :config
-  (org-google-tasks-load-credentials)
-  (org-google-tasks-get-tokens)
-  (org-google-tasks-get-remote-list t t)
-  )
-
-(p! ox-hugo
-  :straight t
-  :after org
-  :defer nil
-  :custom
-  (org-hugo-auto-set-lastmod t)
-  :config
-  (setq org-hugo-base-dir "~/.blog/")
-  (setq org-hugo-front-matter-format 'yaml)
-    (defun org-hugo-new-subtree-post-capture-template ()
-      "Returns `org-capture' template string for new Hugo post.
-See `org-capture-templates' for more information."
-      (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
-             (fname (org-hugo-slug title)))
-	(mapconcat #'identity
-                   `(
-                     ,(concat "* TODO " title)
-                     ":PROPERTIES:"
-                     ,(concat ":EXPORT_FILE_NAME: " fname)
-                     ,(concat ":EXPORT_DATE: %t")
-                     ":END:"
-                     "%?\n")          ;Place the cursor here finally
-                   "\n")))
-
-    (add-to-list 'org-capture-templates
-		 '("b" "Blog"               ))
-    (add-to-list 'org-capture-templates
-		 '("be"                
-                   "Emacs"
-                   entry
-                   (file+olp "~/Documents/Org/Blog/blog.org" "Emacs")
-                   (function org-hugo-new-subtree-post-capture-template)))
-    (add-to-list 'org-capture-templates
-		 '("bc"                
-                   "Coding"
-                   entry
-                   (file+olp "~/Documents/Org/Blog/blog.org" "Coding")
-                   (function org-hugo-new-subtree-post-capture-template)))
-    (add-to-list 'org-capture-templates
-		 '("bp"                
-                   "Philosophy"
-                   entry
-                   (file+olp "~/Documents/Org/Blog/blog.org" "Philosophy")
-                   (function org-hugo-new-subtree-post-capture-template)))
-    (add-to-list 'org-capture-templates
-		 '("bl" 
-                   "Linux"
-                   entry
-                   (file+olp "~/Documents/Org/Blog/blog.org" "Linux")
-                   (function org-hugo-new-subtree-post-capture-template)))
-    (add-to-list 'org-capture-templates
-		 '("ba" 
-                   "Artificial Intelligence"
-                   entry
-                   (file+olp "~/Documents/Org/Blog/blog.org" "Artificial Intelligence")
-                   (function org-hugo-new-subtree-post-capture-template)))
-    (add-to-list 'org-capture-templates
-		 '("bb" 
-                   "Blog"
-                   entry
-                   (file+olp "~/Documents/Org/Blog/blog.org" "Blog")
-                   (function org-hugo-new-subtree-post-capture-template)))
-    :init
-    (require 'ox-hugo)
-    )
-    
-  
-  (p! citeproc-org
-  :straight t
-  :after (ox-hugo org-ref)
-  :config
-  (citeproc-org-setup)
-  )
-
-;; (use-package ob-ipython
-;;   :straight t
+;; (use-package org-google-tasks
+;;   :straight request
+;;   :straight (org-google-tasks :fetcher github :repo "https://github.com/SidharthArya/org-google-tasks")
 ;;   :custom
-;;   (ob-ipython-command "~/.local/bin/jupyter")
+;;   (org-google-tasks-credential-file "/home/arya/Documents/Org/Bots/Org/google-tasks")
+;;   (org-google-tasks-use-inheritance t)
+;;   :config
+;;   (org-google-tasks-load-credentials)
+;;   (org-google-tasks-get-tokens)
+;;   (org-google-tasks-get-remote-list t t)
 ;;   )
 
+;; (p! ox-hugo
+;;   :straight t
+;;   :after org
+;;   :defer nil
+;;   :custom
+;;   (org-hugo-auto-set-lastmod t)
+;;   :config
+;;   (setq org-hugo-base-dir "~/.blog/")
+;;   (setq org-hugo-front-matter-format 'yaml)
+;;     (defun org-hugo-new-subtree-post-capture-template ()
+;;       "Returns `org-capture' template string for new Hugo post.
+;; See `org-capture-templates' for more information."
+;;       (let* ((title (read-from-minibuffer "Post Title: ")) ;Prompt to enter the post title
+;;              (fname (org-hugo-slug title)))
+;; 	(mapconcat #'identity
+;;                    `(
+;;                      ,(concat "* TODO " title)
+;;                      ":PROPERTIES:"
+;;                      ,(concat ":EXPORT_FILE_NAME: " fname)
+;;                      ,(concat ":EXPORT_DATE: %t")
+;;                      ":END:"
+;;                      "%?\n")          ;Place the cursor here finally
+;;                    "\n")))
 
-;; TODO
-;; (defun org-roam--org-hugo-save ()
-;;   ""
-;;   (if (org-roam-file-p)
-;;   (save-excursion
-;;   (org-hugo-export-wim-to-md))))
+;;     (add-to-list 'org-capture-templates
+;; 		 '("b" "Blog"               ))
+;;     (add-to-list 'org-capture-templates
+;; 		 '("be"                
+;;                    "Emacs"
+;;                    entry
+;;                    (file+olp "~/Documents/Org/Blog/blog.org" "Emacs")
+;;                    (function org-hugo-new-subtree-post-capture-template)))
+;;     (add-to-list 'org-capture-templates
+;; 		 '("bc"                
+;;                    "Coding"
+;;                    entry
+;;                    (file+olp "~/Documents/Org/Blog/blog.org" "Coding")
+;;                    (function org-hugo-new-subtree-post-capture-template)))
+;;     (add-to-list 'org-capture-templates
+;; 		 '("bp"                
+;;                    "Philosophy"
+;;                    entry
+;;                    (file+olp "~/Documents/Org/Blog/blog.org" "Philosophy")
+;;                    (function org-hugo-new-subtree-post-capture-template)))
+;;     (add-to-list 'org-capture-templates
+;; 		 '("bl" 
+;;                    "Linux"
+;;                    entry
+;;                    (file+olp "~/Documents/Org/Blog/blog.org" "Linux")
+;;                    (function org-hugo-new-subtree-post-capture-template)))
+;;     (add-to-list 'org-capture-templates
+;; 		 '("ba" 
+;;                    "Artificial Intelligence"
+;;                    entry
+;;                    (file+olp "~/Documents/Org/Blog/blog.org" "Artificial Intelligence")
+;;                    (function org-hugo-new-subtree-post-capture-template)))
+;;     (add-to-list 'org-capture-templates
+;; 		 '("bb" 
+;;                    "Blog"
+;;                    entry
+;;                    (file+olp "~/Documents/Org/Blog/blog.org" "Blog")
+;;                    (function org-hugo-new-subtree-post-capture-template)))
+;;     :init
+;;     (require 'ox-hugo)
+;;     )
+    
+  
+;;   (p! citeproc-org
+;;   :straight t
+;;   :after (ox-hugo org-ref)
+;;   :config
+;;   (citeproc-org-setup)
+;;   )
 
-;; (add-hook 'after-save-hook 'org-roam--org-hugo-save)
+;; ;; (use-package ob-ipython
+;; ;;   :straight t
+;; ;;   :custom
+;; ;;   (ob-ipython-command "~/.local/bin/jupyter")
+;; ;;   )
+
+
+;; ;; TODO
+;; ;; (defun org-roam--org-hugo-save ()
+;; ;;   ""
+;; ;;   (if (org-roam-file-p)
+;; ;;   (save-excursion
+;; ;;   (org-hugo-export-wim-to-md))))
+
+;; ;; (add-hook 'after-save-hook 'org-roam--org-hugo-save)
