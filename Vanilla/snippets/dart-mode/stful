@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: stful
+# key: stful
+# --
+
+class $1 extends StatefulWidget {
+    const $1({Key key}) : super(key: key);
+
+    @override
+    _$1 createState() => _$1();
+}

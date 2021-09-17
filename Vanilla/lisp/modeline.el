@@ -1,4 +1,4 @@
 (p! doom-modeline
-  :ensure t
+  :straight t
    :config
    (doom-modeline-mode 1))

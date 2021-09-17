@@ -25,3 +25,7 @@
 
 (p! dart-mode
   :straight t)
+
+(p! yaml-mode
+  :straight t)
+

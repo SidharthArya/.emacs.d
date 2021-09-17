@@ -113,3 +113,5 @@
           :action
           '(("Find File" . (lambda (c) (find-file (concat "~/.emacs.d/" c)))))
           )))
+(use-package helm-rg
+  :straight t)

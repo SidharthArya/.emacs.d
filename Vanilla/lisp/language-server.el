@@ -20,6 +20,9 @@
 ;;(p! lsp-ivy :straight t :commands lsp-ivy-workspace-symbol)
 (p! lsp-treemacs :straight t
   :commands lsp-treemacs-errors-list)
+(p! treemacs :straight t
+  :bind
+  ("C-c t t" . treemacs))
 
 ;; optionally if you want to use debugger
 (p! dap-mode :straight t)
@@ -32,3 +35,18 @@
   :hook (python-mode . (lambda ()
                           (require 'lsp-pyright)
                           (lsp))))
+(p! lsp-dart :straight t
+  :custom
+  (lsp-dart-flutter-sdk-dir "~/.local/opt/flutter"))
+
+(p! lsp-origami
+  :straight t
+  :bind
+  :config
+  (add-hook 'lsp-after-open-hook #'lsp-origami-try-enable)
+  (global-set-key (kbd "C-c <") 'origami-open-node)
+  (global-set-key (kbd "C-c >") 'origami-close-node)
+  :hook
+  (prog-mode . origami-mode))
+
+  
