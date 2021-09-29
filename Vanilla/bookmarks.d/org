@@ -3,10 +3,10 @@
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("org-capture-last-stored"
- (filename . "~/Documents/Org/Roam/20210917122314-business_logic_component.org")
- (front-context-string)
- (rear-context-string . "Logic Component\n")
- (position . 122))
+ (filename . "~/Documents/Org/Roam/20210929031649-computer_vision.org")
+ (front-context-string . "\n* Concepts\n** C")
+ (rear-context-string . "Computer Vision\n")
+ (position . 93))
 ("Blog"
  (filename . "~/Documents/Org/Blog/blog.org")
  (front-context-string . " (beginning-of-b")
