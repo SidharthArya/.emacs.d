@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: imptorch
+# key: imptorch
+# --
+import torch
+import torch.nn as nn
