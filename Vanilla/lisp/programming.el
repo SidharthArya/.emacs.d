@@ -29,3 +29,5 @@
 (p! yaml-mode
   :straight t)
 
+(p! typescript-mode
+  :straight t)

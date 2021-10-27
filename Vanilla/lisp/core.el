@@ -96,3 +96,9 @@
   (recentf-max-menu-items 100)
   )
 (transient-mark-mode -1)
+
+(p! exec-path-from-shell
+  :config
+  (exec-path-from-shell-initialize))
+
+(global-auto-revert-mode t)
