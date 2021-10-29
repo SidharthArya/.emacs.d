@@ -3,9 +3,9 @@
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("org-capture-last-stored"
- (filename . "~/Documents/Org/Roam/20211027112629-typescript.org")
- (front-context-string)
- (rear-context-string . "tle: Typescript\n")
+ (filename . "~/Documents/Org/Roam/20211029103919-versioning.org")
+ (front-context-string . "\n* Semantic Vers")
+ (rear-context-string . "tle: Versioning\n")
  (position . 88))
 ("Blog"
  (filename . "~/Documents/Org/Blog/blog.org")
