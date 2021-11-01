@@ -31,3 +31,7 @@
 
 (p! typescript-mode
   :straight t)
+
+(p! tree-sitter
+  :straight t)
+

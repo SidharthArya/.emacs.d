@@ -98,6 +98,7 @@
 (transient-mark-mode -1)
 
 (p! exec-path-from-shell
+  :straight t
   :config
   (exec-path-from-shell-initialize))
 
