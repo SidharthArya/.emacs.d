@@ -3,10 +3,10 @@
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("org-capture-last-stored"
- (filename . "~/Documents/Org/Roam/20211101143717-hammerjs.org")
- (front-context-string . "\n\nAdd touch gest")
- (rear-context-string . "title: Hammerjs\n")
- (position . 86))
+ (filename . "~/Documents/Org/Roam/20211102173041-cascading_style_sheets.org")
+ (front-context-string . "\n\n* Flexbox\n:PRO")
+ (rear-context-string . "ng Style Sheets\n")
+ (position . 100))
 ("Blog"
  (filename . "~/Documents/Org/Blog/blog.org")
  (front-context-string . " (beginning-of-b")
