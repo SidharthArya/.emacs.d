@@ -356,3 +356,20 @@ should be continued."
 	("C-c r A" . org-roam-alias-delete)
 	("C-c r g" . org-roam-graph)
 	("C-c r i" . org-roam-node-insert))
+
+(p! org-ref
+  :straight t
+  :after (org)
+  :custom
+  (reftex-default-bibliography '("~/Documents/Org/references.bib"))
+  (org-ref-default-bibliography '("~/Documents/Org/references.bib"))
+  (bibtex-completion-bibliography '("~/Documents/Org/references.bib"))
+  (org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
+  )
+
+  (p! citeproc-org
+  :straight t
+  :after (ox-hugo org-ref)
+  :config
+  (citeproc-org-setup)
+  )
