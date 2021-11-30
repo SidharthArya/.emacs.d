@@ -3,10 +3,10 @@
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("org-capture-last-stored"
- (filename . "~/Documents/Org/Roam/20211102173041-cascading_style_sheets.org")
- (front-context-string . "\n\n* Flexbox\n:PRO")
- (rear-context-string . "ng Style Sheets\n")
- (position . 100))
+ (filename . "~/Documents/Org/Agenda/notes.org")
+ (front-context-string . "** TODO Error Ha")
+ (rear-context-string . "\"\\].iloc\\[0\\]]]\n")
+ (position . 15971))
 ("Blog"
  (filename . "~/Documents/Org/Blog/blog.org")
  (front-context-string . " (beginning-of-b")
