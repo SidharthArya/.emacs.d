@@ -16,7 +16,11 @@
      ("y" \,
       (* 60 8 5 4 12))) nil nil "Customized with use-package org")
  '(safe-local-variable-values
-   '((org-hugo-section . "braindump")
+   '((org-roam-db-location . "~/Desktop/manufacturing-scheduler-optaplanner/notes/DB")
+     (org-roam-directory . "~/Desktop/manufacturing-scheduler-optaplanner/notes")
+     (org-roam-root-directory . "~/Desktop/manufacturing-scheduler-optaplanner/notes")
+     (org-hugo-base-dir . "~/Desktop/manufacturing-scheduler-optaplanner/notes")
+     (org-hugo-section . "braindump")
      (org-hugo-base-dir . "~/.blog"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
