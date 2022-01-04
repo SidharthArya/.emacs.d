@@ -11,14 +11,13 @@
   (evil-want-minibuffer t)
   (evil-emacs-state-modes nil)
   :config
-  (setq evil-undo-system 'undo-tree)
+  (setq evil-undo-system 'undo-redo)
   (require 'goto-chg)
   ;; (require 'evil-collection)
   ;; (evil-collection-init)
   (evil-mode +1)
     (evil-define-key 'normal 'global (kbd "~") #'(lambda() (interactive) (switch-to-buffer nil)))
   (evil-set-leader 'normal (kbd "\\")))
-
 ;; (p! evil-org
 ;;   :straight t
 ;;   :after org
