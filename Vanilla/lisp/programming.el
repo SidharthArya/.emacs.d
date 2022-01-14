@@ -35,3 +35,5 @@
 (p! tree-sitter
   :straight t)
 
+(p! groovy-mode
+  :straight t)
