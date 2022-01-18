@@ -4,8 +4,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(helm-minibuffer-history-key "M-p")
- '(org-agenda-files
-   '("/home/arya/Documents/Org/Roam/20220116053112-thanks_for_the_feedback.org" "/home/arya/Documents/Org/Roam/20220115174610-headache.org" "/home/arya/Documents/Org/Agenda/notes.org" "/home/arya/Documents/Org/Agenda/books.org" "/home/arya/Documents/Org/Agenda/entertainment.org") nil nil "Customized with use-package org")
  '(org-duration-units
    `(("min" . 1)
      ("h" . 60)
