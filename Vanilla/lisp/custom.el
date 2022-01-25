@@ -16,8 +16,9 @@
      ("y" \,
       (* 60 8 5 4 12))) nil nil "Customized with use-package org")
  '(safe-local-variable-values
-   '((org-hugo-section . "braindump")
-     (org-hugo-base-dir . "~/.blog"))))
+   '((org-roam-db-location . "/home/arya/Desktop/Work/DRL/Packaging-Scheduler/making_sense_of_database/DB")
+     (org-roam-db-location . "/home/arya/Desktop/Work/DRL/Packaging-Scheduler/making_sense_of_database")
+     (org-roam-directory . "/home/arya/Desktop/Work/DRL/Packaging-Scheduler/making_sense_of_database"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

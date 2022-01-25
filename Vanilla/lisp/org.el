@@ -367,6 +367,17 @@ should be continued."
 	("C-c r g" . org-roam-graph)
 	("C-c r i" . org-roam-node-insert))
 
+(p! org-roam-ui
+  :straight
+    (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
+    :after org-roam
+    :hook (after-init . org-roam-ui-mode)
+    :config
+    (setq org-roam-ui-sync-theme t
+          org-roam-ui-follow t
+          org-roam-ui-update-on-save t
+          org-roam-ui-open-on-start t))
+
 (p! org-ref
   :straight t
   :after (org)
@@ -383,3 +394,6 @@ should be continued."
   :config
   (citeproc-org-setup)
   )
+
+(p! ox-hugo
+  :straight t)
