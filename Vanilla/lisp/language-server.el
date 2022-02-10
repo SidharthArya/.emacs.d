@@ -52,9 +52,9 @@
   (prog-mode . origami-mode))
 
   
-(p! lsp-ng
-  :straight (lsp-ng :fetcher github :repo "https://github.com/SidharthArya/lsp-ng")
-  :custom
-  (lsp-ng-find-path "~/.nvm/versions/node/v14.18.1")
-  :config
-  (lsp-ng-init))
+;; (p! lsp-ng
+;;   :straight (lsp-ng :fetcher github :repo "https://github.com/SidharthArya/lsp-ng")
+;;   :custom
+;;   (lsp-ng-find-path "~/.nvm/versions/node/v14.18.1")
+;;   :config
+;;   (lsp-ng-init))

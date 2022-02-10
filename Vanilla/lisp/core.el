@@ -103,3 +103,5 @@
   (exec-path-from-shell-initialize))
 
 (global-auto-revert-mode t)
+(if (equal system-type 'darwin)
+    (setq insert-directory-program "gls"))

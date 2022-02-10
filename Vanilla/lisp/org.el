@@ -309,9 +309,6 @@ should be continued."
 
 (p! org-roam
   :straight t
-
-  :hook
-  (after-init . org-roam-mode)
   :init
   (require 'emacsql)
                                         ;(setq emacsql-sqlite-executable "~/.local/bin/emacsql-sqlite")

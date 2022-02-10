@@ -3,7 +3,9 @@
   :config
   (setq projectile-keymap-prefix (kbd "C-c p"))
   (define-key projectile-mode-map (kbd "C-c p") projectile-command-map)
-  (projectile-mode +1))
+  (projectile-mode +1)
+  :bind
+  ("C-c p p" . projectile-switch-project))
 
 
 
