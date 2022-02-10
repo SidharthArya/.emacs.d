@@ -23,5 +23,5 @@
   :straight t
   :after magit
   :config
-  (load "~/Documents/Org/
-  )
+  (when (file-exists-p "~/Documents/Work/Config/work.el")
+      (load "~/Documents/Work/Config/work.el")))

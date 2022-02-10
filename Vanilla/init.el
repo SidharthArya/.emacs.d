@@ -14,7 +14,7 @@
                          (base-post (core-post))
                          (tracking (core vi space appearance org begin-tracking not-org))
                          (programming (core appearance ivy org programming vc))
-                         (org (begin-org (base) dashboard org vc completion language-server wakatime projects programming tramp server custom (base-post)))
+                         (org (begin-org (base) dashboard org vc completion language-server wakatime projects programming tramp custom (base-post)))
                          ;; (org (begin-org (base) dashboard org vc completion language-server wakatime projects programming tramp server (base-post)))
                                ;; (base) dashboard org vc completion language-server wakatime projects server programming (base-post)))
                          (tmp ((base vi) (base-post)))
