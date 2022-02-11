@@ -4,21 +4,16 @@
  (p! modular-config
   :straight t
   :custom
-  (modular-config-list '(
-                         (none ())
+  (modular-config-list '((none ())
                          (minimal (core appearance))
                          (mail (core appearance selectrum emoji not-org mail gnus begin-mail core-post))
                          (news ((base) not-org help begin-news (base-post)))
-                         ;; core web org emoji
                          (base (core appearance modeline helm vi help))
                          (base-post (core-post))
                          (tracking (core vi space appearance org begin-tracking not-org))
                          (programming (core appearance ivy org programming vc))
-                         (org (begin-org (base) dashboard org vc completion language-server wakatime projects programming tramp custom (base-post)))
-                         ;; (org (begin-org (base) dashboard org vc completion language-server wakatime projects programming tramp server (base-post)))
-                               ;; (base) dashboard org vc completion language-server wakatime projects server programming (base-post)))
+                         (org (begin-org (base) dashboard org vc completion language-server wakatime projects programming tramp custom server (base-post)))
                          (tmp ((base vi) (base-post)))
-                               ;;web  server  subtitles core-post  ))
                          (chat (core appearance space vi irc slack begin-chat))
                          (orgtest (org))
 			 (wm (wm))
@@ -31,4 +26,3 @@
   :config
 
   (modular-config-command-line-args-process))
-(put 'narrow-to-region 'disabled nil)

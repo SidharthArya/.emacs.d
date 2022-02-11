@@ -37,3 +37,4 @@
 
 (p! groovy-mode
   :straight t)
+(p! restclient :straight t)
