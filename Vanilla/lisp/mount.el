@@ -1,4 +1,4 @@
-(setq my-documents-mounted (or (equal 1 (string-to-number (shell-command-to-string "mount | grep Documents | wc -l"))) (< 2 (string-to-number (shell-command-to-string "ls ~/Documents | wc -l")))))
+(setq my-documents-mounted (or (equal 1 (string-to-number (shell-command-to-string "mount | grep Documents | wc -l"))) (< 0 (string-to-number (shell-command-to-string "ls ~/Documents | wc -l")))))
 (if (equal system-type 'darwin)
     (setq my-documents-mounted t))
 (defun my-documents-mount()

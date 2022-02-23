@@ -395,6 +395,9 @@ should be continued."
 (p! ox-hugo
   :straight t
   :config
+  (defun my-org-hugo-roam-export-md()
+    (interactive)
+    (if (equal major-mode 'org-mode) (org-hugo-export-to-md)))
   (setq org-hugo-anchor-functions '(org-hugo-get-custom-id
                                     org-hugo-get-id
                                     org-hugo-get-heading-slug
