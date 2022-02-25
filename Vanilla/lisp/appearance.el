@@ -40,11 +40,12 @@
 ;;   (zenburn-scale-outline-headlines t)
 ;;   :init
 ;;   (load-theme 'zenburn t))
-(p! solarized-theme
-  :straight t
-  :config
-  (load-theme 'solarized-zenburn t))
+;; (p! solarized-theme
+;;   :straight t
+;;   :config
+;;   (load-theme 'solarized-zenburn t))
 
-(p! hl-line
-  :config
-  (global-hl-line-mode +1))
+;; (p! hl-line
+;;   :config
+;;   (global-hl-line-mode +1))
+(load-theme 'doom-one t)

@@ -62,7 +62,6 @@
 ;; (set-frame-size nil 130 40)
 (set-frame-position nil 130 40)
 (setq custom-theme-directory "~/.emacs.d/themes")
-                                        ;(load-theme 'tango-dark t)
 ;; (add-hook 'kill-emacs-hook 'save-some-buffers)
 (global-set-key (kbd "<XF86Favorites>") 'bookmark-jump)
 (p! saveplace

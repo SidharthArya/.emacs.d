@@ -2,6 +2,12 @@
   :straight t
   :config
   (setenv "GIT_ASKPASS" "/home/arya/Documents/Org/Scripts/gitaskpass.sh")
+  (defun org-roam--auto-commit()
+    ""
+    (interactive)
+    (magit-call-git "add" ".")
+    (magit-call-git "commit" "-m" (car (cdr (car (org-collect-keywords '("TITLE"))))))
+    (magit-run-git-async "push"))
   (setq transient-default-level 5)
   :bind
   ("C-x g" . magit)
