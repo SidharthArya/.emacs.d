@@ -5,7 +5,7 @@
   (defun org-roam--auto-commit()
     ""
     (interactive)
-    (magit-call-git "add" ".")
+    (magit-call-git "add" (buffer-file-name))
     (magit-call-git "commit" "-m" (car (cdr (car (org-collect-keywords '("TITLE"))))))
     (magit-run-git-async "push"))
   (add-to-list 'safe-local-variable-values '(after-save-hook . org-roam--auto-commit)))
