@@ -16,7 +16,8 @@
      ("y" \,
       (* 60 8 5 4 12))) nil nil "Customized with use-package org")
  '(safe-local-variable-values
-   '((projectile-project-run-cmd . "python Server/manage.py runserver 0.0.0.0:8080")
+   '((org-roam-root-directory . "~/Desktop/")
+     (projectile-project-run-cmd . "python Server/manage.py runserver 0.0.0.0:8080")
      (after-save-hook . org-roam--auto-commit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
