@@ -12,7 +12,7 @@
                          (base-post (core-post))
                          (tracking (core vi space appearance org begin-tracking not-org))
                          (programming (core appearance ivy org programming vc))
-                         (org (begin-org (base) dashboard org vc completion language-server wakatime projects programming tramp custom server (base-post)))
+                         (org (begin-org (base) dashboard org vc completion language-server wakatime projects programming tramp custom server (base-post) tracking))
                          (tmp ((base vi) (base-post)))
                          (chat (core appearance space vi irc slack begin-chat))
                          (orgtest (org))

@@ -59,6 +59,30 @@
   (dolist (key my-tracking-point-keys-daily)
     (my-tracking-give-points  key)))
 
+(defun my-tracking-increment-point()
+  ""
+  (interactive)
+  (let ((str (completing-read "Point File: " my-tracking-point-keys-daily)))
+  (with-current-buffer (find-file-noselect (concat  my-tracking-points-directory str ".csv"))
+    (if (equal (buffer-size) 0)
+        (insert "Date,Value"))
+    (goto-char (point-max))
+    (if (not (equal (car (split-string (thing-at-point 'line) ","))  (format-time-string "%d-%m-%Y" (current-time))))
+        (progn
+          (insert "\n")
+          (insert "")
+          (insert (format-time-string "%d-%m-%Y" (current-time)))
+          (insert "," (format "%s" "1"))
+          (save-buffer)
+          (kill-buffer))
+      (progn
+        (search-backward ",")
+        (forward-char)
+        (setq my-tracking-current-point (number-to-string (+ 1 (string-to-number (car (cdr (split-string (thing-at-point 'line) ",")))))))
+        (kill-region (point) (point-max))
+        (insert my-tracking-current-point)
+        )))))
+  
 (defun my-tracking-give-points(key)
   ""
   (let ((str nil)
