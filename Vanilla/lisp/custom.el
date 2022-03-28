@@ -16,11 +16,8 @@
      ("y" \,
       (* 60 8 5 4 12))) nil nil "Customized with use-package org")
  '(safe-local-variable-values
-   '((org-roam-db-location . "/home/arya/Desktop/Work/DRL/Packaging-Scheduler/making_sense_of_database/DB")
-     (org-roam-directory . "/home/arya/Desktop/Work/DRL/Packaging-Scheduler/making_sense_of_database")
-     (org-roam-root-directory . "~/Desktop/")
-     (projectile-project-run-cmd . "python Server/manage.py runserver 0.0.0.0:8080")
-     (after-save-hook . org-roam--auto-commit))))
+   '((org-hugo-section . "braindump")
+     (org-hugo-base-dir . "~/.blog"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

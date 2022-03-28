@@ -395,10 +395,39 @@ should be continued."
 (p! ox-hugo
   :straight t
   :config
+
   (defun my-org-hugo-roam-export-md()
+    ""
     (interactive)
-    (if (equal major-mode 'org-mode) (org-hugo-export-to-md)))
+    (save-excursion
+   (replace-string "{" "" nil (point-min) (point-max))
+    (replace-string "}" "" nil (point-min) (point-max))
+    (if (equal major-mode 'org-mode) (org-hugo-export-to-md))))
   (setq org-hugo-anchor-functions '(org-hugo-get-custom-id
                                     org-hugo-get-id
                                     org-hugo-get-heading-slug
                                     org-hugo-get-md5)))
+(p! org-fc
+  :straight (org-fc
+             :type git :repo "https://git.sr.ht/~l3kn/org-fc"
+             :files (:defaults "awk" "demo.org"))
+  :custom
+  (org-fc-directories '("~/Documents/Org/Roam"))
+  :config
+  (require 'org-fc-hydra)
+  (evil-define-minor-mode-key '(normal insert emacs) 'org-fc-review-flip-mode
+    (kbd "RET") 'org-fc-review-flip
+    (kbd "n") 'org-fc-review-flip
+    (kbd "s") 'org-fc-review-suspend-card
+    (kbd "q") 'org-fc-review-quit)
+
+  (evil-define-minor-mode-key '(normal insert emacs) 'org-fc-review-rate-mode
+    (kbd "a") 'org-fc-review-rate-again
+    (kbd "h") 'org-fc-review-rate-hard
+    (kbd "g") 'org-fc-review-rate-good
+    (kbd "e") 'org-fc-review-rate-easy
+    (kbd "s") 'org-fc-review-suspend-card
+    (kbd "q") 'org-fc-review-quit)
+  )
+(p! hydra
+  :straight t)
