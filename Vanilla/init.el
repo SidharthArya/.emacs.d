@@ -26,3 +26,4 @@
   :config
 
   (modular-config-command-line-args-process))
+(put 'narrow-to-region 'disabled nil)
