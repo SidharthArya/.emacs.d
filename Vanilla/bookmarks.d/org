@@ -4,9 +4,9 @@
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("org-capture-last-stored"
  (filename . "~/Documents/Org/Agenda/notes.org")
- (front-context-string . "*** TODO Start t")
- (rear-context-string . " lean startup]]\n")
- (position . 19554))
+ (front-context-string . "*** TODO Learn h")
+ (rear-context-string . "ve][Objective]]\n")
+ (position . 19797))
 ("Blog"
  (filename . "~/Documents/Org/Blog/blog.org")
  (front-context-string . " (beginning-of-b")

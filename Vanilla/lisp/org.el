@@ -395,14 +395,20 @@ should be continued."
 (p! ox-hugo
   :straight t
   :config
-
-  (defun my-org-hugo-roam-export-md()
+  (defun my-org-hugo-export-to-md()
+    ""
+    (when (string-match-p (expand-file-name org-roam-directory) (buffer-file-name))
+      (org-hugo-export-wim-to-md)))
+  (add-to-list 'after-save-hook 'my-org-hugo-export-to-md)
+  (defun my-org-hugo-export-before-processing-hook(_backend)
     ""
     (interactive)
-    (save-excursion
-   (replace-string "{" "" nil (point-min) (point-max))
-    (replace-string "}" "" nil (point-min) (point-max))
-    (if (equal major-mode 'org-mode) (org-hugo-export-to-md))))
+    (when (string-match-p (expand-file-name org-roam-directory) (buffer-file-name))
+        (replace-string "{" "" nil (point-min) (point-max))
+        (beginning-of-buffer)
+        (while  (re-search-forward "\}\@.*\}" nil t)
+          (replace-match ""))))
+  (add-to-list 'org-export-before-processing-hook 'my-org-hugo-export-before-processing-hook)
   (setq org-hugo-anchor-functions '(org-hugo-get-custom-id
                                     org-hugo-get-id
                                     org-hugo-get-heading-slug
