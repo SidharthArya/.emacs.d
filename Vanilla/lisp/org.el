@@ -208,7 +208,7 @@ are equal return t."
       
       (if (equal b nil)
           (message "UA:%s, EA: %s, SA: %s" ua ea sa)
-	(message "UA:%s, EA: %s, SA: %s, B: %s, CMP: %s" ua ea sa b (if (> ua b) "Above" "Below"))))
+	(message "UA:%s, EA: %s, SA: %s, B: %s, CMP: %s" ua ea sa b (if (> ua b) "Above" "Below")))))
     
     (defun my-org-preprocess-priority(x)
       (cond ((equal x nil) 66)
@@ -305,7 +305,7 @@ should be continued."
     (require 'org-archive)
     (setq-default org-confirm-babel-evaluate nil)
     (require 'org-habit)
-    (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))))
+    (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0)))
 
 (p! org-roam
   :straight t
