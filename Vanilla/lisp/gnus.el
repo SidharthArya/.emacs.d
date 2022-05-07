@@ -22,7 +22,7 @@
    (nnir-search-engine imap))
   (gnus-secondary-select-methods '(
                                    (nnimap "Gida"
-                                           (nnimap-address "imap.gida.in")
+                                           (nnimap-address "imap.gmail.com")
                                            (nnimap-server-port "imaps")
                                            (nnimap-stream ssl))
                                    ;; (nnimap "Startup"
