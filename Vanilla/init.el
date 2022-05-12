@@ -17,6 +17,7 @@
                          (tmp ((base vi) (base-post)))
                          (chat (core appearance space vi irc slack begin-chat))
                          (orgtest (org))
+                         (noter ((base) org notes pdf))
 			 (wm (wm))
                          (doom (org doom))
                          (utilities (core))
