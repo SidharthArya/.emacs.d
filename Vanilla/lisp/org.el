@@ -332,7 +332,7 @@ should be continued."
     ""
     (when (string-match-p (expand-file-name org-roam-directory) (buffer-file-name))
       (org-hugo-export-wim-to-md)))
-  (add-to-list 'after-save-hook 'my-org-hugo-export-to-md)
+  ;; (add-to-list 'after-save-hook 'my-org-hugo-export-to-md)
   (defun my-org-hugo-export-before-processing-hook(_backend)
     ""
     (interactive)
