@@ -24,10 +24,15 @@
   (org-roam-tag-sources '(prop all-directories vanilla))
   (org-roam-directory "~/Documents/Org/Roam")
   (org-roam-db-location "~/Documents/Org/Roam/DB")
-  (org-roam-dailies-directory "dailies")
+  (org-roam-dailies-directory "../dailies")
   (org-roam-dailies-capture-templates
    '(
      ("d" "daily" entry #'org-roam-capture--get-point
+      "* %?\n"
+      :file-name "daily/%<%Y-%m-%d>"
+      :head "#+title: %<%Y-%m-%d>\n"
+      )
+     ("s" "stocks" entry #'org-roam-capture--get-point
       "* %?\n"
       :file-name "daily/%<%Y-%m-%d>"
       :head "#+title: %<%Y-%m-%d>\n"
