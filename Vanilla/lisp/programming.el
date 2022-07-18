@@ -42,3 +42,12 @@
 
 (p! ein
   :straight t)
+
+(p! lua-mode
+  :straight t)
+
+(p! haskell-mode
+  :straight t)
+
+(p! yaml-mode
+  :straight t)

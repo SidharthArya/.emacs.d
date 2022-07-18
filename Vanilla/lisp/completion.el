@@ -24,8 +24,8 @@
   :after company
   :hook (company-mode . company-box-mode))
 
-(p! company-tabnine
-  :straight t
-  :defer nil
-  :config
-  (add-to-list 'company-backends #'company-tabnine))
+;; (p! company-tabnine
+;;   :straight t
+;;   :defer nil
+;;   :config
+;;   (add-to-list 'company-backends #'company-tabnine))
