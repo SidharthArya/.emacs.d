@@ -3,11 +3,11 @@
   :custom
   (browse-url-browser-function 'browse-rules-url)
   (browse-rules '(
-                  (".*" t "luakit" "%s")
+                  (".*" t "google-chrome-stable" "%s")
                   ;;         (".*\.csv$" t "localc" "%s")
                   ;;                      (".*\.DAT.*" t "localc" "%s")
-                  (".*thehindu.*" t "luakit" "https://outline.com/%s")
-                  (".*medium.*" t "luakit" "%s")
+                  (".*thehindu.*" t "google-chrome-stable" "https://outline.com/%s")
+                  (".*medium.*" t "google-chrome-stable" "%s")
                   (".*mp3.*" t "emacsclient" "%s")
                   (".pdf" nil browse-url-default-browser "%s")
 
