@@ -51,3 +51,5 @@
 
 (p! yaml-mode
   :straight t)
+(p! dockerfile-mode
+  :straight t)
