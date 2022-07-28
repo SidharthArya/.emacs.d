@@ -24,6 +24,78 @@
   (org-id-link-to-org-use-id 'use-existing)
   (org-directory "~/Documents/Org")
   (org-agenda-files '("~/Documents/Org/Agenda/notes.org" "~/Documents/Org/Agenda/books.org" "~/Documents/Org/Agenda/entertainment.org"))
+  (org-agenda-custom-commands
+   '(("e" "Exercises" agenda  ""
+      ((org-agenda-files (list "~/Documents/Org/Agenda/exercises.org"))
+       (org-super-agenda-groups
+        '((:auto-category t)))
+       (org-agenda-sorting-strategy '(priority-up effort-up))))
+     ("d" "Diary" agenda  ""
+      ((org-agenda-files nil)))
+     
+     ("f" "Focus Today" agenda ""
+      ((org-agenda-span 'day)
+       (org-agenda-skip-function '(org-agenda-skip-if-not-today))
+       ))
+     ("A" "Agenda Important" agenda  ""
+      ((org-agenda-files (list "~/Documents/Org/Agenda/notes.org"))
+       (org-super-agenda-groups nil)
+       (org-agenda-sorting-strategy '(priority-up effort-up))))
+     ("pa" "Projects Agenda" agenda  ""
+      ((org-agenda-files (list org-projectile-projects-file (concat (projectile-project-root) org-projectile-per-project-filepath)))
+       (org-super-agenda-groups nil)
+       (org-agenda-sorting-strategy '(priority-up effort-up))))
+     ("pt" "Projects Todo" todo  ""
+      ((org-agenda-files (list org-projectile-projects-file (concat (projectile-project-root) org-projectile-per-project-filepath)))
+       (org-super-agenda-groups nil)
+       (org-agenda-sorting-strategy '(priority-up effort-up))))
+     ("B" "Book" todo  ""
+      ((org-agenda-files (list "~/Documents/Org/Agenda/books.org"))
+       (org-super-agenda-groups nil)
+       (org-agenda-sorting-strategy '(ts-down priority-up effort-up))))
+     ("h" "Habits" agenda ""
+      ((org-agenda-files (list "~/Documents/Org/Agenda/habits.org"))
+       (org-agenda-sorting-strategy '(time-up))))
+     ("u" "Utility Sorted Agenda" agenda ""
+      ((org-agenda-cmp-user-defined 'my-org-cmp-utility-property))
+      (org-agenda-sorting-strategy '(user-defined-up)))
+     ("w" "Work" agenda ""
+      ((org-agenda-filter-preset '("+work"))))
+     ("E" "Entertainment" todo  ""
+      ((org-agenda-files (list "~/Documents/Org/Agenda/entertainment.org"))
+       (org-super-agenda-groups nil)
+       (org-agenda-sorting-strategy '(ts-up priority-up effort-up))))))
+  (org-agenda-sorting-strategy
+   '((agenda user-defined-down scheduled-down deadline-up priority-down effort-up)
+     (todo priority-down)
+     (tags priority-down)
+     (search category-keep)))
+  (org-duration-format '(("d" . nil) ("h" . t) ("min" . t)))
+  (org-effort-durations
+   `(("min" . 1)
+     ("h" . 60)
+     ;; eight-hour days
+     ("d" . ,(* 60 8))
+     ;; five-day work week
+     ("w" . ,(* 60 8 5))
+     ;; four weeks in a month
+     ("m" . ,(* 60 8 5 4))
+     ;; work a total of 12 months a year --
+     ;; this is independent of holiday and sick time taken
+     ("y" . ,(* 60 8 5 4 12))))
+  (org-agenda-skip-deadline-if-done t)
+  (org-agenda-skip-scheduled-if-done t)
+  (org-agenda-window-setup 'current-window)
+  (org-babel-load-languages '((emacs-lisp . t)))
+  (org-agenda-diary-file "~/Documents/Org/diary")
+  (diary-file "~/Documents/Org/diary")
+  (org-log-into-drawer t)
+  (org-agenda-include-diary t)
+  (alert-default-style 'libnotify)
+  (org-alert-notification-title "Organizer")
+  ;; (org-brain-path "~/Documents/Org/Brain")
+  (org-id-track-globally t)
+  (org-id-locations-file "~/Documents/Org/.org-id-locations")
   (org-capture-templates
    '(
      ("i" "Important")
