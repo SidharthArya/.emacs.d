@@ -22,9 +22,6 @@
 ;;(p! lsp-ivy :straight t :commands lsp-ivy-workspace-symbol)
 (p! lsp-treemacs :straight t
   :commands lsp-treemacs-errors-list)
-(p! treemacs :straight t
-  :bind
-  ("C-c t t" . treemacs))
 
 ;; optionally if you want to use debugger
 (p! dap-mode :straight t)

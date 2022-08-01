@@ -9,3 +9,8 @@
         ("d s" . dired-do-symlink)
         )
   )
+
+(p! treemacs :straight t
+  :config
+  (evil-set-
+    ("C-c t" . treemacs))
