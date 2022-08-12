@@ -7,7 +7,7 @@
   (setq org-roam-v2-ack t)
   :config
   (require 'org-roam-protocol)
-  (setq org-roam-root-directory "~/Documents/Org/Roam")
+  (setq org-roam-root-directory "~/Documents/Zettel/prismforce/")
   (defun org-roam-databases ()
     (cons (expand-file-name org-roam-root-directory)
 	  (split-string (shell-command-to-string (concat "fd -t d . '" (expand-file-name org-roam-root-directory) "'")))))
@@ -22,8 +22,8 @@
   (org-roam-db-update-method 'immediate)
   (org-roam-graph-viewer "/usr/bin/xdg-open")
   (org-roam-tag-sources '(prop all-directories vanilla))
-  (org-roam-directory "~/Documents/Org/Roam")
-  (org-roam-db-location "~/Documents/Org/Roam/DB")
+  (org-roam-directory "~/Documents/Zettel/prismforce")
+  (org-roam-db-location "~/Documents/Zettel/prismforce/DB")
   (org-roam-dailies-directory "../dailies")
   (org-roam-dailies-capture-templates
    '(
