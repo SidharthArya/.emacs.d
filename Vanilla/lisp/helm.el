@@ -73,6 +73,7 @@
   ("C-c \?" . helm-multi-swoop))
 
 (use-package helm-projectile
+  :straight t
   :after projectile
   :bind
         ("C-c p p" . helm-projectile)

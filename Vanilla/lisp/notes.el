@@ -7,7 +7,7 @@
   (setq org-roam-v2-ack t)
   :config
   (require 'org-roam-protocol)
-  (setq org-roam-root-directory "~/Documents/Zettel/prismforce/")
+  (setq org-roam-root-directory "~/Documents/Zettel/")
   (defun org-roam-databases ()
     (cons (expand-file-name org-roam-root-directory)
 	  (split-string (shell-command-to-string (concat "fd -t d . '" (expand-file-name org-roam-root-directory) "'")))))
@@ -16,7 +16,7 @@
     (interactive)
     (let* ((slipbox (completing-read "Slipbox: " (org-roam-databases))))
       (setq org-roam-directory slipbox)
-      (setq org-roam-db-location (concat slipbox "/DB"))))
+      (setq org-roam-db-location (concat slipbox "DB"))))
   (org-roam-db-autosync-mode +1)
   :custom
   (org-roam-db-update-method 'immediate)
@@ -24,7 +24,7 @@
   (org-roam-tag-sources '(prop all-directories vanilla))
   (org-roam-directory "~/Documents/Zettel/prismforce")
   (org-roam-db-location "~/Documents/Zettel/prismforce/DB")
-  (org-roam-dailies-directory "../dailies")
+  (org-roam-dailies-directory "./")
   (org-roam-dailies-capture-templates
    '(
      ("d" "daily" entry #'org-roam-capture--get-point
@@ -56,7 +56,7 @@
   ("C-c r t" . org-roam-tag-add)
   ("C-c r T" . org-roam-tag-delete)
   ("C-c r a" . org-roam-alias-add)
-  ("C-c r r" . org-roam-random-note)
+  ("C-c r r" . org-roam-ref-add)
   ("C-c r A" . org-roam-alias-delete)
   ("C-c r g" . org-roam-graph)
   ("C-c r i" . org-roam-node-insert))
@@ -66,6 +66,8 @@
   (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
   :after org-roam
   :hook (after-init . org-roam-ui-mode)
+  :bind
+  ("C-c r w" . org-roam-ui-mode)
   :config
   (setq org-roam-ui-sync-theme t
         org-roam-ui-follow t

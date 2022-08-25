@@ -100,7 +100,7 @@
   :after elfeed
   :defer nil
   :custom
-  (rmh-elfeed-org-files (list "~/Documents/Org/Feeds/feeds.org"))
+  (rmh-elfeed-org-files (list "~/Documents/Links/feeds.org"))
   :config
   (elfeed-org)
   (defun my-elfeed-org-update ()

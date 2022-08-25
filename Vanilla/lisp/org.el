@@ -23,10 +23,15 @@
   :custom
   (org-id-link-to-org-use-id 'use-existing)
   (org-directory "~/Documents/Org")
-  (org-agenda-files '("~/Documents/Org/Agenda/notes.org" "~/Documents/Org/Agenda/books.org" "~/Documents/Org/Agenda/entertainment.org"))
+  (org-agenda-files '("~/Documents/Org/Agenda/notes.org" "~/Documents/Org/Agenda/books.org" "~/Documents/Org/Agenda/entertainment.org" "~/Documents/Org/Agenda/social.org" "~/Documents/Org/Agenda/habits.org"  "~/Documents/Org/Agenda/work"))
   (org-agenda-custom-commands
    '(("e" "Exercises" agenda  ""
       ((org-agenda-files (list "~/Documents/Org/Agenda/exercises.org"))
+       (org-super-agenda-groups
+        '((:auto-category t)))
+       (org-agenda-sorting-strategy '(priority-up effort-up))))
+     ("w" "Work" agenda  ""
+      ((org-agenda-files (list "~/Documents/Org/Agenda/work.org"))
        (org-super-agenda-groups
         '((:auto-category t)))
        (org-agenda-sorting-strategy '(priority-up effort-up))))
@@ -124,6 +129,8 @@
       "* TODO %? \t:unimportant:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 20\n:END:\n  %i\n  %a")
      ("ud" "Deadline" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
       "* TODO %? \t:unimportant:\n\tDEADLINE:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 10\n:END:\n  %i\n  %a")
+     ("s" "Social" entry (file+headline "~/Documents/Org/Agenda/social.org" "Tasks")
+      "* TODO %? \t:social:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 30\n:END:\n  %i\n  %a")
      ("D" "Diary")
      ("Dd" "Daily Diary" entry (file+headline "~/Documents/Org/Brain/Personal/Diaries.org" "Diary")
       "* %(org-insert-time-stamp (org-read-date nil t \"\"))\n %?")
@@ -161,6 +168,18 @@
       "* TODO %:annotation \t:unimportant:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 10\n:END:\n  %i\n  %a")
      ("Pud" "Deadline" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Websites")
       "* TODO %:annotation \t:unimportant:\n\tDEADLINE:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 10\n:END:\n  %i\n  %a"))))
+
+;; ~/.doom.d/config.el
+(p! org-transclusion
+  :straight (:fetcher github :repo "https://github.com/nobiot/org-transclusion")
+  :after org
+  :init
+  (map!
+   :map global-map "<f12>" #'org-transclusion-add
+   :leader
+   :prefix "n"
+   :desc "Org Transclusion Mode" "t" #'org-transclusion-mode))
+
 
 (p! org-ref
   :straight t
@@ -222,5 +241,55 @@
     (kbd "s") 'org-fc-review-suspend-card
     (kbd "q") 'org-fc-review-quit)
   )
-(p! hydra
+
+(p! org-super-agenda
+  :straight t
+  :config
+  (setq org-super-agenda-groups
+       '(;; Each group has an implicit boolean OR operator between its selectors.
+         (:name "Today"  ; Optionally specify section name
+                :time-grid t  ; Items that appear on the time grid
+                :todo "TODAY")  ; Items that have this TODO keyword
+         (:name "Important"
+                ;; Single arguments given alone
+                :tag "bills"
+                :priority "A")
+         (:name "Social"
+                ;; Single arguments given alone
+                :tag "social")
+         ;; Set order of multiple groups at once
+         (:order-multi (2 (:name "Shopping in town"
+                                 ;; Boolean AND group matches items that match all subgroups
+                                 :and (:tag "shopping" :tag "@town"))
+                          (:name "Food-related"
+                                 ;; Multiple args given in list with implicit OR
+                                 :tag ("food" "dinner"))
+                          (:name "Personal"
+                                 :habit t
+                                 :tag "personal")
+                          (:name "Space-related (non-moon-or-planet-related)"
+                                 ;; Regexps match case-insensitively on the entire entry
+                                 :and (:regexp ("space" "NASA")
+                                               ;; Boolean NOT also has implicit OR between selectors
+                                               :not (:regexp "moon" :tag "planet")))))
+         ;; Groups supply their own section names when none are given
+         (:todo "WAITING" :order 8)  ; Set order of this section
+         (:todo ("SOMEDAY" "TO-READ" "CHECK" "TO-WATCH" "WATCHING")
+                ;; Show this group at the end of the agenda (since it has the
+                ;; highest number). If you specified this group last, items
+                ;; with these todo keywords that e.g. have priority A would be
+                ;; displayed in that group instead, because items are grouped
+                ;; out in the order the groups are listed.
+                :order 9)
+         (:priority<= "B"
+                      ;; Show this section after "Today" and "Important", because
+                      ;; their order is unspecified, defaulting to 0. Sections
+                      ;; are displayed lowest-number-first.
+                      :order 1)
+         ;; After the last group, the agenda will display items that didn't
+         ;; match any of these groups, with the default order position of 99
+         ))
+  )
+
+(p! org-download
   :straight t)

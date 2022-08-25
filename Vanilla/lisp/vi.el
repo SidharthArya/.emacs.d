@@ -17,7 +17,7 @@
   ;; (evil-collection-init)
   (evil-mode +1)
     (evil-define-key 'normal 'global (kbd "~") #'(lambda() (interactive) (switch-to-buffer nil)))
-  (evil-set-leader 'normal (kbd "\\")))
+  (evil-set-leader 'normal (kbd "SPC")))
 ;; (p! evil-org
 ;;   :straight t
 ;;   :after org
