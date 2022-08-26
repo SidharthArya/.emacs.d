@@ -171,7 +171,7 @@
 
 ;; ~/.doom.d/config.el
 (p! org-transclusion
-  :straight (:fetcher github :repo "https://github.com/nobiot/org-transclusion")
+  :straight (org-transclusion :fetcher github :repo "nobiot/org-transclusion")
   :after org
   :bind
   ("C-c o t" . org-transclusion-mode))
