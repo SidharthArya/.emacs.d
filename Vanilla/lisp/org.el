@@ -173,12 +173,8 @@
 (p! org-transclusion
   :straight (:fetcher github :repo "https://github.com/nobiot/org-transclusion")
   :after org
-  :init
-  (map!
-   :map global-map "<f12>" #'org-transclusion-add
-   :leader
-   :prefix "n"
-   :desc "Org Transclusion Mode" "t" #'org-transclusion-mode))
+  :bind
+  ("C-c o t" . org-transclusion-mode))
 
 
 (p! org-ref
