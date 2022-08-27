@@ -6,6 +6,8 @@
   ;; :if my-documents-mounted
   :hook (org-mode . visual-line-mode)
   (org-mode . auto-save-mode)
+  :config
+  (require 'org-tempo)
   :bind
   ("C-c o c" . org-capture)
   ("C-c o m" . org-id-get-create)

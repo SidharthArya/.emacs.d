@@ -1,4 +1,5 @@
-(require 'notmuch)
+(p! notmuch
+  :straight t)
 (defun notmuch-startup-function()
   ""
   (notmuch)

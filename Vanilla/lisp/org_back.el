@@ -1,18 +1,3 @@
-  :bind
-  ("C-c o c" . org-capture)
-  ("C-c o m" . org-id-get-create)
-  ("C-c o e" . org-export-dispatch)
-  ("C-c o a" . org-agenda)
-  ("C-c o d" . (lambda() (interactive) (find-file "~/Documents/Org/diary")))
-  ("C-c o A" . (lambda() (interactive) (find-file "~/Documents/Org/Agenda/approach.org")))
-  ("C-c a" . org-agenda)
-  ("C-c c" . org-capture)
-  ("C-c o l" . org-store-link)
-  ("C-c o L" . org-id-store-link)
-  ("C-c o b" . org-switchb)
-  ("C-c o I" . org-insert-link)
-  ("C-c o i" . org-insert-last-stored-link)
-  :init
   (require 'ido)
   (defun my-org-get-score-current()
 

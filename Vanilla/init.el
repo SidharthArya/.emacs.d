@@ -6,7 +6,7 @@
   :custom
   (modular-config-list '((none ())
                          (minimal (core appearance))
-                         (mail (core appearance selectrum emoji not-org mail gnus begin-mail core-post))
+                         (mail ((base) emoji not-org mail notmuch begin-mail core-post))
                          (news ((base) not-org web help begin-news (base-post)))
                          (base (core appearance modeline helm vi help))
                          (base-post (core-post))
