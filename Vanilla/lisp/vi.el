@@ -1,8 +1,10 @@
 (p! undo-tree
   :straight t
+  :custom
+  (undo-tree-history-directory-alist '((".*" . "~/.emacs.d/undo_tree")))
   :config
-  (global-undo-tree-mode +1)
-  )
+  (global-undo-tree-mode +1))
+
 (p! evil
   :straight t
   :after undo-tree

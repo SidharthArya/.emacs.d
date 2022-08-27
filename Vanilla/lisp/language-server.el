@@ -1,18 +1,12 @@
 (p! lsp-mode
   :straight lsp-mode
-  :init
-  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-  (setq lsp-keymap-prefix "C-c i")
-  (evil-define-key 'normal 'prog-mode-map (kbd "\\tl") 'lsp)
   :bind
   ("C-c t l" . lsp)
-  :config
-  (evil-define-key 'normal 'lsp-mode-map (kbd "\\l") lsp-command-map)
-
-
-  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-                                        ;         (prog-mode . lsp)
-         ;; if you want which-key integration
+  ("C-c l r" . lsp-find-references)
+  ("C-c l d" . lsp-find-definition)
+  :hook (
+         (javascript-mode . lsp-deferred)
+         (typescript-mode . lsp-deferred)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
 

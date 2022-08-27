@@ -30,7 +30,8 @@
   :straight t)
 
 (p! typescript-mode
-  :straight t)
+  :straight t
+  :mode "\\.jsx?\\'")
 
 (p! tree-sitter
   :straight t)
@@ -52,4 +53,9 @@
 (p! yaml-mode
   :straight t)
 (p! dockerfile-mode
+  :straight t)
+
+(p! realgud
+  :straight t)
+(p! realgud-node-inspect
   :straight t)

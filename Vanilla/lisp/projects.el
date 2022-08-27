@@ -1,8 +1,12 @@
 (p! projectile
   :straight t
+  :bind
+  ("C-c p f" . projectile-find-file)
+  ("C-c p d" . projectile-find-dir)
+  ("C-c p b" . projectile-switch-to-buffer)
   :config
-  (setq projectile-keymap-prefix (kbd "C-c p"))
-  (define-key projectile-mode-map (kbd "C-c p") projectile-command-map)
+  ;; (setq projectile-keymap-prefix (kbd "C-c p"))
+  ;; (define-key projectile-mode-map (kbd "C-c p") projectile-command-map)
   (projectile-mode +1))
 
 

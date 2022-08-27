@@ -12,5 +12,10 @@
 
 (p! treemacs :straight t
   :config
-  (evil-set-
-    ("C-c t" . treemacs))
+  :bind
+  ("C-c t t" . treemacs)
+  ("C-c T r p" . treemacs-remove-project-from-workspace)
+  ("C-c T s" . treemacs-switch-workspace)
+  ("C-c T n" . treemacs-create-workspace)
+  ("C-c T a" . treemacs-add-project)
+  )

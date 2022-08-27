@@ -289,3 +289,8 @@
 
 (p! org-download
   :straight t)
+
+
+(p! org-bullets
+  :straight t
+  :hook (org-mode . org-bullets-mode))

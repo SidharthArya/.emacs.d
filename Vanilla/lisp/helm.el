@@ -8,6 +8,7 @@
                      "/home/arya/.emacs.d/lisp/*"
                      "/usr/.*"
                      "/home/arya/Documents/Org/Roam/.*"
+                     "/home/arya/Documents/Zettel/people/.*"
                      "~/Documents/Org/Roam/.*"
                      )))
 (use-package helm
@@ -71,34 +72,6 @@
   :bind
   ("C-c /" . helm-swoop)
   ("C-c \?" . helm-multi-swoop))
-
-(use-package helm-projectile
-  :straight t
-  :after projectile
-  :bind
-        ("C-c p p" . helm-projectile)
-        ("C-c p q" . projectile-kill-buffers)
-        ("C-c p R" . helm-projectile-recentf)
-        ("C-c p g" . projectile-vc)
-        ("C-c p d" . projectile-run-gdb)
-        ("C-c p r" . projectile-run-project)
-        ("C-c p e" . projectile-run-command-in-root)
-        ("C-c p E" . projectile-run-eshell)
-        ("C-c p !" . projectile-run-shell-command-in-root)
-        ("C-c p &" . projectile-run-async-shell-command-in-root)
-        ("C-c p b" . helm-projectile-switch-to-buffer)
-        ("C-c p P" . helm-projectile-switch-project)
-        ("C-c p s" . projectile-run-shell)
-        ("C-c p t" . projectile-run-vterm)
-        ("C-c p \?" . helm-projectile-rg)
-        ("C-c p /" . helm-multi-swoop-projectile)
-        ("C-c p f" . helm-projectile-find-file)
-        ("C-c p F" . helm-projectile-find-file-in-known-projects)
-        ("C-c p c" . projectile-compile-project)
-        ("C-c p C" . projectile-configure-project)
-        ("C-c p C-s" . projectile-save-project-buffers)
-  :config
-  (helm-projectile-on))
 
 (defun my-find-system-config()
   (interactive)
