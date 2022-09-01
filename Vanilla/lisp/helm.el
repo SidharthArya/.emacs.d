@@ -11,12 +11,13 @@
                      "/home/arya/Documents/Zettel/people/.*"
                      "~/Documents/Org/Roam/.*"
                      )))
-(use-package helm
+(p! helm
   :custom
   (helm-ff-file-name-history-use-recentf t)
   (recentf-max-menu-items 100)
   (recentf-max-saved-items 100)
   :bind
+  ("C-c i" . helm-imenu)
   ("C-x C-f" . helm-find-files)
   ("M-x" . helm-M-x)
   ("C-x b" . helm-mini)
@@ -89,3 +90,7 @@
           )))
 (use-package helm-rg
   :straight t)
+
+
+(use-package helm-jq
+  :straight (helm-jq :type git :repo "git@github.com:SidharthArya/helm-jq.el.git"))

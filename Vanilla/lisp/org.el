@@ -4,12 +4,13 @@
   :straight t
   :straight org-ql
   ;; :if my-documents-mounted
-  :hook (org-mode . visual-line-mode)
+  :hook
   (org-mode . auto-save-mode)
   :config
   (require 'org-tempo)
   :bind
-  ("C-c o c" . org-capture)
+  ("C-c o c" . org-clock-in)
+  ("C-c o C" . org-clock-out)
   ("C-c o m" . org-id-get-create)
   ("C-c o e" . org-export-dispatch)
   ("C-c o a" . org-agenda)
@@ -296,3 +297,24 @@
 (p! org-bullets
   :straight t
   :hook (org-mode . org-bullets-mode))
+
+(p! ob-restclient
+  :straight t)
+
+(p! ob-async
+  :straight t
+  :after org
+  :config
+  (org-babel-do-load-languages 'org-babel-load-languages
+'((shell . t)
+(python . t)
+(R . t)
+(ruby . t)
+(ditaa . t)
+(dot . t)
+(sql . t)
+(octave . t)
+(sqlite . t)
+(perl . t))))
+
+

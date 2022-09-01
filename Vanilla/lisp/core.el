@@ -108,3 +108,10 @@
 
 (setq auto-save-file-name-transforms
   `((".*" "~/.emacs-saves/" t)))
+
+
+(p! visual-line-mode
+  :bind
+  ("C-c t v" . visual-line-mode))
+
+
