@@ -92,5 +92,3 @@
   :straight t)
 
 
-(use-package helm-jq
-  :straight (helm-jq :type git :repo "git@github.com:SidharthArya/helm-jq.el.git"))
