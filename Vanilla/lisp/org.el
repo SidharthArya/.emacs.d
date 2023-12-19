@@ -221,10 +221,10 @@
                                     org-hugo-get-md5)))
 (p! org-fc
   :straight (org-fc
-             :type git :repo "https://git.sr.ht/~l3kn/org-fc"
+             :type git :repo "https://git.sr.ht/~l3kn/org-fc" :host nil
              :files (:defaults "awk" "demo.org"))
   :custom
-  (org-fc-directories '("~/Documents/Org/Roam"))
+  (org-fc-directories '("~/Documents/Org/Zettel"))
   :config
   (require 'org-fc-hydra)
   (evil-define-minor-mode-key '(normal insert emacs) 'org-fc-review-flip-mode
