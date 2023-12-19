@@ -1,176 +1,177 @@
-(modular-config-load-modules '(mount))
+ (p! org
+   :straight (org :type git :host github :repo "https://git.sr.ht/~bzg/worg")
+   :straight org-ql
+   ;; :if my-documents-mounted
+   :hook
+   (org-mode . auto-save-mode)
+   :config
+   (require 'org-tempo)
+   :bind
+   ("C-c o c" . org-clock-in)
+   ("C-c o C" . org-clock-out)
+   ("C-c o m" . org-id-get-create)
+   ("C-c o e" . org-export-dispatch)
+   ("C-c o a" . org-agenda)
+   ("C-c o d" . (lambda() (interactive) (find-file "~/Documents/Org/diary")))
+   ("C-c o A" . (lambda() (interactive) (find-file "~/Documents/Org/Agenda/approach.org")))
+   ("C-c a" . org-agenda)
+   ("C-c c" . org-capture)
+   ("C-c o l" . org-store-link)
+   ("C-c o L" . org-id-store-link)
+   ("C-c o b" . org-switchb)
+   ("C-c o I" . org-insert-link)
+   ("C-c o i" . org-insert-last-stored-link)
+   :custom
+   (org-id-link-to-org-use-id 'use-existing)
+   (org-directory "~/Documents/Org")
+   (org-agenda-files '("~/Documents/Org/Agenda/notes.org" "~/Documents/Org/Agenda/books.org" "~/Documents/Org/Agenda/entertainment.org" "~/Documents/Org/Agenda/social.org" "~/Documents/Org/Agenda/habits.org"  "~/Documents/Org/Agenda/work"))
+   (org-agenda-custom-commands
+    '(("e" "Exercises" agenda  ""
+       ((org-agenda-files (list "~/Documents/Org/Agenda/exercises.org"))
+        (org-super-agenda-groups
+         '((:auto-category t)))
+        (org-agenda-sorting-strategy '(priority-up effort-up))))
+      ("w" "Work" agenda  ""
+       ((org-agenda-files (list "~/Documents/Org/Agenda/work.org"))
+        (org-super-agenda-groups
+         '((:auto-category t)))
+        (org-agenda-sorting-strategy '(priority-up effort-up))))
+      ("d" "Diary" agenda  ""
+       ((org-agenda-files nil)))
+      
+      ("f" "Focus Today" agenda ""
+       ((org-agenda-span 'day)
+        (org-agenda-skip-function '(org-agenda-skip-if-not-today))
+        ))
+      ("A" "Agenda Important" agenda  ""
+       ((org-agenda-files (list "~/Documents/Org/Agenda/notes.org"))
+        (org-super-agenda-groups nil)
+        (org-agenda-sorting-strategy '(priority-up effort-up))))
+      ("pa" "Projects Agenda" agenda  ""
+       ((org-agenda-files (list org-projectile-projects-file (concat (projectile-project-root) org-projectile-per-project-filepath)))
+        (org-super-agenda-groups nil)
+        (org-agenda-sorting-strategy '(priority-up effort-up))))
+      ("pt" "Projects Todo" todo  ""
+       ((org-agenda-files (list org-projectile-projects-file (concat (projectile-project-root) org-projectile-per-project-filepath)))
+        (org-super-agenda-groups nil)
+        (org-agenda-sorting-strategy '(priority-up effort-up))))
+      ("B" "Book" todo  ""
+       ((org-agenda-files (list "~/Documents/Org/Agenda/books.org"))
+        (org-super-agenda-groups nil)
+        (org-agenda-sorting-strategy '(ts-down priority-up effort-up))))
+      ("h" "Habits" agenda ""
+       ((org-agenda-files (list "~/Documents/Org/Agenda/habits.org"))
+        (org-agenda-sorting-strategy '(time-up))))
+      ("u" "Utility Sorted Agenda" agenda ""
+       ((org-agenda-cmp-user-defined 'my-org-cmp-utility-property))
+       (org-agenda-sorting-strategy '(user-defined-up)))
+      ("w" "Work" agenda ""
+       ((org-agenda-filter-preset '("+work"))))
+      ("E" "Entertainment" todo  ""
+       ((org-agenda-files (list "~/Documents/Org/Agenda/entertainment.org"))
+        (org-super-agenda-groups nil)
+        (org-agenda-sorting-strategy '(ts-up priority-up effort-up))))))
+   (org-agenda-sorting-strategy
+    '((agenda user-defined-down scheduled-down deadline-up priority-down effort-up)
+      (todo priority-down)
+      (tags priority-down)
+      (search category-keep)))
+   (org-duration-format '(("d" . nil) ("h" . t) ("min" . t)))
+   (org-effort-durations
+    `(("min" . 1)
+      ("h" . 60)
+      ;; eight-hour days
+      ("d" . ,(* 60 8))
+      ;; five-day work week
+      ("w" . ,(* 60 8 5))
+      ;; four weeks in a month
+      ("m" . ,(* 60 8 5 4))
+      ;; work a total of 12 months a year --
+      ;; this is independent of holiday and sick time taken
+      ("y" . ,(* 60 8 5 4 12))))
+   (org-agenda-skip-deadline-if-done t)
+   (org-agenda-skip-scheduled-if-done t)
+   (org-agenda-window-setup 'current-window)
+   (org-babel-load-languages '((emacs-lisp . t)))
+   (org-agenda-diary-file "~/Documents/Org/diary")
+   (diary-file "~/Documents/Org/diary")
+   (org-log-into-drawer t)
+   (org-agenda-include-diary t)
+   (alert-default-style 'libnotify)
+   (org-alert-notification-title "Organizer")
+   ;; (org-brain-path "~/Documents/Org/Brain")
+   (org-id-track-globally t)
+   (org-id-locations-file "~/Documents/Org/.org-id-locations")
+   (org-capture-templates
+    '(
+      ("i" "Important")
+      ("it" "Today" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
+       "* TODO %? \t:important:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 30\n:END:\n  %i\n  %a")
+      ("iT" "Today" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
+       "* TODO %? \t:work:important:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 90\n:END:\n  %i\n  %a")
+      ("iw" "Weekend" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
+       "* TODO %? \t:important:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"SUN\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 20\n:END:\n  %i\n  %a")
+      ("iW" "Weekend" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
+       "* TODO %? \t:work:important:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"SUN\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 90\n:END:\n  %i\n  %a")
+      ("is" "Schedule" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
+       "* TODO %? \t:important:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 20\n:END:\n  %i\n  %a")
+      ("iS" "Schedule" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
+       "* TODO %? \t:work:important:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 90\n:END:\n  %i\n  %a")
+      ("id" "Deadline" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
+       "* TODO %? \t:important:\n\tDEADLINE:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 10\n:END:\n  %i\n  %a")
+      ("iD" "Deadline" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
+       "* TODO %? \t:work:important:\n\tDEADLINE:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 90\n:END:\n  %i\n  %a")
+      ("u" "Unimportant")
+      ("ut" "Today" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
+       "* TODO %? \t:unimportant:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 30\n:END:\n  %i\n  %a")
+      ("uw" "Weekend" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
+       "* TODO %? \t:unimportant:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"SUN\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 20\n:END:\n  %i\n  %a")
+      ("us" "Schedule" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
+       "* TODO %? \t:unimportant:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 20\n:END:\n  %i\n  %a")
+      ("ud" "Deadline" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
+       "* TODO %? \t:unimportant:\n\tDEADLINE:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 10\n:END:\n  %i\n  %a")
+      ("s" "Social" entry (file+headline "~/Documents/Org/Agenda/social.org" "Tasks")
+       "* TODO %? \t:social:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 30\n:END:\n  %i\n  %a")
+      ("D" "Diary")
+      ("Dd" "Daily Diary" entry (file+headline "~/Documents/Org/Brain/Personal/Diaries.org" "Diary")
+       "* %(org-insert-time-stamp (org-read-date nil t \"\"))\n %?")
+      ("Dm" "Meditation Diary" entry (file+headline "~/Documents/Org/Brain/Personal/Meditation.org" "Diary")
+       "* %(org-insert-time-stamp (org-read-date nil t \"\"))\n %?")
+      ("Ds" "Sleep Journal" entry (file+headline "~/Documents/Org/Brain/Personal/Diaries.org" "Sleep")
+       "* %(org-insert-time-stamp (org-read-date nil t \"\"))\n %?")
+      ("Dw" "Work Diary" entry (file+headline "~/Documents/Org/Brain/Personal/Diaries.org" "Work")
+       "* %(org-insert-time-stamp (org-read-date nil t \"\"))\n %?")
+      ("Dr" "Research" entry (file+headline "~/Documents/Org/Brain/Personal/Research.org" "Research")
+       "* %?")
+      ("Dm" "Research" entry (file+headline "~/Documents/Org/Brain/Personal/Meditation.org" "Meditation")
+       "* (org-insert-time-stamp (org-read-date nil t \"\"))\n %?")
+      ("DR" "Regret" entry (file+headline "~/Documents/Org/Brain/Personal/Diaries.org" "Regrets")
+       "* %?")
+      ("E" "Emotions")
+      ("Es" "Sensations" entry (file+headline "~/Documents/Org/Brain/Learning/Personality/EmotionalIntelligence.org" "Sensations")
+       "* %? \t:drill:")
+      ("P" "Protocol")
+      ("Pi" "Important")
+      ("Pit" "Today" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Websites")
+       "* TODO %:annotation \t:important:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 30\n:END:\n  %i\n  %a")
+      ("Piw" "Weekend" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Websites")
+       "* TODO %:annotation \t:important:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"SUN\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 20\n:END:\n  %i\n  %a")
+      ("Pis" "Schedule" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Websites")
+       "* TODO %:annotation \t:important:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 20\n:END:\n  %i\n  %a")
+      ("Pid" "Deadline" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Websites")
+       "* TODO %:annotation \t:important:\n\tDEADLINE:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 10\n:END:\n  %i\n  %a")
+      ("Pu" "Unimportant")
+      ("Put" "Today" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Websites")
+       "* TODO %:annotation \t:unimportant:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 10\n:END:\n  %i\n  %a")
+      ("Puw" "Weekend" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Websites")
+       "* TODO %:annotation \t:unimportant:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"SUN\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 10\n:END:\n  %i\n  %a")
+      ("Pus" "Schedule" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Websites")
+       "* TODO %:annotation \t:unimportant:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 10\n:END:\n  %i\n  %a")
+      ("Pud" "Deadline" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Websites")
+       "* TODO %:annotation \t:unimportant:\n\tDEADLINE:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 10\n:END:\n  %i\n  %a")))
 
-(p! org
-  :straight t
-  :straight org-ql
-  ;; :if my-documents-mounted
-  :hook
-  (org-mode . auto-save-mode)
-  :config
-  (require 'org-tempo)
-  :bind
-  ("C-c o c" . org-clock-in)
-  ("C-c o C" . org-clock-out)
-  ("C-c o m" . org-id-get-create)
-  ("C-c o e" . org-export-dispatch)
-  ("C-c o a" . org-agenda)
-  ("C-c o d" . (lambda() (interactive) (find-file "~/Documents/Org/diary")))
-  ("C-c o A" . (lambda() (interactive) (find-file "~/Documents/Org/Agenda/approach.org")))
-  ("C-c a" . org-agenda)
-  ("C-c c" . org-capture)
-  ("C-c o l" . org-store-link)
-  ("C-c o L" . org-id-store-link)
-  ("C-c o b" . org-switchb)
-  ("C-c o I" . org-insert-link)
-  ("C-c o i" . org-insert-last-stored-link)
-  :custom
-  (org-id-link-to-org-use-id 'use-existing)
-  (org-directory "~/Documents/Org")
-  (org-agenda-files '("~/Documents/Org/Agenda/notes.org" "~/Documents/Org/Agenda/books.org" "~/Documents/Org/Agenda/entertainment.org" "~/Documents/Org/Agenda/social.org" "~/Documents/Org/Agenda/habits.org"  "~/Documents/Org/Agenda/work"))
-  (org-agenda-custom-commands
-   '(("e" "Exercises" agenda  ""
-      ((org-agenda-files (list "~/Documents/Org/Agenda/exercises.org"))
-       (org-super-agenda-groups
-        '((:auto-category t)))
-       (org-agenda-sorting-strategy '(priority-up effort-up))))
-     ("w" "Work" agenda  ""
-      ((org-agenda-files (list "~/Documents/Org/Agenda/work.org"))
-       (org-super-agenda-groups
-        '((:auto-category t)))
-       (org-agenda-sorting-strategy '(priority-up effort-up))))
-     ("d" "Diary" agenda  ""
-      ((org-agenda-files nil)))
-     
-     ("f" "Focus Today" agenda ""
-      ((org-agenda-span 'day)
-       (org-agenda-skip-function '(org-agenda-skip-if-not-today))
-       ))
-     ("A" "Agenda Important" agenda  ""
-      ((org-agenda-files (list "~/Documents/Org/Agenda/notes.org"))
-       (org-super-agenda-groups nil)
-       (org-agenda-sorting-strategy '(priority-up effort-up))))
-     ("pa" "Projects Agenda" agenda  ""
-      ((org-agenda-files (list org-projectile-projects-file (concat (projectile-project-root) org-projectile-per-project-filepath)))
-       (org-super-agenda-groups nil)
-       (org-agenda-sorting-strategy '(priority-up effort-up))))
-     ("pt" "Projects Todo" todo  ""
-      ((org-agenda-files (list org-projectile-projects-file (concat (projectile-project-root) org-projectile-per-project-filepath)))
-       (org-super-agenda-groups nil)
-       (org-agenda-sorting-strategy '(priority-up effort-up))))
-     ("B" "Book" todo  ""
-      ((org-agenda-files (list "~/Documents/Org/Agenda/books.org"))
-       (org-super-agenda-groups nil)
-       (org-agenda-sorting-strategy '(ts-down priority-up effort-up))))
-     ("h" "Habits" agenda ""
-      ((org-agenda-files (list "~/Documents/Org/Agenda/habits.org"))
-       (org-agenda-sorting-strategy '(time-up))))
-     ("u" "Utility Sorted Agenda" agenda ""
-      ((org-agenda-cmp-user-defined 'my-org-cmp-utility-property))
-      (org-agenda-sorting-strategy '(user-defined-up)))
-     ("w" "Work" agenda ""
-      ((org-agenda-filter-preset '("+work"))))
-     ("E" "Entertainment" todo  ""
-      ((org-agenda-files (list "~/Documents/Org/Agenda/entertainment.org"))
-       (org-super-agenda-groups nil)
-       (org-agenda-sorting-strategy '(ts-up priority-up effort-up))))))
-  (org-agenda-sorting-strategy
-   '((agenda user-defined-down scheduled-down deadline-up priority-down effort-up)
-     (todo priority-down)
-     (tags priority-down)
-     (search category-keep)))
-  (org-duration-format '(("d" . nil) ("h" . t) ("min" . t)))
-  (org-effort-durations
-   `(("min" . 1)
-     ("h" . 60)
-     ;; eight-hour days
-     ("d" . ,(* 60 8))
-     ;; five-day work week
-     ("w" . ,(* 60 8 5))
-     ;; four weeks in a month
-     ("m" . ,(* 60 8 5 4))
-     ;; work a total of 12 months a year --
-     ;; this is independent of holiday and sick time taken
-     ("y" . ,(* 60 8 5 4 12))))
-  (org-agenda-skip-deadline-if-done t)
-  (org-agenda-skip-scheduled-if-done t)
-  (org-agenda-window-setup 'current-window)
-  (org-babel-load-languages '((emacs-lisp . t)))
-  (org-agenda-diary-file "~/Documents/Org/diary")
-  (diary-file "~/Documents/Org/diary")
-  (org-log-into-drawer t)
-  (org-agenda-include-diary t)
-  (alert-default-style 'libnotify)
-  (org-alert-notification-title "Organizer")
-  ;; (org-brain-path "~/Documents/Org/Brain")
-  (org-id-track-globally t)
-  (org-id-locations-file "~/Documents/Org/.org-id-locations")
-  (org-capture-templates
-   '(
-     ("i" "Important")
-     ("it" "Today" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
-      "* TODO %? \t:important:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 30\n:END:\n  %i\n  %a")
-     ("iT" "Today" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
-      "* TODO %? \t:work:important:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 90\n:END:\n  %i\n  %a")
-     ("iw" "Weekend" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
-      "* TODO %? \t:important:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"SUN\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 20\n:END:\n  %i\n  %a")
-     ("iW" "Weekend" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
-      "* TODO %? \t:work:important:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"SUN\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 90\n:END:\n  %i\n  %a")
-     ("is" "Schedule" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
-      "* TODO %? \t:important:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 20\n:END:\n  %i\n  %a")
-     ("iS" "Schedule" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
-      "* TODO %? \t:work:important:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 90\n:END:\n  %i\n  %a")
-     ("id" "Deadline" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
-      "* TODO %? \t:important:\n\tDEADLINE:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 10\n:END:\n  %i\n  %a")
-     ("iD" "Deadline" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
-      "* TODO %? \t:work:important:\n\tDEADLINE:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 90\n:END:\n  %i\n  %a")
-     ("u" "Unimportant")
-     ("ut" "Today" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
-      "* TODO %? \t:unimportant:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 30\n:END:\n  %i\n  %a")
-     ("uw" "Weekend" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
-      "* TODO %? \t:unimportant:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"SUN\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 20\n:END:\n  %i\n  %a")
-     ("us" "Schedule" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
-      "* TODO %? \t:unimportant:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 20\n:END:\n  %i\n  %a")
-     ("ud" "Deadline" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Tasks")
-      "* TODO %? \t:unimportant:\n\tDEADLINE:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 10\n:END:\n  %i\n  %a")
-     ("s" "Social" entry (file+headline "~/Documents/Org/Agenda/social.org" "Tasks")
-      "* TODO %? \t:social:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 30\n:END:\n  %i\n  %a")
-     ("D" "Diary")
-     ("Dd" "Daily Diary" entry (file+headline "~/Documents/Org/Brain/Personal/Diaries.org" "Diary")
-      "* %(org-insert-time-stamp (org-read-date nil t \"\"))\n %?")
-     ("Dm" "Meditation Diary" entry (file+headline "~/Documents/Org/Brain/Personal/Meditation.org" "Diary")
-      "* %(org-insert-time-stamp (org-read-date nil t \"\"))\n %?")
-     ("Ds" "Sleep Journal" entry (file+headline "~/Documents/Org/Brain/Personal/Diaries.org" "Sleep")
-      "* %(org-insert-time-stamp (org-read-date nil t \"\"))\n %?")
-     ("Dw" "Work Diary" entry (file+headline "~/Documents/Org/Brain/Personal/Diaries.org" "Work")
-      "* %(org-insert-time-stamp (org-read-date nil t \"\"))\n %?")
-     ("Dr" "Research" entry (file+headline "~/Documents/Org/Brain/Personal/Research.org" "Research")
-      "* %?")
-     ("Dm" "Research" entry (file+headline "~/Documents/Org/Brain/Personal/Meditation.org" "Meditation")
-      "* (org-insert-time-stamp (org-read-date nil t \"\"))\n %?")
-     ("DR" "Regret" entry (file+headline "~/Documents/Org/Brain/Personal/Diaries.org" "Regrets")
-      "* %?")
-     ("E" "Emotions")
-     ("Es" "Sensations" entry (file+headline "~/Documents/Org/Brain/Learning/Personality/EmotionalIntelligence.org" "Sensations")
-      "* %? \t:drill:")
-     ("P" "Protocol")
-     ("Pi" "Important")
-     ("Pit" "Today" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Websites")
-      "* TODO %:annotation \t:important:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 30\n:END:\n  %i\n  %a")
-     ("Piw" "Weekend" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Websites")
-      "* TODO %:annotation \t:important:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"SUN\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 20\n:END:\n  %i\n  %a")
-     ("Pis" "Schedule" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Websites")
-      "* TODO %:annotation \t:important:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 20\n:END:\n  %i\n  %a")
-     ("Pid" "Deadline" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Websites")
-      "* TODO %:annotation \t:important:\n\tDEADLINE:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 10\n:END:\n  %i\n  %a")
-     ("Pu" "Unimportant")
-     ("Put" "Today" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Websites")
-      "* TODO %:annotation \t:unimportant:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 10\n:END:\n  %i\n  %a")
-     ("Puw" "Weekend" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Websites")
-      "* TODO %:annotation \t:unimportant:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date nil t \"SUN\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 10\n:END:\n  %i\n  %a")
-     ("Pus" "Schedule" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Websites")
-      "* TODO %:annotation \t:unimportant:\n\tSCHEDULED:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 10\n:END:\n  %i\n  %a")
-     ("Pud" "Deadline" entry (file+headline "~/Documents/Org/Agenda/notes.org" "Websites")
-      "* TODO %:annotation \t:unimportant:\n\tDEADLINE:%(org-insert-time-stamp (org-read-date :from-string \"\"))\n:PROPERTIES:\n:Effort: 1h\n:SCORE_ON_DONE: 10\n:END:\n  %i\n  %a"))))
+  (org-super-agenda-mode +1)
+   )
 
 ;; ~/.doom.d/config.el
 (p! org-transclusion
@@ -179,7 +180,7 @@
   :bind
   ("C-c o t" . org-transclusion-mode))
 
-
+;; 
 (p! org-ref
   :straight t
   :after (org)
@@ -189,7 +190,7 @@
   (bibtex-completion-bibliography '("~/Documents/Org/references.bib"))
   (org-latex-pdf-process (list "latexmk -shell-escape -bibtex -f -pdf %f"))
   )
-
+;; 
 (p! citeproc-org
   :straight t
   :after (ox-hugo org-ref)

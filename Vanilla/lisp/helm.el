@@ -57,7 +57,7 @@
   :config
   (require 'helm-find)
   (require 'helm-config)
-  (helm-mode 1)
+  (helm-mode +1)
   )
 
 (use-package helm-descbinds
