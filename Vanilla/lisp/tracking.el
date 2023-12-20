@@ -5,7 +5,7 @@
 (setq org-drill-leech-method 'warn)
 (setq org-drill-add-random-noise-to-intervals-p t)
                                         ;(setq org-drill-maximum-duration nil)
-(load "~/Documents/Org/Drill/drill.el")
+;; (load "~/Documents/Org/Drill/drill.el")
 (defun my-tracking-drill-stuff ()
 
   ""
@@ -14,9 +14,10 @@
     (let  ((org-drill-scope (mapcar (lambda (a) (format "%s/%s" my-tracking-drill-prefix a)) my-tracking-drill-files)))
       (dolist (x (buffer-list)) (with-current-buffer x (condition-case nil (recover-this-file) (error nil))))(org-drill)(dolist (x (buffer-list)) (with-current-buffer x (condition-case nil (recover-this-file) (error nil)))))))
 
-(defun my-tracking-do-the-writeup ()
+(defun my-tracking-do-the-writeup (&optional writeup-file)
   ""
   (interactive)
+  (let ((my-tracking-writeup-file (or writeup-file my-tracking-writeup-file)))
   (with-current-buffer (find-file-noselect my-tracking-writeup-file)
     (end-of-buffer)
     (if (not (equal (org-time-string-to-absolute (org-get-heading t t t t)) (time-to-days (org-read-date nil t ""))))
@@ -32,7 +33,7 @@
           (org-insert-time-stamp (org-read-date nil t ""))
           (insert temp)))
     (save-buffer)
-    (kill-current-buffer)))
+    (kill-current-buffer))))
 
 (defun my-tracking-do-check-writeup ()
   ""
@@ -83,14 +84,16 @@
         (insert my-tracking-current-point)
         )))))
   
-(defun my-tracking-give-points(key)
+(defun my-tracking-give-points(key &optional track-dir)
   ""
   (let ((str nil)
-        (input nil))
+        (input nil)
+        (my-tracking-points-directory (or track-dir my-tracking-points-directory))
+        )
     (if (listp key)
         (setq str (symbol-name (car key)))
       (setq str (symbol-name key)))
-
+    
     (with-current-buffer (find-file-noselect (concat  my-tracking-points-directory str ".csv"))
       (if (equal (buffer-size) 0)
           (insert "Date,Value"))

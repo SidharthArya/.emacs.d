@@ -56,7 +56,7 @@
         )
   :config
   (require 'helm-find)
-  (require 'helm-config)
+  ;;(require 'helm-config)
   (helm-mode +1)
   )
 
