@@ -7,7 +7,8 @@
   :straight t
   )
 
-(modular-config-load-modules '(space org))
+(defalias 'p! 'use-package)
+(modular-config-load-modules '(org))
 
 (defun things-needed()
   ""
