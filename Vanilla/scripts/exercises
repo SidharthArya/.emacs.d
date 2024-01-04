@@ -10,6 +10,7 @@
     (org-google-tasks-get-tokens)
     ))
 (require 'notifications)
+(org-ql-query :select #'org-get-heading :from "~/Documents/Org/Agenda/habits.org" :where '(tags "fitness"))
 (with-current-buffer (find-file-noselect "~/Documents/Org/Agenda/habits.org")
-  (org-ql-find "exercise")
+  (org-ql-search 'buffer "tags:exercise")
 )
