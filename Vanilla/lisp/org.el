@@ -224,7 +224,7 @@
              :type git :repo "https://git.sr.ht/~l3kn/org-fc" :host nil
              :files (:defaults "awk" "demo.org"))
   :custom
-  (org-fc-directories '("~/Documents/Org/Zettel"))
+  (org-fc-directories '("~/Documents/Zettel"))
   :config
   (require 'org-fc-hydra)
   (evil-define-minor-mode-key '(normal insert emacs) 'org-fc-review-flip-mode
