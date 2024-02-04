@@ -4,6 +4,8 @@
    ;; :if my-documents-mounted
    :hook
    (org-mode . auto-save-mode)
+   :init
+   (setq org-startup-with-latex-preview t)
    :config
    (require 'org-tempo)
    :bind
